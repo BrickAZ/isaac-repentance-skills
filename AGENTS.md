@@ -21,7 +21,7 @@ an Isaac mod project.
 - For work in an unfamiliar target mod, begin with `isaac-mod-context`.
 - Treat the target mod's confirmed files and official Isaac API as authority.
 - Treat third-party libraries as optional unless the target project explicitly
-  declares them. Never assume YSD, Reverie, CuerLib, EID, MCM, or StageAPI.
+  declares them. Never assume, Reverie, CuerLib, EID, MCM, or StageAPI.
 - Keep unknown project facts as `TBD`; do not invent paths, IDs, callbacks,
   animation names, entities, or dependency APIs.
 - Do not replace user-owned design choices such as balance, pools, weights,

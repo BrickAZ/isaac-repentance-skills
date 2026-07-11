@@ -16,7 +16,7 @@
 
 - 先读取目标模组，再写实现。
 - 默认使用官方 Isaac API 和目标模组已有代码。
-- YSD、Reverie、CuerLib、EID、MCM、StageAPI 等均不是默认前置。
+- CuerLib、EID、MCM、StageAPI 等均不是默认前置。
 - 用户未决定的数值、池子、权重、美术和机制细节保持 `TBD`。
 - 不编造路径、实体 Variant、ANM2 动画名、回调注册位置或第三方 API。
 - 静态校验、隔离行为测试和实际游戏验证分别报告，不能混为“已验证”。
