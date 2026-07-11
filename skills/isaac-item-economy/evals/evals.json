@@ -1,0 +1,46 @@
+{
+  "skill_name": "isaac-item-economy",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "新道具是一个稳定但不强的被动，能让玩家更容易处理诅咒房风险。它应该进哪些池、什么品质和权重？先给审核表，不要直接猜一个数字。",
+      "expected_output": "Produces an Item Economy Spec/table, distinguishes quality from pool identity and weight, records excluded pools and asks for comparison with existing curse/treasure items before choosing numbers.",
+      "files": [
+        "docs/skills/isaac-item-economy/references/economy-review-checklist.md"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "代码 Codex 把新道具加进了 base itempools.xml，但中文池子名字没改，权重也和英文不同。请给我检查和修复路线。",
+      "expected_output": "Routes to all language pool files, verifies matching localized item names, pool structure, and Weight/DecreaseBy/RemoveOn parity with the validator, without pretending that static checks decide balance.",
+      "files": [
+        "docs/skills/isaac-item-economy/references/economy-review-checklist.md"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "这个道具很强但很有趣，我把它放进宝箱、商店、恶魔、天使、秘密和诅咒池，再把权重设成 0.1 就行吗？",
+      "expected_output": "Rejects using low weight as a substitute for coherent pool placement, discusses pool dilution and acquisition story, and requires explicit inclusion/exclusion rationale before a numeric policy.",
+      "files": [
+        "docs/skills/isaac-item-economy/references/pool-placement.md"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "我已经决定这个道具是品质 2、只进诅咒池、权重 0.4。tags 和是否会衰减我还没决定。请补全经济审核。",
+      "expected_output": "Keeps quality/pool/weight locked exactly as user decisions, marks tags and depletion as TBD, then gives clearly labeled suggestions with reasons instead of overwriting the supplied values or treating advice as final XML.",
+      "files": [
+        "docs/skills/isaac-item-economy/references/economy-review-checklist.md"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "陌生模组的池子定义放在 data/pools/，只有 ko_kr 本地化。我要评审新被动道具的出现率，开始前不要假设什么？",
+      "expected_output": "应该先用 isaac-mod-context 发现真实 item/pool XML、现有语言和本地经济惯例；不能硬写 content/itempools.xml 或 en/zh 语言表，再把用户没给的数值保留为 TBD 和建议。",
+      "files": [
+        "docs/skills/isaac-mod-context/SKILL.md",
+        "docs/skills/isaac-item-economy/SKILL.md"
+      ]
+    }
+  ]
+}

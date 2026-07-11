@@ -1,0 +1,37 @@
+{
+  "skill_name": "isaac-rooms-stages",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "每层第一次进入普通房时，若没有 Boss，则把一个石头替换为奖励门；离开房间后规则不能影响其他房。请先写房间合同。",
+      "expected_output": "应该分离房间选择、目标验证和 mutation；定义每层/每房 state 与 reset；不假设房间 XML 或 door API 路径，并将奖励交给 rewards-pickups。",
+      "files": [
+        "docs/skills/isaac-rooms-stages/references/room-stage-contract.md"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "普通局结束挑战后，特殊房间替换逻辑仍在下一局生效。该从哪里查？",
+      "expected_output": "应该检查挑战 gate、room/floor/run state owner、new game cleanup 和保存边界；不能只在 MC_POST_NEW_ROOM 里加更多条件。",
+      "files": [
+        "docs/skills/isaac-rooms-stages/SKILL.md"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "项目没有声明 StageAPI，但代码 Codex 说做特殊房必须先依赖它。",
+      "expected_output": "应该先寻找官方房间/楼层 API 与项目已有 loader；StageAPI 只能在项目已声明或用户明确要求时走 required/optional 分流，不能默认新增。",
+      "files": [
+        "docs/skills/isaac-compat-descriptions/SKILL.md"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "本层第一次符合条件的房间选中了目标，但 mutation 前目标被另一机制移除了。该层的 once flag 怎么处理？",
+      "expected_output": "应该保留原有内容或安全跳过，并且不提交成功 flag；尝试记录与成功记录分开，是否重试由用户决定。",
+      "files": [
+        "docs/skills/isaac-rooms-stages/SKILL.md"
+      ]
+    }
+  ]
+}

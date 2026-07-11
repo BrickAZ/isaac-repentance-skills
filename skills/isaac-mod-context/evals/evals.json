@@ -1,0 +1,20 @@
+{
+  "skill_name": "isaac-mod-context",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "这是一个新的以撒 mod，main.lua 里有 RegisterMod，scripts/items 里有道具逻辑。先帮我加一个被动道具。",
+      "expected_output": "先输出项目上下文：mod 对象、bootstrap、scripts/items、实际 content XML 和语言文件；不直接假设对象名或把逻辑写回 main.lua。"
+    },
+    {
+      "id": 2,
+      "prompt": "另一个 mod 只有 items.xml，没有中文或英文分文件。我想补一个道具池。",
+      "expected_output": "记录实际只有的 XML 文件，不要求创建不存在的语言文件；把语言策略标为未知或交由用户/项目约定决定。"
+    },
+    {
+      "id": 3,
+      "prompt": "项目有 main.lua、src 和 modules，分别都像会注册回调。我该用哪个？",
+      "expected_output": "不猜唯一 owner；记录多个候选，路由到 architecture/callback contract，并要求按请求内容定位真正行为 owner。"
+    }
+  ]
+}

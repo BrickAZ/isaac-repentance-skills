@@ -1,0 +1,3 @@
+interface:
+  display_name: "Isaac Config Options"
+  short_description: "Safe options, MCM gates, and config lifecycle"

@@ -1,0 +1,37 @@
+{
+  "skill_name": "isaac-cards-pockets",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "自定义魂石生成出来是空白卡牌，使用效果倒是能触发。请写给代码 Codex 的排查提示词。",
+      "expected_output": "应该优先检查 content/pocketitems.xml、id/pickup/hud 是否混淆、Lua 是否用 Isaac.GetCardIdByName、MC_USE_CARD 是否按 card id 注册、HUD/拾取 art 和 EID 图标是否分开；不能先改 use callback。",
+      "files": [
+        "docs/skills/isaac-cards-pockets/references/blank-card-prevention.md"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "新增一张特殊卡牌，会在某个挑战开局给玩家。你帮我写给代码 Codex 的实现提示词。",
+      "expected_output": "应该要求 pocketitems.xml 注册 card，明确 id/pickup/hud/mimiccharge，Lua 用 GetCardIdByName 和 MC_USE_CARD，挑战 startingcard 或 Lua pocket setup 要用 card id，并调用 isaac-challenges。",
+      "files": [
+        "docs/skills/isaac-cards-pockets/references/pocketitems-xml.md",
+        "docs/skills/isaac-cards-pockets/references/card-generation.md"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "审核补丁：它在 MC_GET_CARD 里 return 了一个自定义 pickup subtype，而且没有任何条件门禁。这个会有什么问题？",
+      "expected_output": "应该指出 MC_GET_CARD 应返回 card id，不是 pickup subtype；缺少门禁会污染普通卡牌生成；可能导致空白/异常卡；需要 pocketitems.xml 和正常局非泄漏测试。",
+      "files": [
+        "docs/skills/isaac-cards-pockets/references/card-generation.md",
+        "docs/skills/isaac-cards-pockets/references/card-pocket-review-checklist.md"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "陌生 mod 要加魂石，但我还不知道 pocket XML、HUD 图和回调写在哪里。",
+      "expected_output": "先用 isaac-mod-context 发现实际注册、资源和模块表面；不假定文件或 id，确认后才按卡牌注册和空白卡检查表实现。",
+      "files": []
+    }
+  ]
+}

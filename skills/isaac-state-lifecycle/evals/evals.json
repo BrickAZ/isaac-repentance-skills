@@ -1,0 +1,37 @@
+{
+  "skill_name": "isaac-state-lifecycle",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "主动道具使用后进入选择模式，直到离开当前房间才取消；如果玩家换房、死亡、或者道具丢失都不能残留 UI。写实现提示词。",
+      "expected_output": "Defines UI/runtime state owner, player keying, create/update/reset callbacks, room/death/item-loss cleanup, and explicitly avoids saved data unless needed.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "我想把受到的伤害延迟到本层结束再结算，存档退出再进来也不能丢。",
+      "expected_output": "Routes to saved data, defines serializable fields, player keying, floor transition settlement, reload reconstruction, and avoids storing live damage/entity userdata.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "挑战里每个房间第一次杀敌会生成奖励，但出了挑战不能影响普通流程。",
+      "expected_output": "Defines challenge-only gate, room state reset, normal-run cleanup, and checks that state cannot leak outside the challenge.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "新 mod 的行为代码都在 src/，我不知道它是否已有 SaveData 约定，但要做一个换层清除的临时效果。",
+      "expected_output": "先发现项目上下文和现有状态约定；把保存需求保持 TBD，不擅自增加 SaveData，并明确层切换清理。",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "陌生项目的合作模式状态会在玩家重排后串到别人。没有现成 key helper 时，直接把 player.InitSeed 当默认 key 可以吗？",
+      "expected_output": "应该拒绝未验证的通用 seed 默认值；先发现项目的 per-player data 或稳定 key 策略，并用语义 owner/field 描述状态直到代码事实可用。",
+      "files": [
+        "docs/skills/isaac-state-lifecycle/references/state-ownership.md"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "skill_name": "isaac-mechanic-contracts",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "设计一个被动道具：玩家受到普通战斗伤害时有 50% 概率把伤害延迟到两间房后结算；献血机、恶魔交易、诅咒门和这次结算本身都不能再次触发。请先写机制，不要急着写回调。",
+      "expected_output": "Defines eligible and excluded damage, original-hit versus deferred paths, explicit idle/deferred/settled states, a self-trigger guard, room interruption policy, and a test matrix before selecting MC_ENTITY_TAKE_DMG or SaveData details.",
+      "files": [
+        "docs/skills/isaac-mechanic-contracts/references/event-outcome-boundaries.md",
+        "docs/skills/isaac-mechanic-contracts/references/state-machine-and-exclusions.md"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "主动道具按下后如果房间有敌人才开始选择效果；选择取消、没有敌人、选完效果、换房分别该怎样定义？请先给机制契约。",
+      "expected_output": "Separates press, eligibility failure, selection mode, cancel, successful choice, and room interruption; leaves charge/input/UI callback details to the active shell skill after the semantic contract is fixed.",
+      "files": [
+        "docs/skills/isaac-mechanic-contracts/references/event-outcome-boundaries.md"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "道具效果是受伤后在以撒头上出现红点并持续 20 帧。它算改以撒本体还是生成实体？请先拆机制和载体。",
+      "expected_output": "Distinguishes the damage-triggered gameplay condition from a player-anchored visual carrier, avoids inventing an entity or costume requirement, and defines the 20-frame lifetime and interruption behavior.",
+      "files": [
+        "docs/skills/isaac-mechanic-contracts/references/surface-ownership-and-compat.md"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "挑战中第一次击杀敌人时奖励一张自定义魂石，但普通局和其他 mod 的卡牌生成绝不能受影响。请先写机制边界。",
+      "expected_output": "Defines challenge and once-per-room gates, owned-target card registration proof, normal-run cleanup, and a compatibility boundary that does not globally replace unfamiliar cards.",
+      "files": [
+        "docs/skills/isaac-mechanic-contracts/references/surface-ownership-and-compat.md"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "陌生 mod 的奖励逻辑分散在 src/ 和 scripts/，我要做一个首次击杀奖励，但还没决定奖励内容。",
+      "expected_output": "先发现项目上下文；把奖励内容保持 TBD，机制合同只定义触发、所有权、重复边界和失败路径，再交给奖励与回调技能。",
+      "files": []
+    }
+  ]
+}

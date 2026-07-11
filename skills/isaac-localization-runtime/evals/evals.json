@@ -1,0 +1,30 @@
+{
+  "skill_name": "isaac-localization-runtime",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "陌生模组要给 HUD 提示做多语言，但没有声明 CuerLib。应该直接引入它吗？",
+      "expected_output": "应该先发现官方 API、现有项目文本表和语言代码；未声明 CuerLib 时不能新增必需前置。可用项目自有 resolver，或将 CuerLib 联动做成有 guard 的可选层。",
+      "files": [
+        "docs/skills/isaac-localization-runtime/references/runtime-localization-architecture.md"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "项目已声明翻译库为必需前置，支持 en、zh、jp。我要为动态提示、字体和本地化贴图加新内容。请先给运行时方案。",
+      "expected_output": "应该建立或扩展集中 registry，明确游戏码、内部表码和资源后缀映射；文本、字体、PNG 都有默认语言 fallback，且不把 EID 当作必装依赖。",
+      "files": [
+        "docs/skills/isaac-localization-runtime/SKILL.md"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "模组只有 ja_jp XML，用户说安装 EID 时要显示图标和长描述。哪些表面能改，哪些不能假设？",
+      "expected_output": "应该只更新已发现的 ja_jp 核心文本；EID 作为 guard 的兼容表面；不能凭空新增 en_us/zh_cn、翻译库、字体或语言贴图。",
+      "files": [
+        "docs/skills/isaac-localization-runtime/SKILL.md",
+        "docs/skills/isaac-compat-descriptions/SKILL.md"
+      ]
+    }
+  ]
+}

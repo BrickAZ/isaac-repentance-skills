@@ -1,0 +1,35 @@
+{
+  "skill_name": "isaac-projectile-combat",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "陌生 Isaac mod 的被动道具想让玩家发射的泪弹有概率分裂一次。没有给回调、道具 id、概率、伤害或资源。写实现前的发现项与投射物合同。",
+      "expected_output": "Requires project discovery, leaves design values TBD, selects a fired-shot route, requires an owned marker and child recursion policy, and separates collision/remove settlement.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "我在 MC_POST_TEAR_UPDATE 里看到蓝色泪弹就改速度和伤害，所有 mod 都应该一样吧？",
+      "expected_output": "Rejects shared variant as ownership proof and requires creation-time marker or verified mechanic/source evidence; preserves foreign and vanilla tears.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "使魔发射一颗自定义泪弹，命中同一敌人只触发一次雷击，泪弹死亡时也会落雷。",
+      "expected_output": "Requires familiar and projectile ownership proof, source credit, a per-projectile hit/settlement boundary that prevents collision plus death double-triggering, and explicit child/lifetime rules.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "自定义 laser variant 查不到时就用 10 继续 Spawn，之后全局扫描 laser 删除错误的。",
+      "expected_output": "Rejects raw fallback and global cleanup; requires current-project registration/lookup proof and suppresses only the owned spawn when unresolved.",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "Boss 要朝玩家连续发射追踪弹幕，顺便让玩家的泪弹反射。",
+      "expected_output": "Routes Boss projectile phase/pattern to isaac-npc-boss-ai and player-tear reflection to isaac-projectile-combat, keeping source/ownership and collision contracts separate.",
+      "files": []
+    }
+  ]
+}

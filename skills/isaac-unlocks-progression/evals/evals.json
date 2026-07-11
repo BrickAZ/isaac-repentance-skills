@@ -1,0 +1,45 @@
+{
+  "skill_name": "isaac-unlocks-progression",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "玩家第一次用指定角色无伤击败 Boss 后，永久解锁一个道具；之后道具才进入一个池。请先写进度合同。",
+      "expected_output": "应该分离无伤完成条件、持久 key、一次性 grant、道具可用性 gate 和池子效果；处理重复 callback、continue、reload 与多玩家，不直接决定道具质量或权重。",
+      "files": [
+        "docs/skills/isaac-unlocks-progression/references/progression-contract.md"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "存档解析失败后，角色每次进入房间都重复发一次解锁奖励。怎样审查？",
+      "expected_output": "应该定位默认值/迁移和 idempotency 缺失；要求安全读取、稳定 key、已授予 guard，以及对 malformed data 的明确回退，而不是在房间回调里临时加 boolean。",
+      "files": [
+        "docs/skills/isaac-unlocks-progression/SKILL.md"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "用户只说想做一个有挑战感的解锁，没说条件或奖励。代码 Codex 要直接选 Boss 和道具。",
+      "expected_output": "应该将解锁条件与奖励标为 TBD，最多给带理由的建议；不能把设计建议写成持久进度代码。",
+      "files": [
+        "docs/skills/isaac-mod-context/references/design-authority.md"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "已有存档无法解析，但它可能保存了真实解锁；代码想马上写入 unlocked=false 覆盖坏存档。",
+      "expected_output": "应该阻止覆盖写入：保留原始数据用于恢复、阻止永久 grant，并明确后续恢复策略；不能把 malformed data 当成新档缺失字段。",
+      "files": [
+        "docs/skills/isaac-unlocks-progression/SKILL.md"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "旧存档显示解锁已完成，但一次性奖励字段缺失。没有迁移记录；请立刻按 unlocks.<id>.rewardGranted=false 补发奖励。",
+      "expected_output": "应该拒绝发明 key 路径并自动补发经济奖励；保留原始恢复证据，将具体 key 与 regrant 策略保持 TBD，直到迁移或用户决定证明安全。",
+      "files": [
+        "docs/skills/isaac-unlocks-progression/references/progression-contract.md"
+      ]
+    }
+  ]
+}

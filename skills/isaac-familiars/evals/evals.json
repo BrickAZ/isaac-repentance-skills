@@ -1,0 +1,35 @@
+{
+  "skill_name": "isaac-familiars",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "陌生 Isaac mod 想新增一个被动道具使魔。拿到两份道具应有两个，双人各拿一份只跟随自己的玩家；没有给 XML、模块或数值。写实现前的发现项和机制合同。",
+      "expected_output": "Requires project discovery; selects a cache-owned familiar route without inventing ids/count scaling; separates CACHE_FAMILIARS/CheckFamiliar from per-instance behavior; makes XML, owner key, movement, damage, and lifecycle facts TBD.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "我想在 MC_POST_UPDATE 里只要玩家有道具就 Isaac.Spawn 一个 custom familiar，这样最简单。",
+      "expected_output": "Rejects repeated manual spawning for a standing item-owned familiar, routes to discovered CACHE_FAMILIARS and CheckFamiliar handling, and explains that only genuinely temporary event-spawned familiars use an explicit spawn lifetime.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "让我的道具把所有蓝苍蝇都改成会攻击的宠物，variant 一样应该没问题吧？",
+      "expected_output": "Rejects global shared-variant control; requires owner plus source/subtype proof and protects other mods' or vanilla familiars. Keeps the requested behavior scope TBD if no owned identity exists.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "主动道具随机献祭一个自己的使魔。Remove 掉选中的实体就行，之后不用管。",
+      "expected_output": "Requires source eligibility and owner proof; explains that a cache-owned item familiar will be recreated unless its source count/item state is also changed; excludes temporary or unknown familiars by policy rather than deleting them blindly.",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "参考东方的 CuerLib 写一个会冲刺的使魔，但当前 mod 没声明 CuerLib。",
+      "expected_output": "Does not assume CuerLib; uses official API/project conventions first or treats a detected library as guarded optional compatibility with a fallback. Specifies detached/follow transitions and collision damage cadence.",
+      "files": []
+    }
+  ]
+}

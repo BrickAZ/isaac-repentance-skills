@@ -1,0 +1,38 @@
+{
+  "skill_name": "isaac-testing-debugging",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "新主动道具按了没反应，你不要直接猜修法，先给我调试路线。",
+      "expected_output": "Triages id lookup, callback registration, ownership, active slot, charge/use return, state and tests before proposing a fix.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "一个挑战规则退出挑战后还在普通局生效，怎么查？",
+      "expected_output": "Checks challenge gate, state lifecycle cleanup, callback scope, continued save behavior, and proposes static/scripted/in-game verification.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "贴图不显示，但 XML 看起来有路径，你帮我证明到底哪里坏了。",
+      "expected_output": "Uses validator, anm2 visual checks, animation names, asset existence, render/load owner, and states which parts require in-game verification.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "静态校验全通过，但新实体进游戏后完全不动。你能不能直接说已经修好了？",
+      "expected_output": "Refuses to claim a fix from static success; routes to entity callbacks and a behavior test or in-game reproduction for registration, update delivery, owner/filter, and removal behavior.",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "陌生模组没有 tests/ 目录，入口在 src/init.lua。一个新卡牌生成后没有效果，调试前不应该假设什么？",
+      "expected_output": "应该先用 isaac-mod-context 发现加载、验证和可用测试入口；不能假设 tests/ 或 main.lua，然后按卡牌 id、注册、生成 owner、回调和最小复现分层验证。",
+      "files": [
+        "docs/skills/isaac-mod-context/SKILL.md",
+        "docs/skills/isaac-testing-debugging/SKILL.md"
+      ]
+    }
+  ]
+}

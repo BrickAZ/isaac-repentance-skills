@@ -1,0 +1,37 @@
+{
+  "skill_name": "isaac-challenges",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "给一个 mod 新增挑战：开局给指定主动和饰品，禁止宝箱房，到妈心结束。请写给代码 Codex 的提示词，别让挑战规则影响普通局。",
+      "expected_output": "应该要求读取 content/challenges.xml、选择未使用 id、添加 roomfilter/endstage/startingitems/startingtrinkets；如果有 Lua 规则必须使用 Isaac.GetChallenge() gate 并加加载入口；测试挑战开局和普通局不泄漏。",
+      "files": [
+        "docs/skills/isaac-challenges/references/challenge-xml.md",
+        "docs/skills/isaac-challenges/references/lua-gate-loading.md"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "做一个挑战：开局把两个饰品 smelt 掉，再把一个自定义道具从道具池移除。这个只写 challenges.xml 够吗？",
+      "expected_output": "应该回答不够，smelt 和 RemoveCollectible 需要 Lua starting inventory；MC_POST_GAME_STARTED 通常跳过 continued saves；要说明 XML 和 Lua 不要重复给同一物品。",
+      "files": [
+        "docs/skills/isaac-challenges/references/starting-inventory.md"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "审核一个挑战补丁：它加了 MC_PRE_ENTITY_SPAWN 把所有道具底座替换成某个自定义道具，但没有判断当前挑战，也没有防止替换循环。",
+      "expected_output": "应该指出缺少 Isaac.GetChallenge() gate、会影响普通局和其他挑战、需要允许目标 subtype 通过以避免循环、需要 Lua 加载入口和正常局非泄漏测试。",
+      "files": [
+        "docs/skills/isaac-challenges/references/room-floor-rules.md",
+        "docs/skills/isaac-challenges/references/challenge-review-checklist.md"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "陌生项目的挑战逻辑在 modules/challenges，且不确定是否有 challenges.xml。我想加挑战限定奖励。",
+      "expected_output": "先用 isaac-mod-context 确认挑战 XML、加载入口和模块根；奖励内容按用户决定处理，挑战门禁与普通局不泄漏规则明确后再实现。",
+      "files": []
+    }
+  ]
+}

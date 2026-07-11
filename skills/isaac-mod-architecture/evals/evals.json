@@ -1,0 +1,35 @@
+{
+  "skill_name": "isaac-mod-architecture",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "main.lua 越来越大了，我想把道具、卡牌、挑战、实体拆模块，但不要把现有功能弄坏。先写一个执行提示词。",
+      "expected_output": "Plans module boundaries, load order, callback ownership, shared helpers, validator/test verification, and rollback while preserving existing conventions.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "现在三个道具都在复制同一种玩家状态表和 reset 逻辑，应该怎么整理？",
+      "expected_output": "Suggests a narrow shared helper only for real duplication, routes state details to state lifecycle, and avoids broad unrelated refactor.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "加一个新实体时顺手改 loader，可以吗？",
+      "expected_output": "Requires reading current load pattern, keeping callback/load order explicit, scoping loader changes, and running validators/tests.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "main.lua 现在只是加载模块。新增一个道具时，代码 Codex 又把所有逻辑写回 main.lua；请审核并给出正确归属。",
+      "expected_output": "Distinguishes bootstrap owner from behavior owner, keeps the new item beside the existing item module, and treats any loader change as a separate scoped change with verification.",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "陌生 mod 有 boot.lua、src 和 modules，我想加共享 helper，但不知道真正加载入口。",
+      "expected_output": "先用 isaac-mod-context 确认加载入口、模块根和现有 helper；只在真实重复存在时提议 helper，不把 boot.lua 当作默认实现位置。",
+      "files": []
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "skill_name": "isaac-npc-boss-ai",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "新增 Boss：满血追玩家，半血进入无敌蓄力，动画结束后发射三轮弹幕并召唤小怪，死亡掉落自定义奖励。先写状态合同。",
+      "expected_output": "应该列出状态、半血一次性 phase gate、已验证动画、无敌/中断规则、弹幕和小怪的 owned spawn 校验、死亡与奖励的去重顺序；不能只给 MC_NPC_UPDATE 模板。",
+      "files": [
+        "docs/skills/isaac-npc-boss-ai/references/npc-state-machine.md"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "两个同 variant Boss 同房时，其中一个进入二阶段，另一个也一起跳阶段。如何修？",
+      "expected_output": "应该定位为全局 phase 状态错误，要求将状态放到每个 NPC 的 GetData 或等价 per-entity owner，并测试双实例。",
+      "files": [
+        "docs/skills/isaac-npc-boss-ai/SKILL.md"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "为了让 Boss 发弹幕，代码 Codex 想默认用某个第三方弹幕库。项目没有声明前置。",
+      "expected_output": "应该优先官方 projectile/NPC API 或项目已有 helper；未声明的库不能成为默认依赖，只能作为可选 guard 集成。",
+      "files": [
+        "docs/skills/isaac-compat-descriptions/SKILL.md"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "用户已规定 Boss 首次低于半血进二阶段，但项目未知。请把半血阈值和 InitSeed 都标为 TBD。",
+      "expected_output": "应该保留半血阈值这个用户决定，仅把边界处理标为 TBD；不能把 InitSeed 当成通用实体 key，实际 owner 必须发现。",
+      "files": [
+        "docs/skills/isaac-npc-boss-ai/SKILL.md"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "skill_name": "isaac-config-options",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "陌生 Isaac mod 想加一个 MCM 开关，关闭后不再给新泪弹写本机制标记。MCM 没声明为必需前置，默认值和已有标记泪弹的处理都没给。写实现前合同。",
+      "expected_output": "Discovers project/save/UI facts; treats MCM as guarded optional; keeps the default and in-flight tear policy TBD; separates plain saved preference from tear runtime markers; routes localization and projectile behavior to sibling skills.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "没有 Mod Config Menu 就直接 require 它，反正玩家都该装。然后在 toggle callback 里把房间所有 tear 删除。",
+      "expected_output": "Rejects the undeclared hard dependency and global teardown. Requires an optional guard, an approved fallback/default, and an owned-mechanic contract for any existing projectiles.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "我要做一个设置，默认值你觉得开还是关？存档坏了随便设成 true 就行。",
+      "expected_output": "Does not choose a default for the user. Keeps it TBD and requires malformed-data recovery to use the approved default or an explicit user decision.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "项目没有 MCM 示例，但我的测试 stub 接受 DisplayNameZhCn。我就用它做中文标题，并把 AddSetting 写成冒号调用。",
+      "expected_output": "Rejects stub-derived API fields and unverified call shape. Requires the documented MCM AddSetting contract, keeps unproven localized-title behavior as TBD, and asks for a guarded optional registration with an idempotent retry when project load order warrants it.",
+      "files": []
+    }
+  ]
+}

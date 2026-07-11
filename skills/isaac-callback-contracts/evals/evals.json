@@ -1,0 +1,36 @@
+{
+  "skill_name": "isaac-callback-contracts",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "新被动道具会给伤害和移速。代码里已经有 Evaluate 函数，但玩家拿到道具后属性不变。请先审核 callback 合同，不要先改数值。",
+      "expected_output": "Checks MC_EVALUATE_CACHE registration, handler existence/signature, cache-flag gates, ownership count, and the AddCacheFlags/EvaluateItems refresh path; asks for a test proving the registered callback fires.",
+      "files": [
+        "main.lua",
+        "tests/"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "一个受伤取消道具已经有 MC_ENTITY_TAKE_DMG，但献血机和恶魔交易也被取消了。该怎么审核回调？",
+      "expected_output": "Keeps the damage callback but requires source/flag exclusion guards, player filtering, recursion policy, and callback-specific return verification instead of switching blindly to an update callback.",
+      "files": [
+        "docs/skills/isaac-callback-contracts/references/callback-choice-and-filters.md"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "一个自定义卡的 MC_GET_CARD 现在会影响普通局所有卡牌生成。请给出 callback 合同。",
+      "expected_output": "Requires a narrow owned-generation/challenge gate, verifies card id return semantics for MC_GET_CARD, preserves unknown third-party cards, and adds normal-run non-firing tests.",
+      "files": [
+        "docs/skills/isaac-callback-contracts/references/registration-and-return-contracts.md"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "另一个 mod 的回调都在 modules/，对象叫 MyMod。我要修一个不触发的 MC_USE_ITEM。",
+      "expected_output": "先用 isaac-mod-context 确认 MyMod、modules/ 和测试入口，再选择回调与过滤器；不假定 main.lua 或固定项目对象名。",
+      "files": []
+    }
+  ]
+}

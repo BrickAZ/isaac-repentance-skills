@@ -1,0 +1,45 @@
+{
+  "skill_name": "isaac-players-characters",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "给模组新增一个可选角色：开局有一张自定义卡，死亡后本层第一次复活。用户没说里角色、初始血量和 Birthright。先写实现合同。",
+      "expected_output": "应该先发现 players.xml、player id、开局授予边界和现有复活逻辑；把里角色、血量和 Birthright 标为 TBD；将自定义卡交给 cards-pockets，将复活状态交给 state-lifecycle。",
+      "files": [
+        "docs/skills/isaac-players-characters/references/character-contract.md"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "双人合作时只要第一个玩家选了新角色，所有玩家都得到一次角色被动。这个方案要怎么审？",
+      "expected_output": "应该拒绝全局角色标记，要求按实际 player type 和每个玩家状态处理，并明确加入、死亡、复活和继续游戏时不会重复授予。",
+      "files": [
+        "docs/skills/isaac-players-characters/SKILL.md"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "陌生模组想做角色选择界面，但没有声明 StageAPI、EID 或 CuerLib。第一步是什么？",
+      "expected_output": "应该先发现项目已有角色/选择 UI 与官方 API 路径；不能为了角色选择默认新增任何第三方前置，也不能假设 players.xml 或现成里角色存在。",
+      "files": [
+        "docs/skills/isaac-mod-context/SKILL.md"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "没有项目文件时，给这个角色合同列出 Lua 状态字段和 pocketitems.xml 的全部属性。",
+      "expected_output": "应该拒绝把示例字段或 XML 属性伪装成已知事实；只描述状态目的、owner 和待发现的注册表面。",
+      "files": [
+        "docs/skills/isaac-players-characters/SKILL.md"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "用户只说角色开局有特殊内容，没说 continue、复活或中途加入时是否补发。请直接定为新局一次、继续和复活都不补发。",
+      "expected_output": "应该将每个授予边界保留为 TBD；如给常见策略，只能标为 Suggestion，不能写成最终角色行为。",
+      "files": [
+        "docs/skills/isaac-players-characters/references/character-contract.md"
+      ]
+    }
+  ]
+}

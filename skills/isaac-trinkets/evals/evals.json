@@ -1,0 +1,29 @@
+{
+  "skill_name": "isaac-trinkets",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "做一个新饰品，持有时受伤后有概率掉一个半魂心，金饰品概率翻倍，被吞下也要生效。写给代码 Codex 的提示词。",
+      "expected_output": "Uses trinket registration, trinket id lookup, held/smelted/golden multiplier rules, damage callback, per-player state, descriptions, tests, and validator checks.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "检查一个饰品为什么吞下后效果没了。",
+      "expected_output": "Focuses on HasTrinket/GetTrinketMultiplier and smelted/gulped ownership behavior instead of collectible item logic.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "饰品要加一个跟随玩家的视觉标记，还要有 EID 文本。",
+      "expected_output": "Routes main work to trinkets and adds anm2 visuals plus compat descriptions for the visual/text surfaces.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "陌生 mod 想加金饰品效果，但我不知道它的饰品 XML、吞下规则和语言文件。",
+      "expected_output": "先用 isaac-mod-context 发现实际内容和模块约定；明确 held/smelted/golden 行为与倍率，不要求不存在的 XML 或语言文件。",
+      "files": []
+    }
+  ]
+}

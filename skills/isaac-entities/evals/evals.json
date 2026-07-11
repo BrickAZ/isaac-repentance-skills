@@ -1,0 +1,38 @@
+{
+  "skill_name": "isaac-entities",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "给一个 mod 做一个漂浮在玩家旁边的小婴儿影子，靠近敌人会造成接触伤害，房间结束后消失。写实现提示词。",
+      "expected_output": "Treats the request as entity behavior rather than only an anm2 sprite, specifies entity kind, spawn/update/collision/remove callbacks, owner state, and room cleanup.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "我有一个 anm2 光环，想让它挡子弹并有血量，被打碎后播放破碎动画。",
+      "expected_output": "Routes to registered entity work, not visual-only anm2, and calls out HP, collision, damage/death callbacks, animation names, and state lifecycle.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "检查一个自定义 familiar 为什么不动，只显示一帧。",
+      "expected_output": "Inspects entities2.xml, familiar callbacks, update route, animation names, sprite update/play logic, and owner/state setup.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "自定义特效查不到 variant 时，能不能直接用 3008 继续 Spawn？另外我不想误伤其他 mod 的未知实体。",
+      "expected_output": "Rejects a raw custom-variant fallback for an unverified current-project entity, requires entities2/ANM2/spritesheet proof, skips only the owned effect on failure, and forbids a global unknown-entity blocker that would affect other mods.",
+      "files": [
+        "content/entities2.xml",
+        "docs/skills/isaac-validators/references/owned-spawn-safety.md"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "陌生 mod 的实体逻辑在 modules/effects，且我不确定它是否有 entities2.xml。我要做一个会碰撞的特效。",
+      "expected_output": "先用 isaac-mod-context 确认实体 XML、模块根和资产布局；碰撞需求走实体路线，缺失注册表时保持 TBD 而不是发明 variant。",
+      "files": []
+    }
+  ]
+}

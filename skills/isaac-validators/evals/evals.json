@@ -1,0 +1,43 @@
+{
+  "skill_name": "isaac-validators",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "我刚让代码 Codex 加了一个新道具和 anm2 特效，你帮我确认有没有 XML、贴图路径、语言文件这种静态错误。",
+      "expected_output": "Runs or requests the validator, reports static pass/fail/warnings separately from in-game checks, and does not claim runtime verification.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "卡牌又变成空白的了，但我不想先猜代码，你先给我一个检查流程。",
+      "expected_output": "Uses deterministic checks for pocket XML, HUD/pickup art, ids, descriptions, and asset paths before changing behavior code.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "以后每次做完以撒 mod 改动都要有一个静态检查命令，你把这个写进交付要求。",
+      "expected_output": "Adds the validator command to the final verification checklist and explains what it can and cannot prove.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "以后当前 mod 自己生成的实体、卡牌、掉落物都不能变成空白或无意义对象；但其他 mod 的自定义实体必须保持兼容。请给出验证与实现边界。",
+      "expected_output": "要求只验证当前 mod owned spawn/morph targets，检查 entities2.xml 到 ANM2/spritesheet/default animation 的链条以及 pocketitems 的 id/pickup/hud；失败时跳过本 mod 的生成或保留原对象，禁止全局删除未知实体或用裸自定义 variant 兜底。",
+      "files": [
+        "docs/skills/isaac-validators/references/owned-spawn-safety.md"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "校验已经通过，但奖励实体在游戏里没有行为；能不能把静态通过当作修复完成？",
+      "expected_output": "明确拒绝把静态通过当作运行时验证；指出 validator 只证明 XML/路径/注册形状，并路由 testing-debugging 与 entities 去检查回调、事件触发和游戏内复现。",
+      "files": []
+    },
+    {
+      "id": 6,
+      "prompt": "我的 mod 把回调拆在 scripts/items 和 scripts/entities，mod 对象叫 MyMod，不是 Neverbirth。怎么做静态检查？",
+      "expected_output": "使用 validate-isaac-mod.ps1，显式传入目标根目录和 MyMod；说明通用 runner 会递归扫描 Lua 模块中的直接回调注册，项目专用规则应由当前项目自己的覆盖层另加。",
+      "files": []
+    }
+  ]
+}

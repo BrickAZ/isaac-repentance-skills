@@ -1,0 +1,48 @@
+{
+  "skill_name": "isaac-audio-render-feedback",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "一个主动道具成功使用时播放短音效，失败时播放另一个音效。请写给代码 Codex 的提示词，要求它别只写 SFXManager:Play。",
+      "expected_output": "应该路由到 SFX，要求 content/sounds.xml、resources/sfx 路径、成功/失败触发点、id 匹配、文件存在、失败不消耗政策与 active skill 联动。",
+      "files": [
+        "docs/skills/isaac-audio-render-feedback/references/sfx-music.md",
+        "docs/skills/isaac-active-item-mechanics/references/use-callback-charge.md"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "我想给道具加一个全屏 shader，受伤后持续 20 帧变暗。这个是不是直接改 shaders.xml 就行？",
+      "expected_output": "应该说明不是只改 shaders.xml，还要 MC_GET_SHADER_PARAMS、激活状态、20 帧生命周期、结束重置、黑屏风险和 fallback；小效果可考虑 render/sprite 替代。",
+      "files": [
+        "docs/skills/isaac-audio-render-feedback/references/shader-params.md"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "审核这个方案：每帧 MC_POST_RENDER 里 new 一个 Sprite 画选择菜单，并且 MC_INPUT_ACTION 一直 return false，直到玩家按确定。",
+      "expected_output": "应该指出每帧创建 Sprite 错误、input block 没有安全释放条件、需要明确 screen-space、取消/换房/退出重置、不要在 render 里写 gameplay 状态。",
+      "files": [
+        "docs/skills/isaac-audio-render-feedback/references/render-overlay.md",
+        "docs/skills/isaac-audio-render-feedback/references/input-interception.md"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "陌生模组的资源根是 media/，渲染代码在 src/ui/。我要新增一次受伤的全屏闪白，最先该确认什么？",
+      "expected_output": "应该先用 isaac-mod-context 发现真实资源/XML/加载路径和已有渲染生命周期；不能假设 content/sounds.xml、resources/ 或 main.lua，再选择 shader 或 Sprite feedback。",
+      "files": [
+        "docs/skills/isaac-mod-context/SKILL.md",
+        "docs/skills/isaac-audio-render-feedback/SKILL.md"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "一个世界反馈用 MC_POST_RENDER 手动 Sprite:Render(entity.Position + offset)，在屏幕滚动和大型 Boss 上位置不对。怎么修？",
+      "expected_output": "应该区分世界锚点与屏幕渲染坐标：每帧计算 live anchor、Isaac.WorldToScreen 后 Render；按 owner 的位置偏移和尺寸策略处理，或在已发现的实体架构下评估 ENTITY_EFFECT，并要求实测。",
+      "files": [
+        "docs/skills/isaac-audio-render-feedback/references/render-overlay.md"
+      ]
+    }
+  ]
+}
