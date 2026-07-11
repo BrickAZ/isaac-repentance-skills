@@ -1,0 +1,35 @@
+{
+  "skill_name": "isaac-collectibles",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "陌生 Isaac mod 要加一个被动道具：拿到后加伤害，但用户没给道具 ID、倍率、XML 路径或现有代码。写实现前必须确认的事项。",
+      "expected_output": "Requires project discovery; creates a Passive Collectible Contract with item metadata, holder, copy policy, cache flag, refresh route, and tests as TBD. Does not invent an ID, multiplier, XML path, or pool values.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "我在 MC_POST_PLAYER_UPDATE 里每帧 player.Damage = player.Damage + 1，就能做被动伤害道具吧？",
+      "expected_output": "Rejects direct per-frame mutation for a cache-backed stat; routes to the discovered MC_EVALUATE_CACHE and narrow cache-refresh pattern, with explicit player ownership and copy policy.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "一个被动道具受伤时 30% 概率抵消伤害，直接 MC_ENTITY_TAKE_DMG return false 就行。",
+      "expected_output": "Requires a Mechanic Contract and Callback Contract; does not treat return false as universal. Requires damaged-player ownership, source/flag exclusions, chance authority, repeat/re-entry policy, and co-op-safe filtering.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "双人里 A 有两份被动道具，B 没有。我要让效果对两个玩家都生效，简单按所有玩家总数量乘就行。",
+      "expected_output": "Rejects global copy aggregation unless the user explicitly designs a shared effect. Keeps holder scope and per-player copy policy explicit, and requires tests for A, B, and intended stacking.",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "道具被 D6 重掷后之前的计数器和头顶特效应该没关系，不用清。",
+      "expected_output": "Requires item-loss/reroll cleanup review, clears or rebuilds stale item-owned runtime state and owned effects, and distinguishes runtime cleanup from any explicitly approved persistent progression.",
+      "files": []
+    }
+  ]
+}

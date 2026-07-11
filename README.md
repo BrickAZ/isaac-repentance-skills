@@ -51,6 +51,7 @@
 | Skill | 作用 |
 | --- | --- |
 | `isaac-active-item-mechanics` | 为主动道具提供充能、输入、UI 等机制分流壳。 |
+| `isaac-collectibles` | 处理被动收集品的注册、持有/叠加、缓存属性、事件效果和清理。 |
 | `isaac-cards-pockets` | 处理卡牌、符文、药丸和口袋物品，并防止空白实体。 |
 | `isaac-trinkets` | 处理饰品注册、持有判断和叠加。 |
 | `isaac-item-economy` | 审核品质、池子、权重、tags 和解锁后的经济影响。 |
@@ -77,6 +78,6 @@
 
 ```text
 .codex-plugin/plugin.json  Codex plugin 清单
-skills/                    25 个通用 Isaac skills
+skills/                    26 个通用 Isaac skills
 AGENTS.md                  给维护本仓库的 AI 的边界说明
 ```
