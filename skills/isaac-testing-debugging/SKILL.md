@@ -21,6 +21,7 @@ Before proposing a fix:
 6. Read the closest existing project test before writing a new test; if none exists, choose the smallest available scripted or in-game reproduction.
 7. If the issue is stateful, also use `isaac-state-lifecycle`.
 8. If the intended mechanic itself is ambiguous, reconstruct its trigger/guard/result contract with `isaac-mechanic-contracts` before judging a callback as broken.
+9. If a visual, icon, portrait, menu, or native UI surface is involved, create a surface matrix before proposing a fix. Read `references/native-surface-matrix.md`.
 
 ## Verification Layers
 
@@ -34,6 +35,7 @@ Read `references/verification-layers.md` before planning verification. Read `ref
 ## Hard Rules
 
 - Do not claim an Isaac runtime behavior is fixed only because code looks right.
+- Do not infer that a resource chain proven on one native surface also fixes another. A colored collectible PNG, pocket HUD image, death portrait, character-select portrait, achievement popup, and completion mark each need their own discovered route and requested in-game check.
 - Do not run broad refactors while debugging a specific symptom.
 - Do not patch before identifying the most likely failing surface.
 - Do not leave temporary debug prints or forced spawn hooks in final code unless the user asked for a debug mode.
@@ -62,7 +64,7 @@ When changing a large, monolithic Lua entry file, include a check that parses or
 - Wrong, duplicated, blank, or lost reward: `isaac-rewards-pickups`, then check candidate validation, owner, repeat boundary, spawn/Morph fallback, and third-party preservation.
 - Item does not trigger: item id lookup, callback registration, item ownership, active slot, charge/use return.
 - Callback fires incorrectly or not at all: `isaac-callback-contracts`, registration line, handler existence, filter, callback-specific return policy, and a behavior test that invokes the registered handler.
-- Visual missing: `isaac-anm2-visuals`, asset path, animation name, load owner, render/update path.
+- Visual missing: first name the exact surface, then use `isaac-anm2-visuals` for that surface's asset path, animation name, load owner, and render/update path. Do not use a working adjacent surface as proof.
 - Entity not behaving: `isaac-entities`, callback route, type/variant/subtype, `GetData()`, spawn/remove logic.
 - Blank/meaningless entity or pickup: prove the spawn owner first, then check current-project registration, id/variant/subtype, ANM2/spritesheet/HUD chain, and invalid-target fallback. Do not test by globally deleting unknown entities.
 - Challenge leaking: `isaac-challenges`, `Isaac.GetChallenge()` gate, state lifecycle cleanup.
@@ -78,3 +80,4 @@ Before saying debugging is complete, report:
 - Fix applied or recommended.
 - Tests run.
 - Manual in-game checks still required.
+- For native visuals, the surface matrix and every still-unverified surface.

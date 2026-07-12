@@ -40,6 +40,36 @@
       "files": [
         "docs/skills/isaac-players-characters/references/character-contract.md"
       ]
+    },
+    {
+      "id": "character-portrait-surfaces",
+      "prompt": "自定义角色能选中且角色选择头像正常，但 Boss Bar 肖像和死亡页空白。请写角色合同，不给文件。",
+      "expected_output": "玩家类型/选择/Boss/死亡是独立表面；各自路径和注册保持 TBD；不改角色机制或用选择页资产推断其他 UI。",
+      "files": []
+    },
+    {
+      "id": "select-and-coop-are-separate",
+      "prompt": "自定义角色在角色选择页和合作菜单都没有资源，我能直接复用一张肖像吗？",
+      "expected_output": "应将两者拆开：可覆盖的官方默认是角色选择 48x48、512x1024 图集，合作菜单 32x32、192x128 或 192x224 图集；一张资源或一个成功表面不能证明另一个。",
+      "files": [
+        "docs/skills/isaac-anm2-visuals/references/official-native-ui-baselines.md"
+      ]
+    },
+    {
+      "id": "generate-select-and-coop-portraits",
+      "prompt": "用户没有角色选择和合作菜单的图片，要求 AI 直接生成。",
+      "expected_output": "应分别生成 48x48 select frame 与 32x32 co-op frame，并分别接入发现的图集/ANM2；用户或项目已有替代资产时不可擅自覆盖。",
+      "files": [
+        "docs/skills/isaac-anm2-visuals/references/official-native-ui-baselines.md"
+      ]
+    },
+    {
+      "id": "generate-heart-hud-cell",
+      "prompt": "用户要求角色使用自定义心脏 HUD，但没有提供美术，要求 AI 直接生成。",
+      "expected_output": "应按官方默认生成 16x16 heart HUD cell，并发现 ui_hearts ANM2/atlas mapping 后接入；不能顺带修改健康机制，非默认尺寸需要明确 override。",
+      "files": [
+        "docs/skills/isaac-anm2-visuals/references/official-native-ui-baselines.md"
+      ]
     }
   ]
 }

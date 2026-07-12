@@ -1,6 +1,6 @@
 ---
 name: isaac-anm2-visuals
-description: Work with `.anm2` visual assets for Binding of Isaac Repentance mods. Use this whenever the user asks to create, fix, review, or write a prompt for Isaac `.anm2` visuals, costumes, Lua-loaded Sprite effects, UI/HUD sprites, EID inline icons, or vanilla animation-template reuse. If the visual needs collision, AI, HP, pickup behavior, contact damage, or entities2.xml registration, also use isaac-entities; use isaac-familiars first when the registered entity is a custom familiar. 中文触发：anm2、贴图、外观、服装、变身、以撒身上、头上特效、光环、HUD、图标、动画不显示。
+description: Work with `.anm2` visual assets for Binding of Isaac Repentance mods. Use this whenever the user asks to create, fix, review, or write a prompt for Isaac `.anm2` visuals, costumes, Lua-loaded Sprite effects, UI/HUD sprites, collectible death portraits, ESC My Stuff sketches, collection-page or Last Will item sketches, EID inline icons, or vanilla animation-template reuse. If the visual needs collision, AI, HP, pickup behavior, contact damage, or entities2.xml registration, also use isaac-entities; use isaac-familiars first when the registered entity is a custom familiar. 中文触发：anm2、贴图、外观、服装、变身、以撒身上、头上特效、光环、HUD、ESC 草图、死亡遗嘱道具图、收藏页道具草图、图标、动画不显示。
 ---
 
 # Isaac ANM2 Visuals
@@ -25,13 +25,16 @@ Answer these questions before choosing a route:
 2. Does it need to follow player body animation and facing direction?
 3. Does it need collision, damage, AI, or entity variant/subtype?
 4. How long does it live: permanent, conditional, timed, or one-shot?
-5. Who owns it: costume XML, Lua `Sprite`, EID, vanilla template, or entity XML?
+5. Who owns it: costume XML, Lua `Sprite`, `deathanm2`, EID, vanilla template, or entity XML?
+
+When the task targets a native menu or HUD surface, read `references/official-native-ui-baselines.md` for the asset decision gate and overrideable official size/ANM2 baselines. If the user asks to generate an absent asset, generate the listed source frame and integrate it into the discovered atlas/mapping.
 
 Then identify the visual route:
 
 - **Costume / player overlay**: player head/body/wing/mask/held visual tied to costumes. Read `references/costumes.md`.
 - **Lua Sprite effect**: visual feedback loaded and rendered by Lua with `Sprite:Load`, `:Play`, `:Update`, `:Render`. Read `references/lua-sprite-effects.md`.
 - **UI / HUD sprite**: screen-space sprite, button guide, meter, counter, choice panel, or overlay. Read `references/ui-hud-sprites.md`.
+- **Collectible death portrait**: native item sketch for ESC My Stuff, the collection page, or Last Will. Discover `items.xml` root `deathanm2`, the ANM2/spritesheet, and the item-id animation mapping. Read `references/collectible-death-portraits.md`. This is separate from the colored `gfxroot + gfx` PNG route owned by `isaac-collectible-registration`.
 - **EID / inline icon**: EID icon, transformation icon, card/pill icon, or text inline visual. Read `references/eid-icons.md`.
 - **Vanilla template reuse**: reusing an existing Isaac `.anm2` skeleton and replacing spritesheets or animation/frame. Read `references/vanilla-template-reuse.md`.
 
@@ -49,6 +52,7 @@ is required.
 - Always connect `.anm2` path, spritesheet PNG path, animation name, and Lua/XML reference as one unit.
 - Do not invent animation names. Read the `.anm2` and use its `DefaultAnimation` or named `Animation`.
 - Do not assume case-insensitive paths. Match existing repo casing and Isaac's resource-root conventions.
+- For a native collectible death portrait, do not use `MC_POST_RENDER` or a manual HUD sprite as a substitute. Discover the `deathanm2` root, source ANM2/spritesheet, required item-id animation mapping, and the exact native surface before editing.
 - For generated `.anm2`, keep the first version simple: one spritesheet, one layer, clear pivot, explicit width/height, and one or two animation names.
 - For a manual Lua `Sprite`, keep world anchor and screen render position separate:
   calculate the owner-relative world anchor, then pass
@@ -68,12 +72,14 @@ is required.
 - Inspect a current-project Lua `Sprite` effect for load, update, render, and cleanup ownership.
 - Inspect a current-project UI sprite for screen-space coordinates and cached lifetime.
 - Inspect a current-project costume XML and matching `.anm2` only when the project actually uses costumes.
+- Inspect a current-project `items.xml` root `deathanm2` and its matching item-sketch ANM2 only when ESC, collection-page, or Last Will art is requested.
 
 ## Final Review
 
 Before saying the visual work is complete, report:
 
 - The selected route.
+- For a death portrait, the `items.xml` root `deathanm2`, ANM2/spritesheet, item-id animation mapping, and requested native surfaces.
 - Every `.anm2` path and PNG spritesheet path touched.
 - Every XML or Lua file that references the `.anm2`.
 - The animation names used.

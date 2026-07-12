@@ -32,6 +32,14 @@
       "files": [
         "docs/skills/isaac-npc-boss-ai/SKILL.md"
       ]
+    },
+    {
+      "id": 5.0,
+      "prompt": "用户没有给单体自定义 Boss 的肖像，要求 AI 直接生成并接入原生 Boss 肖像。",
+      "expected_output": "应按官方默认生成 192x192 Boss portrait，并发现项目的 portrait XML/resource mapping 后接入；不能把 Boss AI 动画、Boss Bars 或 versus screen 当作肖像路线。",
+      "files": [
+        "docs/skills/isaac-anm2-visuals/references/official-native-ui-baselines.md"
+      ]
     }
   ]
 }

@@ -24,6 +24,22 @@
       "prompt": "陌生 mod 想加金饰品效果，但我不知道它的饰品 XML、吞下规则和语言文件。",
       "expected_output": "先用 isaac-mod-context 发现实际内容和模块约定；明确 held/smelted/golden 行为与倍率，不要求不存在的 XML 或语言文件。",
       "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "饰品在地上显示正常，但被玩家持有后的提示图标空白；EID 图标却存在。该怎么排查？",
+      "expected_output": "应把 pickup、HUD/pocket 指示、costume 和可选 EID 拆为独立表面；EID 或地面 pickup 正常不证明持有提示图标正常，先发现该项目请求表面的映射与资源链。",
+      "files": [
+        "docs/skills/isaac-testing-debugging/references/native-surface-matrix.md"
+      ]
+    },
+    {
+      "id": 6.0,
+      "prompt": "用户没有给新饰品图标，要求 AI 直接生成并接入。",
+      "expected_output": "应按可覆盖的官方默认生成 32x32 trinket PNG，并接入发现的 trinket XML/resource route；已有非默认条带或用户指定美术时必须保留并验证其映射，不能强行缩放。",
+      "files": [
+        "docs/skills/isaac-anm2-visuals/references/official-native-ui-baselines.md"
+      ]
     }
   ]
 }

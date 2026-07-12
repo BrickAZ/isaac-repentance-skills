@@ -26,6 +26,7 @@ repeat, and what happens when selection or replacement fails.
    If none exists, use this skill's selection and fallback references.
 6. Read `../isaac-validators/references/owned-spawn-safety.md` before creating a
    custom target or handling a configurable card/pickup id.
+7. If a custom world-pickup visual is requested, read `references/official-world-pickup-baselines.md`. Do not generate art for a normal official subtype spawn.
 
 ## Core Contract
 
@@ -84,6 +85,7 @@ Read [spawn-morph-fallback.md](references/spawn-morph-fallback.md).
 | Callback timing/filter for a reward trigger | `isaac-callback-contracts` |
 | Once-per-room/floor/player reward memory | `isaac-state-lifecycle` |
 | Event semantics, exclusions, and ownership | `isaac-mechanic-contracts` |
+| Custom world-pickup visual format | `references/official-world-pickup-baselines.md` plus `isaac-anm2-visuals` |
 
 ## Hard Rules
 
@@ -97,6 +99,7 @@ Read [spawn-morph-fallback.md](references/spawn-morph-fallback.md).
   replace it.
 - `pcall`, a non-nil object, or a numeric subtype alone is not a reward
   validator.
+- Spawning an existing official subtype does not require new art. Generate pickup art only for a requested custom world-pickup visual, using the matching official frame baseline unless the user or project explicitly overrides it.
 
 ## Review and Test
 

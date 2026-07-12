@@ -25,4 +25,5 @@ Use this when a custom card/rune/soul stone appears blank, has the wrong art, sh
 
 - Do not fix blank art by changing the use callback first. Registration and art mapping come first.
 - Do not assume EID icon registration fixes the in-game pocket/HUD art.
+- Do not infer a missing cardfront from a working pickup or HUD key. Record pickup, cardfront, pocket/HUD, and optional EID as separate native or optional surfaces; the actual route for each remains project-discovered.
 - Do not let a generation callback return custom card ids outside the challenge/item condition that owns them.

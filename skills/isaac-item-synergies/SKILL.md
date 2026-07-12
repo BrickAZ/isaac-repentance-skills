@@ -25,7 +25,7 @@ behavior, callback signature, state storage, economy, or assets.
 
 ## Choose The Boundary
 
-- **Single-content base behavior**: route to `isaac-collectibles`,
+- **Single-content base behavior**: route to `isaac-passive-collectibles`, `isaac-active-item-mechanics`,
   `isaac-trinkets`, `isaac-cards-pockets`, or `isaac-familiars`. Do not put
   its ordinary effect in a synergy handler.
 - **Combination qualification and precedence**: keep it here.

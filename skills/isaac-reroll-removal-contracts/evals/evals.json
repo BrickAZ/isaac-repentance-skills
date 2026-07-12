@@ -6,7 +6,7 @@
       "prompt": "一个被动道具给玩家一个跟随特效。它被重掷、移除或 Morph 成别的内容后，特效必须消失；重新拿到时可以重新出现。项目没有给出回调名。请写实现前契约。",
       "expected_output": "Separates change observation from reconciliation, keeps callback names as TBD, limits cleanup to owned visuals/state, defines per-player ownership and reacquisition policy, and requires in-game reroll/Morph verification.",
       "files": [
-        "references/content-change-matrix.md"
+        "docs/skills/isaac-reroll-removal-contracts/references/content-change-matrix.md"
       ]
     },
     {
@@ -14,7 +14,7 @@
       "prompt": "为了处理重掷，我准备每帧给所有玩家加一次伤害，再在没道具时减回去。这样总能同步吧？",
       "expected_output": "Rejects frame-based stat accumulation/subtraction. Requires desired-state reconciliation through the project cache route and an idempotency test.",
       "files": [
-        "references/reconciliation-review.md"
+        "docs/skills/isaac-reroll-removal-contracts/references/reconciliation-review.md"
       ]
     },
     {
@@ -22,7 +22,7 @@
       "prompt": "我已经决定道具移除后立即清理、重新获得后重置冷却。是否支持存档退出后继续保持冷却还没有决定。请审核。",
       "expected_output": "Keeps immediate cleanup and cooldown reset locked, marks save/reload behavior as TBD, and prevents serializing live userdata by default.",
       "files": [
-        "SKILL.md"
+        "docs/skills/isaac-reroll-removal-contracts/SKILL.md"
       ]
     },
     {
@@ -30,7 +30,7 @@
       "prompt": "某个第三方 mod 的 Morph API 没有在本项目依赖里声明，但我想把所有同 variant 的效果实体删掉，保证替换干净。",
       "expected_output": "Rejects the undeclared dependency and broad variant cleanup. Requires guarded discovery and removal limited to explicit owned markers/entities, with an official/no-op fallback.",
       "files": [
-        "references/reconciliation-review.md"
+        "docs/skills/isaac-reroll-removal-contracts/references/reconciliation-review.md"
       ]
     }
   ]

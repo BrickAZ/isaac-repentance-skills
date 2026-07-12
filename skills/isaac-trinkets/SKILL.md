@@ -21,8 +21,16 @@ Before editing or writing a prompt:
 3. If no local trinket exists, use this skill's registration, ownership/multiplier, and behavior references. Do not fall back to collectible-item behavior or require a third-party mod checkout.
 5. If the trinket changes stats, use the current project's item/stat implementation surface and `isaac-callback-contracts` for cache wiring.
 6. If the trinket has state, use `isaac-state-lifecycle`.
-7. If the trinket has costume/icon visuals or EID text, use `isaac-anm2-visuals` and `isaac-compat-descriptions`.
+7. If the trinket has costume/icon visuals or EID text, use `isaac-anm2-visuals` and `isaac-compat-descriptions`. For a blank or wrong native visual, read `../isaac-testing-debugging/references/native-surface-matrix.md` first.
 
+## High-Priority Official Trinket-Icon Suggestion
+
+When a trinket icon is requested and no compatible user or project asset exists, read `../isaac-anm2-visuals/references/official-native-ui-baselines.md`.
+
+- Recommend a 32x32 trinket PNG as the official default.
+- If the user asks to generate the absent icon, generate a 32x32 trinket PNG and connect it through the discovered trinket XML/resource route.
+- Preserve a user-provided or project-established non-default strip/animation asset. Report its dimensions and mapping instead of silently resizing it to 32x32.
+- Trinket pickup art remains separate from HUD/pocket, costume, and optional EID surfaces.
 ## Route The Trinket
 
 - **Registration and metadata**: `trinkets.xml`, internal name, display names, pickup text, description, tags, quality-like review if the repo uses one. Read `references/trinket-registration.md`.
@@ -39,6 +47,7 @@ Before editing or writing a prompt:
 - Do not forget golden trinket multiplier behavior; state whether the effect scales or intentionally does not.
 - Do not use one global boolean for a player-held trinket effect.
 - Do not update only one language file when the repo has language variants.
+- Do not infer a trinket pickup, HUD/pocket indicator, costume, or optional EID icon from another working visual surface. Discover the requested surface's own route.
 
 ## Handoff Prompt Template
 
@@ -68,3 +77,4 @@ Before saying trinket work is complete, report:
 - Multiplier rule.
 - Callbacks touched.
 - Tests run and in-game checks still needed.
+- Which requested native and optional visual surfaces were checked independently.

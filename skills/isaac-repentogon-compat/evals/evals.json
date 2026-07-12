@@ -1,0 +1,21 @@
+{
+  "skill_name": "isaac-repentogon-compat",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "用户想要一个忏悔龙优化，但未明确允许模组强制依赖忏悔龙。",
+      "expected_output": "应保留官方核心实现，先取得用户意图和 REPENTOGON global/version 证明；不存在或版本不足时安全回退或明确省略增强。",
+      "files": [
+        "docs/skills/isaac-repentogon-compat/SKILL.md"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "一个 REPENTOGON XML 属性在本机可解析，但部分玩家没有忏悔龙。",
+      "expected_output": "应避免无守卫 XML/回调路径，验证 absent、insufficient、sufficient 三分支；不能用本机解析成功推导所有玩家可加载。",
+      "files": [
+        "docs/skills/isaac-repentogon-compat/SKILL.md"
+      ]
+    }
+  ]
+}

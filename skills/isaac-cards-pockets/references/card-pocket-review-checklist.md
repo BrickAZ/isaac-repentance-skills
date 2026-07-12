@@ -10,7 +10,7 @@ Use this before handing off card/rune/soul stone/pill work.
 - `MC_USE_CARD`, `MC_USE_PILL`, or generation callbacks use the correct ids.
 - Generation/replacement callbacks are gated to the owning item/challenge.
 - EID/description surfaces are updated and guarded.
-- Art and icon surfaces are checked; EID icons are not mistaken for in-game HUD art.
+- Pickup, cardfront, pocket/HUD, and optional EID art are checked independently; an EID icon or one working surface is not mistaken for another.
 - Blank-card prevention checks are listed.
 - Manual in-game checks include pickup appearance and pocket/HUD appearance.
 

@@ -15,6 +15,14 @@ callback conventions, projectile helpers, room-clear behavior, and dependency
 facts. Then write the state and phase contract in
 `references/npc-state-machine.md` before selecting callbacks.
 
+## High-Priority Official Boss-Portrait Suggestion
+
+When a custom Boss needs a native portrait and the user has not supplied a compatible asset, read `../isaac-anm2-visuals/references/official-native-ui-baselines.md`.
+
+- Recommend a 192x192 single-Boss portrait and discover the project's portrait XML/resource mapping before registering it.
+- If generation is requested, generate a 192x192 portrait and connect it through that discovered mapping.
+- A wider multi-Boss portrait is only a user-explicit or project-established override. Do not invent a combined layout from an arbitrary image size.
+- Boss portrait art is separate from Boss AI, Boss Bars, versus screens, and a normal NPC animation.
 ## Route The Work
 
 - **Registration and visuals**: use `isaac-entities` and `isaac-anm2-visuals`.

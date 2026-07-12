@@ -16,6 +16,14 @@ challenge hooks, unlock XML/metadata, content gates, migration/versioning, and
 test entrypoints. Then write the Progression Contract in
 `references/progression-contract.md`.
 
+## High-Priority Official Unlock-Art Suggestion
+
+When an unlock achievement image is requested and the user has not supplied a compatible asset, read `../isaac-anm2-visuals/references/official-native-ui-baselines.md`.
+
+- Recommend a 263x176 achievement-art PNG, then discover the current project's achievement popup/ANM2 registration route.
+- If generation is requested, generate a 263x176 achievement image and connect it through that discovered route.
+- Do not generate the full 480x270 popup frame for a normal achievement image, and do not confuse achievement art with a completion mark.
+- A different format requires an explicit user decision or project-owned mapping; otherwise report the mismatch rather than inventing a route.
 ## Route The Work
 
 - **Condition semantics**: challenge, character, boss, run result, or event
@@ -26,11 +34,13 @@ test entrypoints. Then write the Progression Contract in
   effects and `isaac-rewards-pickups` for a concrete one-time reward.
 - **Player/challenge completion**: use `isaac-players-characters` or
   `isaac-challenges` when those systems own the condition.
+- **Optional presentation**: achievement popup, completion mark, pause/menu indicator, and unlock text are separate from the unlock itself. Discover each requested UI/resource route; use `isaac-audio-render-feedback`, `isaac-hud-ui-state`, or `isaac-anm2-visuals` only when that specific surface is requested.
 
 ## Hard Rules
 
 - Keep unlock condition, persistence key, grant action, and availability gate
   as separate fields. A saved flag alone is not an unlock implementation.
+- Keep unlock condition, persistence, grant, availability gate, achievement notification, completion mark, and pause/menu display as separate fields. A working saved flag or popup does not prove the other surfaces are correct.
 - Grant idempotently: repeated callbacks, continue, reload, and multiple
   players must not duplicate a one-time reward or corrupt progression.
 - Save only durable progression. Room timers, temporary visuals, and ordinary
@@ -65,6 +75,7 @@ test entrypoints. Then write the Progression Contract in
 - Idempotency / duplicate-grant guard:
 - Content availability gate:
 - One-time reward route:
+- Optional achievement/popup/completion-mark/pause-menu surfaces:
 - Co-op, continue, reload, and new-run behavior:
 - Optional dependencies and official fallback:
 - Required tests and in-game checks:
@@ -72,6 +83,6 @@ test entrypoints. Then write the Progression Contract in
 
 ## Final Review
 
-Report the condition, saved key, default/migration behavior, gate, and tests
-for first completion, repeated completion, continue, malformed data, and a
-fresh profile when applicable.
+Report the condition, saved key, default/migration behavior, gate, requested
+presentation surfaces, and tests for first completion, repeated completion,
+continue, malformed data, and a fresh profile when applicable.

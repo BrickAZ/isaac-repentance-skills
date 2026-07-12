@@ -20,6 +20,14 @@
       "id": 4,
       "prompt": "陌生 mod 想在房间清理后生成自定义掉落，但我不知道注册表、模块目录和奖励内容。",
       "expected": "先用 isaac-mod-context 发现项目结构和注册表；奖励内容标为 TBD，不生成裸 subtype，并在确认所有权后才选择 Spawn/Morph 路径。"
+    },
+    {
+      "id": 5.0,
+      "prompt": "用户要新增一个会掉在地上的自定义药丸奖励，没有提供美术，要求 AI 直接生成并接入。",
+      "expected": "应把它识别为 custom world pickup visual：推荐并生成 32x32 药丸帧，发现并接入项目的 pickup ANM2/atlas；不能把 32x32 HUD、卡面或 loose PNG 当作自动加载的世界掉落物。若只生成官方药丸 subtype，则不应生成新美术。",
+      "files": [
+        "docs/skills/isaac-rewards-pickups/references/official-world-pickup-baselines.md"
+      ]
     }
   ]
 }

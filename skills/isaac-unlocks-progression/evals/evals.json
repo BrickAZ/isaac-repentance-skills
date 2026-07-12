@@ -40,6 +40,20 @@
       "files": [
         "docs/skills/isaac-unlocks-progression/references/progression-contract.md"
       ]
+    },
+    {
+      "id": "unlock-presentation-separation",
+      "prompt": "一个角色通关后存档标记已写入，道具也进入池子，但成就弹窗与暂停页完成印记没有显示。请审查，不给文件。",
+      "expected_output": "区分条件、持久化、池子 gate、弹窗、完成印记；不因标记或池子正常推断 UI 正常；各表面保持 TBD 并要求独立验证。",
+      "files": []
+    },
+    {
+      "id": "generate-unlock-achievement-art",
+      "prompt": "用户没有给解锁成就图，要求 AI 直接生成并在解锁时显示。",
+      "expected_output": "应按官方默认生成 263x176 achievement art，发现 popup/ANM2 路线后接入；不应生成完整 480x270 popup frame，也不能把成就图当 completion mark。",
+      "files": [
+        "docs/skills/isaac-anm2-visuals/references/official-native-ui-baselines.md"
+      ]
     }
   ]
 }

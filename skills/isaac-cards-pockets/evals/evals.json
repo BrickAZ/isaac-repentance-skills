@@ -32,6 +32,31 @@
       "prompt": "陌生 mod 要加魂石，但我还不知道 pocket XML、HUD 图和回调写在哪里。",
       "expected_output": "先用 isaac-mod-context 发现实际注册、资源和模块表面；不假定文件或 id，确认后才按卡牌注册和空白卡检查表实现。",
       "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "自定义卡牌的拾取图和口袋 HUD 都正常，但卡面显示空白。应该先改 EID 图标还是 use callback？",
+      "expected_output": "应先把 pickup、cardfront、pocket/HUD、可选 EID 拆成独立表面；已正常的 pickup 和 HUD 不能证明 cardfront，先发现该项目的 cardfront 资源与映射，不能先改 EID 或 use callback。",
+      "files": [
+        "docs/skills/isaac-cards-pockets/references/blank-card-prevention.md",
+        "docs/skills/isaac-testing-debugging/references/native-surface-matrix.md"
+      ]
+    },
+    {
+      "id": 6.0,
+      "prompt": "陌生项目要做一张自定义卡牌正面，没有既有 cardfront 资源。卡面尺寸优先用多少？",
+      "expected_output": "应给出可覆盖的官方默认：ui_cardfronts.anm2 的 card-face 帧是 16x24，基础图集 128x144、Repentance DLC 图集 256x144；不能把 pickup、HUD 或 EID 图标误当 cardfront。",
+      "files": [
+        "docs/skills/isaac-anm2-visuals/references/official-native-ui-baselines.md"
+      ]
+    },
+    {
+      "id": 7.0,
+      "prompt": "用户没给自定义卡面的美术，要求 AI 直接生成卡面。",
+      "expected_output": "应生成 16x24 cardface source cell，并嵌入发现的 ui_cardfronts 图集/映射；不能把 pickup、HUD 或 EID 图标当作卡正面。",
+      "files": [
+        "docs/skills/isaac-anm2-visuals/references/official-native-ui-baselines.md"
+      ]
     }
   ]
 }

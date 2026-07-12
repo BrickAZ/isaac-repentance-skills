@@ -1,0 +1,21 @@
+{
+  "skill_name": "isaac-mcm-compat",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "模组有本地配置值，想加 MCM 开关，但用户没有声明 MCM 前置。",
+      "expected_output": "应先发现配置 owner 和可用 MCM API；MCM 缺失时保持已批准默认值和核心功能，不能把 MCM 作为唯一配置来源。",
+      "files": [
+        "docs/skills/isaac-mcm-compat/SKILL.md"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "MCM 可能晚加载，注册逻辑每帧都会被调用。",
+      "expected_output": "应限制为直到成功的一次幂等注册，不能重复添加控件；同时测试无 MCM、已存在 MCM、重复调用和设置持久化。",
+      "files": [
+        "docs/skills/isaac-mcm-compat/SKILL.md"
+      ]
+    }
+  ]
+}

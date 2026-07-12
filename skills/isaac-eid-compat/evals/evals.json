@@ -1,0 +1,21 @@
+{
+  "skill_name": "isaac-eid-compat",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "陌生模组想加 EID 描述，但没有证明 EID 已安装。请给出实现边界。",
+      "expected_output": "应要求先发现可用 EID global/API；EID 缺失时只跳过描述注册，核心玩法和 XML 本地化继续工作，不 require EID。",
+      "files": [
+        "docs/skills/isaac-eid-compat/SKILL.md"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "EID 在运行中可用但注册函数被重复调用。如何避免描述重复且不覆盖别的模组？",
+      "expected_output": "应使用发现的 API 和本模已确认 ID，确保幂等注册；不覆盖陌生/原版描述，并分别验证 EID 不存在与重复调用分支。",
+      "files": [
+        "docs/skills/isaac-eid-compat/SKILL.md"
+      ]
+    }
+  ]
+}

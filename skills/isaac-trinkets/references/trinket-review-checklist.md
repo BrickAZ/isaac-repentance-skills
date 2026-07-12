@@ -7,5 +7,5 @@ Before finalizing trinket work, verify:
 - Held, smelted/gulped, and golden behavior is explicit.
 - Co-op and per-player ownership are not accidentally global.
 - Language/EID surfaces are updated.
-- Visual assets exist if referenced.
+- Each requested pickup, HUD/pocket, costume, and optional EID visual surface has its own discovered route; a file existing or another surface working is not proof.
 - Static validator and relevant behavior tests were run when possible.

@@ -33,6 +33,12 @@
         "docs/skills/isaac-mod-context/SKILL.md",
         "docs/skills/isaac-testing-debugging/SKILL.md"
       ]
+    },
+    {
+      "id": "cross-surface-visual-proof",
+      "prompt": "静态检查确认自定义角色的角色选择头像文件存在，但合作菜单头像空白。如何验证？",
+      "expected_output": "建立角色选择与合作菜单的独立 surface matrix；不把选择页通过当作合作菜单通过；分别查资源/ANM2/注册并要求游戏内检查。",
+      "files": []
     }
   ]
 }

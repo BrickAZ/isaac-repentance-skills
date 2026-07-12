@@ -71,6 +71,36 @@
       "files": [
         "docs/skills/isaac-anm2-visuals/references/lua-sprite-effects.md"
       ]
+    },
+    {
+      "id": "esc-death-portrait-not-colored-gfx",
+      "prompt": "陌生 Isaac 模组的彩色 collectible PNG 已正常显示，但 ESC My Stuff 的红色草图图标空白。没有文件、路径、动画名或第三方库。只写发现项和视觉路由。",
+      "expected_output": "选择 native collectible death portrait 路由；保持 deathanm2、ANM2、spritesheet、item-id animation mapping 为 TBD；不建议 MC_POST_RENDER，也不把 gfx PNG 当作修复。",
+      "files": []
+    },
+    {
+      "id": "mystuff-loose-png-is-not-default",
+      "prompt": "我想把每个 32x32 道具彩色图复制为同名 `_mystuff.png`，不改 ANM2，就让 ESC My Stuff 显示红色涂鸦。这样对吗？",
+      "expected_output": "应说明这不是高优先级默认方案：默认发现 deathanm2、ANM2 图集和 item-id 动画/帧映射，32x32 彩色 gfx 不能规定 My Stuff 尺寸，也不会按 _mystuff 文件名自动发现。若用户明确选择，或项目已有声明的加载/映射路线，可以保留为 override，但必须记录并在游戏内验证。",
+      "files": [
+        "docs/skills/isaac-anm2-visuals/references/collectible-death-portraits.md"
+      ]
+    },
+    {
+      "id": "native-character-ui-baselines",
+      "prompt": "陌生模组要补角色选择头像和合作菜单头像，但没有现成视觉资源。请给出优先建议，用户仍可选择不同美术路线。",
+      "expected_output": "应给出可覆盖的官方默认：角色选择 characterportraits.anm2 为 48x48 帧和 512x1024 图集；合作菜单 coop menu.anm2 为 32x32 帧和 192x128 或 192x224 图集。要求分别发现和游戏内验证，不能把一个表面外推到另一表面。",
+      "files": [
+        "docs/skills/isaac-anm2-visuals/references/official-native-ui-baselines.md"
+      ]
+    },
+    {
+      "id": "generate-character-ui-baselines",
+      "prompt": "用户没有提供角色选择和合作菜单头像，要求我直接生成。应该生成什么尺寸、怎么交付？",
+      "expected_output": "应直接按可覆盖官方建议生成 48x48 角色选择肖像与 32x32 合作菜单头像，并要求分别嵌入已发现的图集/ANM2 映射；不能生成 loose PNG 后假定游戏会自动使用。",
+      "files": [
+        "docs/skills/isaac-anm2-visuals/references/official-native-ui-baselines.md"
+      ]
     }
   ]
 }

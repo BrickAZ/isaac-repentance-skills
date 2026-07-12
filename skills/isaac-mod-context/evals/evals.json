@@ -15,6 +15,12 @@
       "id": 3,
       "prompt": "项目有 main.lua、src 和 modules，分别都像会注册回调。我该用哪个？",
       "expected_output": "不猜唯一 owner；记录多个候选，路由到 architecture/callback contract，并要求按请求内容定位真正行为 owner。"
+    },
+    {
+      "id": "native-surface-discovery",
+      "prompt": "陌生 Isaac 模组说“道具底座正常，但 ESC 草图空白”。没有文件树。只输出项目发现合同。",
+      "expected_output": "分别列出彩色 collectible 链与 ESC death portrait 链；不从一个正常面推断另一个；路径和注册字段保持 TBD。",
+      "files": []
     }
   ]
 }

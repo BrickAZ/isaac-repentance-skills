@@ -20,6 +20,16 @@
 - 用户未决定的数值、池子、权重、美术和机制细节保持 `TBD`。
 - 不编造路径、实体 Variant、ANM2 动画名、回调注册位置或第三方 API。
 - 静态校验、隔离行为测试和实际游戏验证分别报告，不能混为“已验证”。
+- 原生 UI 表面彼此独立：彩色道具图、ESC My Stuff、卡面、HUD、角色选择、合作菜单、成就和 Boss 肖像必须分别发现并验证。
+- 用户未提供美术时，官方尺寸仅是可覆盖的源帧建议；生成资源仍必须接入已发现的 XML、ANM2、图集与映射，不能假设 loose PNG 会自动加载。
+
+## 本版强化
+
+- 为原生视觉补充可覆盖的官方资源基线，以及彩色道具图、ESC My Stuff、卡面、HUD 与世界 Pickup 的明确分流。
+- 强化世界坐标与屏幕坐标边界：手动 Sprite:Render 必须经过 Isaac.WorldToScreen，并按 owner 偏移与尺寸策略验证。
+- 强化空白/无意义实体防护：只校验、替换或清理当前模组明确拥有的 Spawn/Morph 路径，不干扰其他模组。
+- 为 EID、MCM、StageAPI 与 REPENTOGON 补齐缺失依赖和重复注册等 eval，保持官方 API fallback。
+- 全量复核 39 个 skill、171 条 eval 与 122 个 reference 链接；结构、引用和插件校验均通过。实际游戏验证仍由具体模组与运行环境完成。
 
 ## Skill Map
 
@@ -34,8 +44,8 @@
 | `isaac-callback-contracts` | 选择 callback、过滤器、注册时机和返回值。 |
 | `isaac-state-lifecycle` | 管理运行期状态、SaveData 以及房间、重开和死亡清理。 |
 | `isaac-performance-hotpaths` | 审核逐帧扫描、重复 Spawn 和其他性能热点。 |
-| `isaac-testing-debugging` | 分层复现、调试和验证问题。 |
-| `isaac-validators` | 检查 XML、资源引用、重复 ID 和常见回调问题。 |
+| `isaac-testing-debugging` | 分层复现、调试和验证问题，并分开验证各原生 UI 表面。 |
+| `isaac-validators` | 检查 XML、资源引用、重复 ID、常见回调和本模拥有的实体生成链。 |
 
 ### 实体与战斗
 
@@ -54,16 +64,16 @@
 | --- | --- |
 | `isaac-active-item-mechanics` | 为主动道具提供充能、输入、UI 等机制分流壳。 |
 | `isaac-passive-collectibles` | 管理被动道具持有、Cache、失去、重掷和重新获得。 |
-| `isaac-collectible-registration` | 处理主动/被动道具 XML、原生 ESC 菜单图标和 PNG 注册链。 |
-| `isaac-cards-pockets` | 处理卡牌、符文、药丸和口袋物品，并防止空白实体。 |
-| `isaac-trinkets` | 处理饰品注册、持有判断和叠加。 |
+| `isaac-collectible-registration` | 处理主动/被动道具 XML，并分开彩色图与原生 ESC My Stuff 图标链。 |
+| `isaac-cards-pockets` | 处理卡牌、符文、药丸和口袋物品，分开卡面、Pickup、HUD/EID，并防止空白实体。 |
+| `isaac-trinkets` | 处理饰品注册、持有判断、叠加及其独立视觉表面。 |
 | `isaac-item-economy` | 审核品质、池子、权重、tags 和解锁后的经济影响。 |
 | `isaac-item-synergies` | 定义多道具、饰品和角色联动的归属、叠加与失效边界。 |
 | `isaac-reroll-removal-contracts` | 管理重掷、移除、替换后的幂等 reconciliation。 |
 | `isaac-rng-determinism` | 管理随机源、抽取边界、种子范围和多人可复现性。 |
-| `isaac-rewards-pickups` | 处理奖励选择、Spawn/Morph 和失败时保留原物。 |
+| `isaac-rewards-pickups` | 处理奖励选择、已拥有目标的 Spawn/Morph、世界 Pickup 资源链和失败保留原物。 |
 | `isaac-challenges` | 处理挑战 XML、起始物品和运行规则。 |
-| `isaac-unlocks-progression` | 处理永久解锁、成就、存档和可用性 gate。 |
+| `isaac-unlocks-progression` | 处理永久解锁、成就、存档、可用性 gate 和独立展示表面。 |
 
 ### 伤害、诅咒与运行规则
 
@@ -76,7 +86,7 @@
 
 | Skill | 作用 |
 | --- | --- |
-| `isaac-anm2-visuals` | 处理 ANM2、Sprite、坐标系和视觉载体选择。 |
+| `isaac-anm2-visuals` | 处理 ANM2、Sprite、坐标系、视觉载体和可覆盖的原生 UI 资源基线。 |
 | `isaac-audio-render-feedback` | 处理音效、shader、render 和输入拦截。 |
 | `isaac-hud-ui-state` | 管理 HUD/UI 显示、世界坐标转屏幕坐标和短效状态清理。 |
 | `isaac-localization-runtime` | 处理运行期多语言和依赖分流。 |

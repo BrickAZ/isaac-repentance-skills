@@ -1,0 +1,21 @@
+{
+  "skill_name": "isaac-stageapi-compat",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "给楼层做 StageAPI 专属房间，但没有证明玩家安装 StageAPI。",
+      "expected_output": "应先发现声明、对象和版本；无 StageAPI 时走官方等价路线或明确不提供该可选增强，不能崩溃或污染普通房间。",
+      "files": [
+        "docs/skills/isaac-stageapi-compat/SKILL.md"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "StageAPI 注册在房间切换时重复执行。",
+      "expected_output": "应只拥有本整合创建的房间/门/状态，注册幂等并在转场清理；分别测试无库、支持库、重复注册和转场。",
+      "files": [
+        "docs/skills/isaac-stageapi-compat/SKILL.md"
+      ]
+    }
+  ]
+}

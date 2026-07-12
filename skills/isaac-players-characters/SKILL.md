@@ -18,10 +18,26 @@ and supported locale surfaces. Do not assume a player name, tainted variant,
 Before code, write a Character Contract. Read
 `references/character-contract.md`.
 
+## High-Priority Official Native-UI Defaults
+
+When a requested character-select or co-op visual surface has no established current-project route, read `../isaac-anm2-visuals/references/official-native-ui-baselines.md`.
+
+- Character select: start from the official `characterportraits.anm2` baseline, using 48x48 portrait frame crops from a 512x1024 `CharacterMenu.png` sheet.
+- Co-op menu: start from the official `coop menu.anm2` baseline, using 32x32 portrait frame crops from a 192x128 base or 192x224 Repentance-DLC sheet.
+- These defaults do not prove boss, HUD, death, costume, or completion-mark routes. Preserve a user-selected or project-established alternative with a declared mapping and per-surface in-game proof.
+- If a requested select or co-op image is absent, recommend the matching 48x48 or 32x32 source frame. If generation is requested, generate that frame and integrate it into the discovered character-select or co-op atlas, not as a loose replacement file.
+## High-Priority Official Heart-HUD Suggestion
+
+Use this only when the task explicitly requests a custom heart HUD surface. Read `../isaac-anm2-visuals/references/official-native-ui-baselines.md`.
+
+- Recommend a 16x16 heart-HUD cell from the official `ui_hearts.anm2` route and its 112x64 sheet.
+- If generation is requested, generate a 16x16 cell and integrate it into the discovered heart-HUD atlas/ANM2 mapping.
+- Heart appearance is separate from player health mechanics. Do not change health logic merely to display custom art.
+- A non-16x16 heart cell requires an explicit user decision or project-owned mapping; otherwise report the mismatch instead of guessing a render route.
 ## Route The Work
 
-- **Registration**: player type, `players.xml`, display assets, and character
-  identity. Use `isaac-anm2-visuals` for costumes or player visual assets.
+- **Registration**: player type, `players.xml`, and character identity.
+- **Native character visuals**: character select, co-op menu, in-run HUD, boss portrait, death screen, costumes, and optional completion marks are separate surfaces. Discover each requested route; use `isaac-anm2-visuals` for ANM2/assets and do not assume one portrait supplies another.
 - **Starting kit**: starting collectibles, trinkets, cards, pills, health, and
   active slots. Use `isaac-cards-pockets` or `isaac-rewards-pickups` for the
   owned content surfaces.
@@ -46,6 +62,7 @@ Before code, write a Character Contract. Read
   policy into final behavior; label any proposal as `Suggestion`.
 - Do not use a costume as proof of character identity. Costumes are visual;
   player type and ownership drive gameplay.
+- Do not use a working character-select, co-op, HUD, boss, death, or costume asset as proof another character surface is registered. Each requested surface needs its own source asset/ANM2/registration evidence and in-game check.
 - Do not make a custom character require EID, CuerLib, StageAPI, or another
   third-party mod unless the project explicitly declares that dependency.
 - Do not invent starting items, health, Birthright behavior, or a tainted
@@ -65,6 +82,7 @@ Before code, write a Character Contract. Read
 - Character mechanic and sibling skills:
 - Per-player state owner and reset points:
 - Costume/visual route:
+- Native character surface matrix:
 - Birthright and user-locked decisions:
 - Optional integrations:
 - Locale and description surfaces:
@@ -74,5 +92,5 @@ Before code, write a Character Contract. Read
 ## Final Review
 
 Report the actual player ids, grant boundary, co-op behavior, reset/death
-behavior, visual carrier, and in-game checks for new run, continue, and two
-players when supported.
+behavior, visual carrier, requested native character surfaces, and in-game
+checks for new run, continue, and two players when supported.

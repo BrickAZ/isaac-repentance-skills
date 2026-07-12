@@ -25,6 +25,7 @@ From the target mod root, inspect:
    Chinese files exist.
 5. Declared or observed dependency facts: official API use, project-owned helpers, required libraries, and optional integrations with their guards.
 6. Existing test, lint, or validation commands and their supported runtime. For executable tests, discover and record the actual runner path and version; absence from `PATH` alone is not proof that no compatible runner exists.
+7. For a request that names a native visual surface, map each requested surface separately: world pickup/pedestal, HUD or Extra HUD, ESC My Stuff, collection page, Last Will, character select, co-op menu, boss portrait, achievement popup, or completion mark. Record the discovered registration/resource route for each surface; do not infer one from another.
 
 ## Project Context Contract
 
@@ -38,6 +39,7 @@ Before handing work to another skill, output only observed facts:
 - Bootstrap/load file(s):
 - Behavior module root(s):
 - Content XML actually present:
+- Requested native visual surfaces and per-surface evidence:
 - Language variants actually present:
 - Dependency classification and evidence:
 - Existing test/validation entry points:
@@ -66,6 +68,7 @@ If more than one `RegisterMod` object or module root exists, keep the owner as
 - Do not invent a `Mod`, `Neverbirth`, `Main`, or other module object name.
 - Do not assume `content/`, `scripts/`, a language pair, or a test directory
   exists until inspected.
+- Do not infer that a PNG, XML entry, ANM2, or successful render on one native surface proves another surface uses the same chain. Keep every requested native surface as discovered or `TBD`.
 - When a target project/root is available, inspect it before marking its facts
   `TBD`. “Do not assume” means discover actual paths and names; it does not
   permit skipping discovery. Use `TBD` only for facts still absent or

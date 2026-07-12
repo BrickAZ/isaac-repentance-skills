@@ -18,16 +18,25 @@ Before editing or writing a prompt:
 1. In an unfamiliar project, use `isaac-mod-context` to confirm pocket XML, callback modules, language variants, and art conventions that actually exist.
 2. Read the current project's pocket XML if it exists.
 3. Read existing card/pocket callbacks in the current project.
-3. If the task touches descriptions, also use `isaac-compat-descriptions`.
-4. If the task touches card/hud/icon `.anm2`, also use `isaac-anm2-visuals`.
-5. If a challenge grants a starting card, also use `isaac-challenges`.
-6. After file changes, use `isaac-validators` for XML/id/asset/path checks when possible.
-8. For any generated or replaced pocket item, read `../isaac-validators/references/owned-spawn-safety.md` and prove it is current-project-owned before suppressing or replacing it.
+4. If the task touches descriptions, also use `isaac-compat-descriptions`.
+5. If the task touches card/hud/icon `.anm2`, also use `isaac-anm2-visuals`.
+6. If a challenge grants a starting card, also use `isaac-challenges`.
+7. For blank or wrong native art, read `../isaac-testing-debugging/references/native-surface-matrix.md` and name the requested surface before inspecting assets.
+8. After file changes, use `isaac-validators` for XML/id/asset/path checks when possible.
+9. For any generated or replaced pocket item, read `../isaac-validators/references/owned-spawn-safety.md` and prove it is current-project-owned before suppressing or replacing it.
 
 When the current mod has no matching pocket item, use this skill's XML,
 generation, art, and review references. Do not require a third-party mod
 checkout to distinguish ids, pickup art, HUD art, and callbacks.
 
+## High-Priority Official Cardfront Default
+
+When a custom card face is requested and the project has no established cardfront route, read `../isaac-anm2-visuals/references/official-native-ui-baselines.md`.
+
+- Start from the official `ui_cardfronts.anm2` baseline: 16x24 card-face frame crops, with 128x144 base or 256x144 Repentance-DLC sheet formats.
+- This is separate from `pickup`, pocket/HUD, and optional EID surfaces.
+- Preserve a user-selected or project-established alternative when it has a declared loader/mapping; record it as an override and verify the requested cardface surface in game.
+- If no compatible cardface is supplied, recommend the 16x24 source frame. If generation is requested, generate a 16x24 cardface cell and integrate it into the discovered `ui_cardfronts` atlas rather than creating an unrelated card PNG.
 ## Route The Work
 
 - **Pocket XML registration**: `card`, `rune`, `pilleffect`, ids, pickup art id, hud art key, mimiccharge, type/class. Read `references/pocketitems-xml.md`.
@@ -43,6 +52,7 @@ checkout to distinguish ids, pickup art, HUD art, and callbacks.
 - Do not add `MC_USE_CARD` without a matching `content/pocketitems.xml` entry for a custom card/rune/soul stone.
 - Do not assume `pickup` equals `id`; these are separate registration fields.
 - Do not leave `hud` missing or mismatched for a custom card that should display in the pocket/HUD.
+- Do not infer the cardfront, pickup, or pocket/HUD route from another working pocket surface. A valid `pickup` value, matching `hud` key, or optional EID icon proves only that one surface.
 - Do not update EID or descriptions only; registration and art surfaces must be checked too.
 - If a card generates blank/abnormal, inspect XML registration, cardfront/hud assets, and generation code before changing behavior logic. Check EID only after gameplay registration is correct and only when that integration exists.
 - For blank or abnormal cards, prefer `isaac-testing-debugging` plus `isaac-validators` before guessing behavior changes.
@@ -77,5 +87,6 @@ Before saying the work is complete, report:
 - The card/rune/pill id lookup used in Lua.
 - The use/generation callbacks touched.
 - The pickup and HUD art keys.
+- The separately verified pickup, cardfront, pocket/HUD, and optional EID visual surfaces.
 - The optional EID/description surfaces touched.
 - Any in-game card pickup/HUD visual checks still needed.
