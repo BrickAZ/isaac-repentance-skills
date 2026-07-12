@@ -1,0 +1,23 @@
+{
+  "skill_name": "isaac-repentance-router",
+  "evals": [
+    {
+      "id": "mixed-passive-shield-route",
+      "prompt": "陌生 Isaac 模组要做一个被动护符：持有时有护盾层，受伤时可抵消一次伤害并在头顶显示标记。用户没给项目文件和数值。只输出该用哪些 skill 及顺序。",
+      "expected_output": "passive 为 primary；damage/callback/state/HUD 为 companions；context 仅 preflight；验证位于 verification route。",
+      "files": []
+    },
+    {
+      "id": "blank-card-route",
+      "prompt": "一个现有模组的自定义卡牌生成后是空白的，用户要排错。给出 skill 路由，不写代码。",
+      "expected_output": "cards 为 primary；context preflight；testing 为 debug companion；validators 在 verification；ANM2/description/compat conditional。",
+      "files": []
+    },
+    {
+      "id": "architecture-only-route",
+      "prompt": "用户只说：这个 Isaac 模组的 main.lua 太大，想拆模块，但未给文件。请输出 skill 路由。",
+      "expected_output": "architecture 为 primary；context 仅 preflight；验证在 verification；没有 mechanism/entity/item/compat。",
+      "files": []
+    }
+  ]
+}

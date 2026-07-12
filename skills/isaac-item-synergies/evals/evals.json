@@ -1,0 +1,37 @@
+{
+  "skill_name": "isaac-item-synergies",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "一个被动道具和一个饰品同时持有时，玩家发射的眼泪首次命中敌人会分裂一次。多人时只让满足组合的玩家眼泪分裂；我没有给 id、分裂数或伤害数值。请写实现前契约。",
+      "expected_output": "Defines per-player combination qualification, projectile ownership proof, first-hit/repeat boundary, reroll/removal retraction, and keeps ids/counts/damage as TBD. Routes the projectile implementation to isaac-projectile-combat rather than inventing Lua.",
+      "files": [
+        "references/synergy-contract.md"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "玩家拿到 A 和 B 后，所有模组的使魔都会多射一发，直接在 MC_POST_UPDATE 里扫全部 Familiar 行不行？",
+      "expected_output": "Rejects global mutation of all familiars and frame-driven double application. Requires an explicit owned familiar/source boundary and routes base familiar behavior to isaac-familiars.",
+      "files": [
+        "references/synergy-review-checklist.md"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "我已经决定 A+B 联动让伤害加 1.0，并且 B 被重掷掉后立即失效。其他数值和优先级没有决定。请审核。",
+      "expected_output": "Keeps +1.0 and immediate loss locked, marks all other decisions including precedence as TBD, and asks for a cache/retraction route without replacing the user's decisions.",
+      "files": [
+        "references/synergy-contract.md"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "陌生模组声称兼容一个可选的第三方道具库，但没有给文件树和依赖声明。我要让本模道具和那个库的内容联动。",
+      "expected_output": "Starts with isaac-mod-context discovery, treats the third-party library as optional and guarded, keeps its API/id as TBD, and requires an official-API fallback or a no-op path.",
+      "files": [
+        "SKILL.md"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "skill_name": "isaac-hud-ui-state",
+  "evals": [
+    {
+      "id": "unknown-project-world-marker",
+      "prompt": "陌生 Isaac 模组要在受伤玩家头顶显示红点 20 帧。没有提供项目文件、资源、ANM2、回调或现有 UI 写法。只输出发现项、载体判断、坐标和生命周期合同，不写代码。",
+      "expected_output": "保留路径和回调为 TBD；区分世界和屏幕坐标；要求 WorldToScreen 或实体路线的验证；包含 co-op 清理。",
+      "files": []
+    },
+    {
+      "id": "screen-counter-with-gameplay-risk",
+      "prompt": "给玩家做一个屏幕右上角连击计数器，并在 render 回调里顺便结算连击奖励。项目未知。请审查设计。",
+      "expected_output": "选择 HUD；拒绝在 render 结算游戏机制；说明所有者、暂停和持久化/清理待定。",
+      "files": []
+    }
+  ]
+}

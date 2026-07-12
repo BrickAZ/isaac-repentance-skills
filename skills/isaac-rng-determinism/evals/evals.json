@@ -1,0 +1,17 @@
+{
+  "skill_name": "isaac-rng-determinism",
+  "evals": [
+    {
+      "id": "collectible-owned-random-event",
+      "prompt": "陌生 Isaac 模组的被动道具每次击杀随机选择一种效果；合作模式下每个持有者应独立，重开同种子是否一致尚未决定。没有代码。只写随机合同。",
+      "expected_output": "不决定确定性政策；要求 owner、draw edge、RNG 来源、co-op、重复和验证；不使用 player zero/global RNG 猜测。",
+      "files": []
+    },
+    {
+      "id": "per-frame-random-visual-risk",
+      "prompt": "一个特效在 update 中每帧随机换方向，作者说用 math.random 最快。项目未知。请审查。",
+      "expected_output": "要求先确认是否应稳定；区分创建时抽取与每帧变化；不默认认可 math.random。",
+      "files": []
+    }
+  ]
+}

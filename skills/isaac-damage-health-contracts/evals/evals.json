@@ -1,0 +1,17 @@
+{
+  "skill_name": "isaac-damage-health-contracts",
+  "evals": [
+    {
+      "id": "unknown-player-damage-replacement",
+      "prompt": "陌生 Isaac 模组要求玩家本次受伤时不扣血，改为消耗一个自定义护盾层，并对攻击来源造成反伤。没有代码、回调、来源类型、护盾存储方式、伤害数值或死亡规则。只写实施前合同，不写 Lua。",
+      "expected_output": "区分取消原伤害、护盾消耗和反伤；保留回调返回及数值为 TBD；覆盖来源、递归、co-op、i-frame 和死亡边界。",
+      "files": []
+    },
+    {
+      "id": "foreign-source-repeat-hit",
+      "prompt": "一个 mod 想让自定义敌人每次命中玩家后回复自己生命，但不能干扰其他模组的敌人，也不能无限触发。项目未知。请审查。",
+      "expected_output": "要求证明实体与来源所有权，定义原伤害结果和 repeat/re-entry 边界，不把 NPC HP 与玩家心值混用。",
+      "files": []
+    }
+  ]
+}

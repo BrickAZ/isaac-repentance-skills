@@ -1,0 +1,17 @@
+{
+  "skill_name": "isaac-performance-hotpaths",
+  "evals": [
+    {
+      "id": "unknown-project-hotpath-review",
+      "prompt": "陌生 Isaac 模组说每帧遍历所有实体后卡顿，但未提供代码、项目结构或性能数据。只给出应发现的事实、风险、最小验证方案和不能声称的结论。",
+      "expected_output": "保留项目事实为 TBD；不编造回调或优化结果；区分静态、运行时和游戏内证据。",
+      "files": []
+    },
+    {
+      "id": "coop-effect-spawn-hotpath",
+      "prompt": "一个双人合作道具每帧给所有玩家生成提示特效。请审查性能与正确性，但用户没有给频率、生命周期、实体类型或可接受的视觉延迟。",
+      "expected_output": "指出所有者隔离、生成边沿、清理和节流语义为待定；不直接给出硬编码优化实现。",
+      "files": []
+    }
+  ]
+}

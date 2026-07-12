@@ -1,0 +1,17 @@
+{
+  "skill_name": "isaac-curses-run-modifiers",
+  "evals": [
+    {
+      "id": "temporary-item-curse-mask",
+      "prompt": "陌生 Isaac 模组的一件道具持有时增加一种已有楼层诅咒，失去或重掷后应撤销。其他诅咒必须保留。没有回调、bit、项目结构或前置库。只写合同。",
+      "expected_output": "保留具体 bit/回调 TBD；区分 item loss、重掷、楼层和其他 bit；不默认 CuerLib。",
+      "files": []
+    },
+    {
+      "id": "challenge-curse-overlap",
+      "prompt": "挑战强制一种诅咒，同时一个角色机制想临时移除另一种诅咒。请审查职责和生命周期。",
+      "expected_output": "挑战 XML 交 challenges，runtime mask 交 curses；保留挑战位、限定 runtime 修改、定义重算与测试。",
+      "files": []
+    }
+  ]
+}

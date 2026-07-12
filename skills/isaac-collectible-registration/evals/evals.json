@@ -1,0 +1,17 @@
+{
+  "skill_name": "isaac-collectible-registration",
+  "evals": [
+    {
+      "id": "unknown-active-pause-icon",
+      "prompt": "陌生 Isaac 模组新增主动道具后，ESC 暂停页里图标空白。没有项目文件、items.xml、PNG、id 或回调。只写发现项和注册合同，不写 Lua。",
+      "expected_output": "要求发现 items.xml/gfxroot/gfx/PNG；明确原生菜单图标不能用 MC_POST_RENDER 伪造；将充能和机制转交 active-item skill。",
+      "files": []
+    },
+    {
+      "id": "passive-lua-works-icon-blank",
+      "prompt": "一个被动道具效果和 cache 都正常，但 ESC 菜单图标显示错误。请审查，不给文件。",
+      "expected_output": "优先检查 entry kind、gfxroot、gfx 与 PNG；不改 cache 逻辑；静态验证与 ESC 实测分开。",
+      "files": []
+    }
+  ]
+}

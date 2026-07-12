@@ -1,0 +1,4 @@
+interface:
+  display_name: "Isaac Item Synergies"
+  short_description: "Define safe multi-content Isaac interactions"
+  default_prompt: "Use $isaac-item-synergies to define a safe Isaac content synergy."

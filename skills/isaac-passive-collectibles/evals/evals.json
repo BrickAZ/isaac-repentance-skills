@@ -1,0 +1,17 @@
+{
+  "skill_name": "isaac-passive-collectibles",
+  "evals": [
+    {
+      "id": "unknown-passive-stat-item",
+      "prompt": "陌生 Isaac 模组要加一个被动道具：持有时提升伤害，拿两份应更强，失去或重掷后应撤销。没有 item id、数值、项目结构、已有 cache 约定或池子决定。只写实施前合同，不写 Lua。",
+      "expected_output": "区分 item economy 与持有效果；保持数值和回调细节 TBD；要求 owner/count、缓存计算、刷新边沿、移除和 co-op 合同。",
+      "files": []
+    },
+    {
+      "id": "pickup-once-vs-held-effect",
+      "prompt": "一个被动道具拿到时给一个临时光环，持有时让子弹带标记。玩家重掷、死亡、再拿到和合作模式的表现未定义。请审查。",
+      "expected_output": "拆分 acquisition-once 与 while-held；将光环/子弹转交给生命周期或 projectile skill；不假设重复与清理语义。",
+      "files": []
+    }
+  ]
+}

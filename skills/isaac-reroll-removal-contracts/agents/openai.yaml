@@ -1,0 +1,4 @@
+interface:
+  display_name: "Isaac Content Change Contracts"
+  short_description: "Reconcile Isaac effects after content changes"
+  default_prompt: "Use $isaac-reroll-removal-contracts to define safe reroll and removal behavior."
