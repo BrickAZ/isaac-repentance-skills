@@ -29,9 +29,11 @@
 | --- | --- |
 | `isaac-mod-context` | 发现真实入口、资源、XML、依赖和验证命令。 |
 | `isaac-mod-architecture` | 划分模块边界、接入点并避免重复注册。 |
+| `isaac-repentance-router` | 为陌生需求选择一个主 skill，并控制辅助 skill 的数量。 |
 | `isaac-mechanic-contracts` | 先定义机制的输入、结果与边界，再选择实现。 |
 | `isaac-callback-contracts` | 选择 callback、过滤器、注册时机和返回值。 |
 | `isaac-state-lifecycle` | 管理运行期状态、SaveData 以及房间、重开和死亡清理。 |
+| `isaac-performance-hotpaths` | 审核逐帧扫描、重复 Spawn 和其他性能热点。 |
 | `isaac-testing-debugging` | 分层复现、调试和验证问题。 |
 | `isaac-validators` | 检查 XML、资源引用、重复 ID 和常见回调问题。 |
 
@@ -51,12 +53,24 @@
 | Skill | 作用 |
 | --- | --- |
 | `isaac-active-item-mechanics` | 为主动道具提供充能、输入、UI 等机制分流壳。 |
+| `isaac-passive-collectibles` | 管理被动道具持有、Cache、失去、重掷和重新获得。 |
+| `isaac-collectible-registration` | 处理主动/被动道具 XML、原生 ESC 菜单图标和 PNG 注册链。 |
 | `isaac-cards-pockets` | 处理卡牌、符文、药丸和口袋物品，并防止空白实体。 |
 | `isaac-trinkets` | 处理饰品注册、持有判断和叠加。 |
 | `isaac-item-economy` | 审核品质、池子、权重、tags 和解锁后的经济影响。 |
+| `isaac-item-synergies` | 定义多道具、饰品和角色联动的归属、叠加与失效边界。 |
+| `isaac-reroll-removal-contracts` | 管理重掷、移除、替换后的幂等 reconciliation。 |
+| `isaac-rng-determinism` | 管理随机源、抽取边界、种子范围和多人可复现性。 |
 | `isaac-rewards-pickups` | 处理奖励选择、Spawn/Morph 和失败时保留原物。 |
 | `isaac-challenges` | 处理挑战 XML、起始物品和运行规则。 |
 | `isaac-unlocks-progression` | 处理永久解锁、成就、存档和可用性 gate。 |
+
+### 伤害、诅咒与运行规则
+
+| Skill | 作用 |
+| --- | --- |
+| `isaac-damage-health-contracts` | 处理伤害语义、无敌帧、来源归属、递归与致命/复活边界。 |
+| `isaac-curses-run-modifiers` | 管理已有诅咒位的运行期增加、抑制、重算和清理。 |
 
 ### 资源、文本与可选集成
 
@@ -64,10 +78,14 @@
 | --- | --- |
 | `isaac-anm2-visuals` | 处理 ANM2、Sprite、坐标系和视觉载体选择。 |
 | `isaac-audio-render-feedback` | 处理音效、shader、render 和输入拦截。 |
+| `isaac-hud-ui-state` | 管理 HUD/UI 显示、世界坐标转屏幕坐标和短效状态清理。 |
 | `isaac-localization-runtime` | 处理运行期多语言和依赖分流。 |
 | `isaac-compat-descriptions` | 处理 EID/百科描述与可选依赖兼容。 |
 | `isaac-config-options` | 处理配置、SaveData 和可选 MCM 接入。 |
-
+| `isaac-eid-compat` | 处理可选 EID 描述、图标与语言注册。 |
+| `isaac-mcm-compat` | 处理可选 Mod Config Menu 配置界面与重复注册。 |
+| `isaac-stageapi-compat` | 处理可选 StageAPI 房间、楼层与版本兼容。 |
+| `isaac-repentogon-compat` | 处理可选 REPENTOGON API、版本门控和官方 fallback。 |
 ## 不做什么
 
 这套 skills 不替用户决定平衡数值、视觉风格或机制设计，也不承诺未经运行的
@@ -77,6 +95,6 @@
 
 ```text
 .codex-plugin/plugin.json  Codex plugin 清单
-skills/                    25 个通用 Isaac skills
+skills/                    39 个通用 Isaac skills
 AGENTS.md                  给维护本仓库的 AI 的边界说明
 ```
