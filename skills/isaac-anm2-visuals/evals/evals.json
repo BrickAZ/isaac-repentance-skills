@@ -75,7 +75,7 @@
     {
       "id": "esc-death-portrait-not-colored-gfx",
       "prompt": "陌生 Isaac 模组的彩色 collectible PNG 已正常显示，但 ESC My Stuff 的红色草图图标空白。没有文件、路径、动画名或第三方库。只写发现项和视觉路由。",
-      "expected_output": "选择 native collectible death portrait 路由；保持 deathanm2、ANM2、spritesheet、item-id animation mapping 为 TBD；不建议 MC_POST_RENDER，也不把 gfx PNG 当作修复。",
+      "expected_output": "选择 native collectible death portrait 路由；保持 deathanm2、ANM2、spritesheet、当前 items.xml 本地 ID 到帧映射为 TBD；明确不能用运行时全局 ItemConfig ID；不建议 MC_POST_RENDER，也不把 gfx PNG 当作修复。",
       "files": []
     },
     {
@@ -100,6 +100,65 @@
       "expected_output": "应直接按可覆盖官方建议生成 48x48 角色选择肖像与 32x32 合作菜单头像，并要求分别嵌入已发现的图集/ANM2 映射；不能生成 loose PNG 后假定游戏会自动使用。",
       "files": [
         "docs/skills/isaac-anm2-visuals/references/official-native-ui-baselines.md"
+      ]
+    },
+    {
+      "id": "weapon-world-appearance-is-not-icon",
+      "prompt": "我要画一把自定义武器：角色战斗时手里要显示它，还会随角色/攻击动作变化。请直接生成一个武器图标。",
+      "expected_output": "应拒绝把“图标”当默认交付：先输出资源用途卡，标记为 world/combat appearance，display surface 是角色或战斗中的世界视觉；实际 carrier 保持 TBD，先发现它是 costume、familiar、Lua Sprite 还是注册实体及其动画/ANM2 路线。明确它不是 HUD、EID、道具彩色图或 ESC 草图。",
+      "files": [
+        "docs/skills/isaac-anm2-visuals/SKILL.md"
+      ]
+    },
+    {
+      "id": "weapon-icon-needs-native-surface",
+      "prompt": "我要给自定义武器画一个图标，游戏里也能看见。没有说明显示在 HUD、EID、道具底座、ESC My Stuff 还是别处。请给我画一张 32x32 武器外观图并接入。",
+      "expected_output": "应先输出资源用途卡并将 display surface 标为 TBD；“图标”不能默认等于 32x32 彩色道具图，也不能当作角色手持外观。要求用户或项目事实确定 HUD/EID/collectible gfx/ESC 等具体表面后，再选择对应尺寸、ANM2/图集或 XML 映射。",
+      "files": [
+        "docs/skills/isaac-anm2-visuals/SKILL.md",
+        "docs/skills/isaac-anm2-visuals/references/official-native-ui-baselines.md"
+      ]
+    },
+    {
+      "id": "weapon-appearance-and-icon-are-two-assets",
+      "prompt": "同一把自定义武器既要在角色手里挥动，也要在 HUD 里显示一个小图标。为了省事，我只让 AI 生成一张 PNG，并让两个地方共用。",
+      "expected_output": "应拆成两张资源用途卡：世界/战斗外观与指定 HUD 表面是独立交付，分别发现 carrier、动画需要、尺寸、图集与映射。可以复用同一美术设计或由同一原画派生，但不得假设一张导出 PNG 可同时满足两条加载链。",
+      "files": [
+        "docs/skills/isaac-anm2-visuals/SKILL.md"
+      ]
+    },
+    {
+      "id": "death-portrait-rejects-global-itemconfig-id",
+      "prompt": "自定义道具在日志里显示 Isaac.GetItemIdByName 结果为 733、749、756。有人建议把 deathanm2 的草图搬到第 733、749、756 帧，称这样 ESC My Stuff 才能显示。项目的 content/items.xml 中这些道具本地 id 是 1、17、24。请审查。",
+      "expected_output": "必须拒绝按运行时全局 ItemConfig ID 排 deathanm2 帧：日志/Isaac.GetItemIdByName 数值会随已安装模组与加载顺序改变。应发现并按当前 items.xml 的本地 active/passive/familiar id 与 ANM2 frame index 映射，保留 frame 0/reserved behavior 的项目事实，并要求多模组加载顺序验证。",
+      "files": [
+        "docs/skills/isaac-anm2-visuals/references/collectible-death-portraits.md"
+      ]
+    },
+    {
+      "id": "death-portrait-local-id-is-load-order-stable",
+      "prompt": "当前模组有 30 个道具，本地 XML id 为 1 到 30；单独运行时 Lua 日志给它们分配了 733 到 763。我要把第 N 张草图放到 733+N 的图集格，以避免第 N 本地帧被覆盖。",
+      "expected_output": "必须指出这会制造加载顺序依赖：原生 deathanm2 不应以 Lua/ItemConfig 的全局 ID 作为图集格或帧索引。应使本地 XML id N 映射到发现的本地 ANM2 frame N（具体起始/reserved frame 由现有文件确认），并在启用其他模组时验证同一 items.xml id 仍显示同一草图。",
+      "files": [
+        "docs/skills/isaac-anm2-visuals/SKILL.md",
+        "docs/skills/isaac-anm2-visuals/references/collectible-death-portraits.md"
+      ]
+    },
+    {
+      "id": "death-portrait-custom-loader-is-explicit-override",
+      "prompt": "项目存在一个已实现的自定义 Lua/UI loader，它明确读取自定义 name-to-frame 表，而不是使用原生 deathanm2。此时能否按该表给草图排帧？",
+      "expected_output": "可以，但必须把它识别为项目声明的自定义 loader override，而非原生 deathanm2 规则；读取该表、保留它的稳定 key 与加载顺序策略，并分别验证原生和自定义表面。不能从运行时全局 ItemConfig ID 反推默认帧位。",
+      "files": [
+        "docs/skills/isaac-anm2-visuals/SKILL.md"
+      ]
+    },
+    {
+      "id": "death-portrait-missing-local-id-is-blocked",
+      "prompt": "陌生模组的 items.xml 有 30 个道具，但所有 active/passive/familiar 条目都没有显式 id 属性。当前 deathanm2 把草图按文件第 1 到 30 个条目的顺序排帧；Lua 日志显示运行时 ID 是 733 到 763。该怎么修？",
+      "expected_output": "应将原生 death portrait 映射标为 blocked/TBD：不能把文档顺序当稳定本地帧键，也不能用 733 等运行时全局 ItemConfig ID。先发现已有自定义 loader；若没有，提出经用户确认的显式、唯一、不可重排本地 XML id 迁移，再按该 id 连接 ANM2 帧，并在不同模组加载顺序下实测。",
+      "files": [
+        "docs/skills/isaac-anm2-visuals/SKILL.md",
+        "docs/skills/isaac-anm2-visuals/references/collectible-death-portraits.md"
       ]
     }
   ]

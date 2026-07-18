@@ -5,6 +5,18 @@ description: Debug and verify Binding of Isaac Repentance mod changes. Use this 
 
 # Isaac Testing And Debugging
 
+## TBD Disclosure Contract
+
+A `TBD` is an unresolved project fact or user decision, not permission to guess.
+
+- Whenever an active `TBD` affects this turn's recommendation, implementation, test plan, or completion claim, label it exactly as **`TBD — user decision required`** and state the consequence of leaving it unresolved.
+- In every response that relies on one or more active `TBD`s, end with a concise **User decisions required** list containing every still-active item. Do not hide a decision inside code, a default value, or an implementation note.
+- Give optional alternatives only as suggestions. Do not choose a balance value, room route, fallback mechanism, asset, dependency, identifier, callback, or persistence policy on the user's behalf.
+- If safe discovery or validation can continue, continue it conditionally while keeping the decision visible. If the next mutation depends on the `TBD`, stop before that mutation and ask the user.
+- Do not create artificial `TBD`s for facts already confirmed by the project or explicitly decided by the user. Once a decision is confirmed, remove it from later reminders.
+
+Read `../isaac-mod-context/references/tbd-disclosure.md` whenever an unresolved fact or user decision remains active.
+
 Use this skill when the task is about proof, diagnosis, or verification.
 
 The goal is to stop guessing. Isaac mod work needs a layered verification story: static checks, local behavior tests where possible, targeted logs or debug-console reproduction, then in-game checks for runtime-only surfaces.
@@ -22,6 +34,7 @@ Before proposing a fix:
 7. If the issue is stateful, also use `isaac-state-lifecycle`.
 8. If the intended mechanic itself is ambiguous, reconstruct its trigger/guard/result contract with `isaac-mechanic-contracts` before judging a callback as broken.
 9. If a visual, icon, portrait, menu, or native UI surface is involved, create a surface matrix before proposing a fix. Read `references/native-surface-matrix.md`.
+10. If the failure crosses an Isaac API boundary that expects `Vector`, `Color`, `KColor`, `EntityRef`, or another engine-owned value, read **Engine Value Boundary Tests** before trusting a Lua stub.
 
 ## Verification Layers
 
@@ -42,7 +55,33 @@ Read `references/verification-layers.md` before planning verification. Read `ref
 - When a test cannot run in the current environment, say exactly what was not run and provide the shortest in-game check.
 - Do not conclude that Lua behavior tests are unavailable merely because `lua` is absent from `PATH`. Complete runner discovery first; do not install a runtime, alter global `PATH`, or change machine configuration unless the user explicitly asks.
 - Separate “runner found but test failed”, “test was not run”, and “no compatible runner was found after discovery”.
+- Do not treat a test stub that only records an engine call as proof that its argument types are valid. For a tested engine boundary, the stub must reject plain Lua-table lookalikes and exercise the exact changed path.
+- Do not state the runtime representation of a constructor from a test fixture alone. Record whether the current test uses a function, callable object, or another adapter, then verify the real construction route from project/official/runtime evidence.
+- Do not let a room/door test declare every coordinate legal. Model discovered room topology separately from local position legality, and include a no-candidate case that proves no owned mutation or success consumption occurs.
+- Do not treat a console/debug/goto room as proof that normal map adjacency, neighboring-room creation, or door transitions work. Require a separate normal-floor in-game check.
 
+## Engine Value Boundary Tests
+
+An Isaac API can require an engine-compatible value even when a Lua table has matching fields. Treat `Vector`, `Color`, `KColor`, `EntityRef`, and comparable values as a boundary contract, not as structural Lua data.
+
+1. Identify the exact engine call and every typed argument it receives.
+2. Discover how the project/runtime constructs that value. Do not branch only on `type(Constructor) == "function"`; a callable object is possible.
+3. Let construction fail explicitly. The caller must skip or abort only its owned operation rather than passing a table fallback into the engine.
+4. Make the test double accept the same constructor shape needed by production and reject an ordinary lookalike at the engine-call boundary.
+5. Prove the current source and current test actually execute the changed path. A report about an older fixture is not test evidence.
+6. Mark the real-game type contract as in-game/runtime evidence unless the project or official API proves it directly.
+## Room Topology And Door Tests
+
+Room-local coordinates are not proof of world topology. A door or portal feature needs two independent facts: a legal local position and a real neighboring room/door slot in the current map context.
+
+For any custom door, portal, gallery connection, or room-to-room transition test:
+
+1. Record the discovered current room identity and whether it is a normal map-grid room or a debug/console surface.
+2. Test at least one valid normal-floor candidate with a discovered compatible slot and neighbor.
+3. Test a blocked or invalid candidate.
+4. Test the no-candidate result: no owned portal/door appears, existing unrelated doors remain, and no once-per-room/floor success is consumed.
+5. Keep a debug-room test as a focused local reproduction only; it cannot prove map adjacency merely because it reloads or pages.
+6. Run the shortest real normal-floor in-game check for connection, return route, cleanup, and repeat behavior.
 ## Static-Pass Runtime Failures
 
 A clean validator run can still leave a callback unregistered, a valid entity
@@ -68,6 +107,7 @@ When changing a large, monolithic Lua entry file, include a check that parses or
 - Entity not behaving: `isaac-entities`, callback route, type/variant/subtype, `GetData()`, spawn/remove logic.
 - Blank/meaningless entity or pickup: prove the spawn owner first, then check current-project registration, id/variant/subtype, ANM2/spritesheet/HUD chain, and invalid-target fallback. Do not test by globally deleting unknown entities.
 - Challenge leaking: `isaac-challenges`, `Isaac.GetChallenge()` gate, state lifecycle cleanup.
+- Door, portal, or rooms that are not truly connected: `isaac-rooms-stages`; verify map topology separately from local coordinates, then run valid/blocked/no-candidate tests and a normal-floor check.
 - State persists or vanishes incorrectly: `isaac-state-lifecycle`, reset/save/reload plan.
 
 ## Final Review
@@ -81,3 +121,5 @@ Before saying debugging is complete, report:
 - Tests run.
 - Manual in-game checks still required.
 - For native visuals, the surface matrix and every still-unverified surface.
+- For engine-valued API boundaries, the current code path, test-double assertion, and the remaining runtime/in-game proof.
+- For room topology, the current room context, candidate matrix, no-candidate result, and separate normal-floor proof.

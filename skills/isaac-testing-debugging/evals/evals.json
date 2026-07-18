@@ -39,6 +39,18 @@
       "prompt": "静态检查确认自定义角色的角色选择头像文件存在，但合作菜单头像空白。如何验证？",
       "expected_output": "建立角色选择与合作菜单的独立 surface matrix；不把选择页通过当作合作菜单通过；分别查资源/ANM2/注册并要求游戏内检查。",
       "files": []
+    },
+    {
+      "id": "engine-value-test-double-fidelity",
+      "prompt": "本地 Lua 测试通过，但实机 Isaac.Spawn 报 Vector expected, got table。测试桩只记录 Spawn 被调用过。如何排查和补测试？",
+      "expected_output": "Separates current-code/current-test execution proof from an old or stale fixture claim; requires the test double to model the discovered Vector call shape, reject table lookalikes at the Spawn boundary, exercise the exact spawn path, and leaves actual engine representation as discovered/in-game evidence rather than guessing it.",
+      "files": []
+    },
+    {
+      "id": "room-door-topology-test-matrix",
+      "prompt": "本地测试把每个门位置都模拟成房间内且无碰撞，结果实机日志说 no legal position for portal。要怎样补测试和报告？",
+      "expected_output": "Requires a legal-candidate matrix covering normal adjacency/valid door slot, blocked or invalid slot, no candidate, and debug-room-versus-normal-floor topology; verifies no portal and no success consumption when none is valid, and requires an in-game normal-floor check.",
+      "files": []
     }
   ]
 }

@@ -34,6 +34,49 @@
       "files": [
         "docs/skills/isaac-anm2-visuals/references/official-native-ui-baselines.md"
       ]
+    },
+    {
+      "id": "death-portrait-registration-requires-stable-local-id",
+      "prompt": "陌生模组的自定义道具彩色 gfx 正常，但要补 ESC My Stuff 草图。items.xml 条目没有 id 属性，代码 Agent 只打算给 deathanm2 追加 30 帧。请审查注册要求。",
+      "expected_output": "应区分普通 colored gfx 与 native death portrait：对于 ESC/My Stuff/collection/Last Will 原生草图，目标 active/passive/familiar 条目必须先有显式、唯一、稳定的本地 id，或存在已声明的自定义 loader。没有时 death portrait 映射应 blocked/TBD；不能用条目顺序或运行时 ItemConfig ID。",
+      "files": [
+        "docs/skills/isaac-collectible-registration/SKILL.md",
+        "docs/skills/isaac-anm2-visuals/references/collectible-death-portraits.md"
+      ]
+    },
+    {
+      "id": "colored-gfx-does-not-force-death-portrait-id",
+      "prompt": "用户只想给一个普通 collectible 补 32x32 的 gfxroot + gfx 彩色图，没有要求 ESC、My Stuff、收藏页或 Last Will。代码 Agent 要强制给所有 items.xml 条目新增本地 id。这样对吗？",
+      "expected_output": "应要求该 collectible 注册条目拥有显式、唯一、稳定的本地 id：本 skill 的统一注册规则适用于普通 colored gfx 与 native death portrait。普通 gfx 不因此需要 deathanm2，但不能省略本地 id；已有无 id 项目必须走用户确认的 append-only 迁移。",
+      "files": [
+        "docs/skills/isaac-collectible-registration/SKILL.md"
+      ]
+    },
+    {
+      "id": "death-portrait-id-migration-needs-approval",
+      "prompt": "已有模组现在想补所有 ESC My Stuff 草图，但条目没有显式本地 id。为了方便，代码 Agent 直接按当前 XML 顺序批量写 id=1..N。",
+      "expected_output": "应要求先提出可审查的本地-id迁移表并获得用户确认：id 必须唯一、稳定、append-only，已有条目不可因排序重号；随后由 isaac-anm2-visuals 连接 ANM2 frame，并在不同加载顺序下游戏内验证。",
+      "files": [
+        "docs/skills/isaac-collectible-registration/SKILL.md",
+        "docs/skills/isaac-anm2-visuals/SKILL.md"
+      ]
+    },
+    {
+      "id": "all-collectibles-require-declared-local-id",
+      "prompt": "陌生 Isaac 模组新增一个普通被动道具，只要求 32x32 gfxroot + gfx 彩色图，不涉及 ESC、My Stuff、收藏页或 Last Will。items.xml 草稿没有 id。代码 Agent 说普通彩色图不需要本地 id。请审查。",
+      "expected_output": "应阻止注册并要求 active/passive/familiar 条目声明显式、唯一、稳定的本地 id；这是一切自定义 collectible 的统一规则，不因未使用 deathanm2 而例外。不得自动从 XML 顺序生成 id。",
+      "files": [
+        "docs/skills/isaac-collectible-registration/SKILL.md"
+      ]
+    },
+    {
+      "id": "registration-local-id-is-not-runtime-itemconfig-id",
+      "prompt": "用户要给新道具登记 id。代码 Agent 从当前日志读到 Isaac.GetItemIdByName 返回 733，于是写入 items.xml id=\"733\"，说这会与 native deathanm2 对齐。",
+      "expected_output": "应拒绝把运行时/global ItemConfig 数字当作本地注册 id；要求发现或提出用户确认的本地、唯一、稳定、append-only id 方案，并明确不同模组加载顺序不得改变该 key。",
+      "files": [
+        "docs/skills/isaac-collectible-registration/SKILL.md",
+        "docs/skills/isaac-anm2-visuals/references/collectible-death-portraits.md"
+      ]
     }
   ]
 }

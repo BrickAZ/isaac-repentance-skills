@@ -21,6 +21,12 @@
       "prompt": "陌生 Isaac 模组说“道具底座正常，但 ESC 草图空白”。没有文件树。只输出项目发现合同。",
       "expected_output": "分别列出彩色 collectible 链与 ESC death portrait 链；不从一个正常面推断另一个；路径和注册字段保持 TBD。",
       "files": []
+    },
+    {
+      "id": "active-tbd-disclosure",
+      "prompt": "陌生 Isaac mod 要新增一个主动道具，但用户没有说明道具名、机制、充能、池子、品质或资源。只输出项目发现与下一步。",
+      "expected_output": "Discovers only project facts, labels every decision that affects the next step as TBD — user decision required, does not choose values or assets, and ends with a concise User decisions required list.",
+      "files": []
     }
   ]
 }

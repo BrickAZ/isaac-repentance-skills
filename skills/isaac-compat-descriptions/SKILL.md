@@ -1,9 +1,21 @@
 ---
 name: isaac-compat-descriptions
-description: Handle optional dependency compatibility and player-facing descriptions for Binding of Isaac Repentance mods. Use this whenever a task mentions EID, item descriptions, Chinese/English text, Encyclopedia, Mod Config Menu, StageAPI, Boss Bars, CuerLib, optional dependencies, load guards, translations, wiki text, or keeping XML/EID/compat descriptions synchronized. 中文触发：EID、道具描述、中文描述、英文描述、百科、MCM、兼容、可选依赖、翻译、文本不同步、图标描述。
+description: Handle optional dependency compatibility and player-facing descriptions for Binding of Isaac Repentance mods. Use this whenever a task mentions EID, item descriptions, Chinese/English text, locale XML templates, startup language switching, Encyclopedia, Mod Config Menu, StageAPI, Boss Bars, CuerLib, optional dependencies, load guards, translations, wiki text, or keeping XML/EID/compat descriptions synchronized. 中文触发：EID、道具描述、中文描述、英文描述、多语言 XML、启动语言切换、百科、MCM、兼容、可选依赖、翻译、文本不同步、图标描述。
 ---
 
 # Isaac Compatibility And Descriptions
+
+## TBD Disclosure Contract
+
+A `TBD` is an unresolved project fact or user decision, not permission to guess.
+
+- Whenever an active `TBD` affects this turn's recommendation, implementation, test plan, or completion claim, label it exactly as **`TBD — user decision required`** and state the consequence of leaving it unresolved.
+- In every response that relies on one or more active `TBD`s, end with a concise **User decisions required** list containing every still-active item. Do not hide a decision inside code, a default value, or an implementation note.
+- Give optional alternatives only as suggestions. Do not choose a balance value, room route, fallback mechanism, asset, dependency, identifier, callback, or persistence policy on the user's behalf.
+- If safe discovery or validation can continue, continue it conditionally while keeping the decision visible. If the next mutation depends on the `TBD`, stop before that mutation and ask the user.
+- Do not create artificial `TBD`s for facts already confirmed by the project or explicitly decided by the user. Once a decision is confirmed, remove it from later reminders.
+
+Read `../isaac-mod-context/references/tbd-disclosure.md` whenever an unresolved fact or user decision remains active.
 
 Use this skill for optional mod integrations and player-facing text surfaces.
 
@@ -35,6 +47,7 @@ Before editing or writing a prompt:
 
 - **EID and inline icons**: item/card/trinket descriptions, icons, transformation icons, button icons, charge icons. Read `references/eid-descriptions.md`. For custom card/rune/soul stone/pill registration, generation, or blank card art, use `isaac-cards-pockets`.
 - **Localization sync**: default XML, every discovered locale XML, EID language files, metadata, and translation tables. Read `references/localization-sync.md`.
+- **Static XML localization**: use only when the project already maintains per-locale XML templates and needs native static surfaces such as collectible names or pool entries to change before launch. Read `references/static-xml-localization.md`. Do not introduce template copying for a simple runtime HUD string or an unfamiliar project.
 - **Optional dependency gates**: `if EID then`, `if CuerLib then`, `if StageAPI then`, `if ModConfigMenu then`, or graceful fallback. Read `references/optional-dependency-gates.md`.
 - **MCM / Encyclopedia / Boss Bars / StageAPI**: config pages, wiki entries, boss bar support, stage API hooks. Read `references/compat-modules.md`. For a setting's default authority, persistence, malformed-data recovery, runtime gate, or in-flight behavior boundary, add `isaac-config-options`.
 - **Load order and module organization**: include/require order, descriptions folder, compatibility folder, and avoiding hard failure on missing optional mods. Read `references/load-order.md`.
@@ -45,6 +58,7 @@ Before editing or writing a prompt:
 - Prefer an official API or current-project implementation before proposing a third-party helper.
 - Do not call EID, Encyclopedia, MCM, StageAPI, or CuerLib APIs before confirming the object exists or the project declares it required.
 - Do not mix Chinese text into English description surfaces or English-only text into Chinese surfaces unless the design explicitly wants bilingual text.
+- Treat a startup-time XML copier as an optional project-owned build/launch route, never as the default multi-language implementation. It cannot provide in-game language hot switching.
 - Keep collectible/card/trinket ids distinct. Use the matching `Isaac.GetItemIdByName`, `Isaac.GetCardIdByName`, or `Isaac.GetTrinketIdByName`.
 - When a mechanic changes, update descriptions in all relevant surfaces or report why a surface was intentionally left untouched.
 
@@ -55,7 +69,8 @@ Before editing or writing a prompt:
 
 - Content type:
 - Text surfaces to update:
-- Languages:
+- Languages and code mapping:
+- Static XML template route / active targets / launcher entrypoint, if applicable:
 - Optional dependencies:
 - Required dependency gates:
 - Dependency classification and official fallback:
@@ -74,4 +89,5 @@ Before saying the work is complete, report:
 - Which optional dependency gates were used.
 - Which ids were resolved as collectible/card/trinket/player/entity.
 - Which languages were updated.
+- For a static XML route, which templates and active targets were synchronized, the checker result, and the restart boundary.
 - Any compatibility behavior that still needs in-game verification.

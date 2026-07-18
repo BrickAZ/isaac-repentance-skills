@@ -18,6 +18,12 @@
       "prompt": "用户只说：这个 Isaac 模组的 main.lua 太大，想拆模块，但未给文件。请输出 skill 路由。",
       "expected_output": "architecture 为 primary；context 仅 preflight；验证在 verification；没有 mechanism/entity/item/compat。",
       "files": []
+    },
+    {
+      "id": "router-tbd-disclosure",
+      "prompt": "用户要做“一个能进入奖励房的主动道具”，但没有说明房间入口、失败时效果、是否允许第三方库或任何项目事实。只输出 skill 路由。",
+      "expected_output": "Routes active-item mechanics, mechanic contracts, rooms/stages, context, and testing without inventing a room API; labels unresolved route/fallback/dependency choices as TBD — user decision required and ends with the full User decisions required list.",
+      "files": []
     }
   ]
 }

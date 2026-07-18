@@ -28,6 +28,22 @@
       "files": [
         "docs/skills/isaac-rewards-pickups/references/official-world-pickup-baselines.md"
       ]
+    },
+    {
+      "id": "pickup-collision-is-not-confirmed-acquisition",
+      "prompt": "玩家碰到一个 collectible pickup 时，要显示本模组自定义横幅并结算一次附加奖励。代码 Agent 在 MC_PRE_PICKUP_COLLISION 立即显示并发奖励。合作模式中同一个 pickup 可能被多次碰撞，且碰撞不一定完成拾取。",
+      "expected": "应把碰撞仅当候选：以项目验证的玩家与来源 key 去重，记录前置状态；只在已发现的可靠证据（如持有数量增加或已排队道具）确认后显示/结算一次；来源消失或玩家无效时清理 pending。不能把碰撞本身当作成功拾取。",
+      "files": [
+        "docs/skills/isaac-rewards-pickups/references/pickup-confirmation.md"
+      ]
+    },
+    {
+      "id": "deferred-entitlement-is-not-a-spawn",
+      "prompt": "主动道具承诺玩家下次进入指定房间类型时给奖励。当前房间不是目标房，代码 Agent 仍马上 Spawn，并把 pending 标记清掉。目标房可能本层根本不出现。",
+      "expected": "应把承诺资格、目标上下文、兑现时机和过期/保留策略写入 contract；仅在目标房真实存在且候选验证后 Spawn，成功后才清除 pending。目标未出现时的跨层、取消或保留不能擅自决定，保持 TBD 或用户批准。",
+      "files": [
+        "docs/skills/isaac-rewards-pickups/references/deferred-entitlements.md"
+      ]
     }
   ]
 }

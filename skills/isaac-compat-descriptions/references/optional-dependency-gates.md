@@ -24,3 +24,19 @@ Use this when code touches EID, CuerLib, StageAPI, Mod Config Menu, Encyclopedia
 - Load order is safe.
 - Optional module does not mutate core state before dependency check.
 - Compatibility code can be skipped without syntax/runtime errors.
+
+## Late Availability Is A Separate Condition
+
+Use a retrying optional-integration path only when the current project proves
+that the optional global or capability can appear after the mod's first load.
+A simple missing dependency does not justify per-frame polling.
+
+- Put all registration in one idempotent `tryRegister` helper.
+- Check the required capability, not only a global name.
+- Mark success only after the complete registration succeeds; successful calls
+  must stop future retries and must not duplicate descriptions, callbacks, or
+  modifiers.
+- Choose an existing project-owned safe retry hook or documented bounded window.
+  If late availability is not proven, use one guarded registration attempt.
+- Missing forever remains a supported optional-dependency outcome: core gameplay
+  must not wait for, save, or fail because of it.

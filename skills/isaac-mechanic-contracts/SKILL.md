@@ -5,6 +5,18 @@ description: Define, implement, review, or write handoff prompts for Binding of 
 
 # Isaac Mechanic Contracts
 
+## TBD Disclosure Contract
+
+A `TBD` is an unresolved project fact or user decision, not permission to guess.
+
+- Whenever an active `TBD` affects this turn's recommendation, implementation, test plan, or completion claim, label it exactly as **`TBD — user decision required`** and state the consequence of leaving it unresolved.
+- In every response that relies on one or more active `TBD`s, end with a concise **User decisions required** list containing every still-active item. Do not hide a decision inside code, a default value, or an implementation note.
+- Give optional alternatives only as suggestions. Do not choose a balance value, room route, fallback mechanism, asset, dependency, identifier, callback, or persistence policy on the user's behalf.
+- If safe discovery or validation can continue, continue it conditionally while keeping the decision visible. If the next mutation depends on the `TBD`, stop before that mutation and ask the user.
+- Do not create artificial `TBD`s for facts already confirmed by the project or explicitly decided by the user. Once a decision is confirmed, remove it from later reminders.
+
+Read `../isaac-mod-context/references/tbd-disclosure.md` whenever an unresolved fact or user decision remains active.
+
 Use this skill before implementation when the difficult part is understanding the mechanic, not registering the content type.
 
 Read `../isaac-mod-context/references/design-authority.md` first. User-defined triggers, exclusions, settlement, rewards, restrictions, and presentation are locked; only missing fields may receive labeled suggestions.
@@ -30,6 +42,7 @@ Read the relevant reference before writing the contract:
 - Delayed, conditional, repeated, and exclusion-heavy mechanics: `references/state-machine-and-exclusions.md`.
 - Gameplay carrier versus visual carrier, ownership, and compatibility: `references/surface-ownership-and-compat.md`.
 - Review and test requirements: `references/mechanic-review-checklist.md`.
+- Vanilla-like presentation versus actual vanilla-mechanism reuse: `references/native-mechanism-isolation.md`.
 
 ## Route After The Contract
 
@@ -39,6 +52,7 @@ Read the relevant reference before writing the contract:
 - Card/rune/pill generation or use: use `isaac-cards-pockets`.
 - Registered entity, collision, HP, or AI: use `isaac-entities`.
 - Challenge-only gating: use `isaac-challenges`.
+- Custom room, stage, dimension, or vanilla-like room flow: use `isaac-rooms-stages` after deciding independent replica versus proven native reuse.
 - State storage, keying, reset, or save/reload: use `isaac-state-lifecycle` after the contract defines the states.
 - Active-item charge, slot, held input, or temporary UI: use `isaac-active-item-mechanics` as a shell helper after the mechanic is clear.
 - Costume, Lua sprite, ANM2, sound, shader, or render: use the visual/audio skills as secondary surfaces.
@@ -52,6 +66,7 @@ Read the relevant reference before writing the contract:
 - A delayed effect needs an interruption rule: player death, room/floor/run change, item loss, reload, and relevant co-op behavior.
 - Preserve third-party behavior by limiting gates and replacements to targets this mechanic owns. Unknown mod content is not an error by itself.
 - Do not let a generic active-item shell decide the mechanic's semantics.
+- When a request says “like vanilla” and also requires later vanilla behavior to remain untouched, do not directly invoke the vanilla mechanism as a shortcut and then clean, close, or reset its observed internal resources. Reuse requires a discovered isolated entrypoint plus the in-game same-run non-interference proof in `references/native-mechanism-isolation.md`; otherwise use an owned independent replica or mark the combination `blocked`/`TBD`.
 
 ## Required Output
 
@@ -73,6 +88,8 @@ Before code, write this block for a non-trivial mechanic:
 - Gameplay carrier:
 - Visual/audio carrier:
 - Compatibility boundary:
+- Vanilla-like presentation / explicit native-reuse choice:
+- Vanilla-owned touchpoints and isolation proof, if reuse is requested:
 - Unknown decisions kept as TBD:
 - Implementation skills and files to inspect:
 - Test matrix:
@@ -86,5 +103,6 @@ Before saying a mechanic is complete, report:
 - Every excluded event and why it is excluded.
 - The recursion and repeated-trigger policy.
 - What is gameplay versus presentation.
+- Whether vanilla behavior was independently replicated, explicitly reused, or blocked; for reuse, the isolation proof and same-run non-interference result.
 - Which content skill implemented the contract.
 - Tests for success, failure, exclusion, repeated use, and interruption.
