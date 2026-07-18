@@ -33,6 +33,12 @@
       "prompt": "陌生 mod 的实体逻辑在 modules/effects，且我不确定它是否有 entities2.xml。我要做一个会碰撞的特效。",
       "expected_output": "先用 isaac-mod-context 确认实体 XML、模块根和资产布局；碰撞需求走实体路线，缺失注册表时保持 TBD 而不是发明 variant。",
       "files": []
+    },
+    {
+      "id": "engine-vector-boundary",
+      "prompt": "我的 Spawn 在游戏里报 Vector expected, got table。为了兼容测试，我能把位置和速度降级成 { X = x, Y = y } 吗？Vector 在某些环境里看起来不是普通 function。",
+      "expected_output": "Rejects a plain Lua-table fallback at the Isaac.Spawn boundary; requires calling the discovered Vector constructor without assuming type(Vector) is function, stops the owned spawn when construction fails, and routes test-double fidelity through isaac-testing-debugging.",
+      "files": []
     }
   ]
 }

@@ -10,7 +10,7 @@ Use these as high-priority defaults when a Binding of Isaac: Repentance project 
 | Boss portrait | 192x192 PNG is the official single-Boss default. Use a wider portrait only for an explicitly multi-Boss or project-mapped route. |
 | Unlock achievement art | 263x176 PNG, displayed by the discovered achievement popup/ANM2 route. It is not the full popup frame. |
 | Heart HUD cell | `ui_hearts.anm2` frame crop 16x16 from a 112x64 `ui_hearts.png` sheet. |
-| ESC My Stuff item sketch | Official `death items.png` atlas is 320x640. Discover the active project's `deathanm2` and item-frame mapping; do not infer a standalone same-name PNG route. |
+| ESC My Stuff item sketch | Official `death items.png` atlas is 320x640. Discover the active project's `deathanm2` and declared-`items.xml`-local-id-to-frame mapping; if no local id exists, keep the mapping blocked until a declared loader or approved migration is found. Do not infer a standalone same-name PNG route or use runtime/global ItemConfig IDs. |
 | Character-select portrait | `gfx/ui/main menu/characterportraits.anm2`; frame crop 48x48 from a 512x1024 `CharacterMenu.png` sheet. |
 | Co-op character menu portrait | `gfx/ui/coop menu.anm2`; frame crop 32x32. Official base sheet is 192x128 and the Repentance DLC sheet is 192x224. |
 | Pause-menu My Stuff panel | `menu_mystuff.png`, 128x128, is a panel asset rather than a per-item portrait. |

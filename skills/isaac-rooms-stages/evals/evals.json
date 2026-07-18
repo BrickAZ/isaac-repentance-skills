@@ -32,6 +32,12 @@
       "files": [
         "docs/skills/isaac-rooms-stages/SKILL.md"
       ]
+    },
+    {
+      "id": "debug-room-is-not-topology",
+      "prompt": "我在 goto s.default.2 进入 ROOM_DEBUG_IDX=-3 的调试房。翻页只是重进这个房间，但我想生成两个相连展厅和中间门；能否直接在固定 Y 偏移处调用一个看起来合适的开门 API？",
+      "expected_output": "Rejects treating a negative/debug goto room or reload as proof of normal map adjacency; requires discovered normal-floor room/grid/door-slot facts and legal-candidate generation, preserves state when none exists, and marks a real normal-floor connection test as required.",
+      "files": []
     }
   ]
 }

@@ -5,6 +5,18 @@ description: Add, fix, review, or write handoff prompts for registered Binding o
 
 # Isaac Entities
 
+## TBD Disclosure Contract
+
+A `TBD` is an unresolved project fact or user decision, not permission to guess.
+
+- Whenever an active `TBD` affects this turn's recommendation, implementation, test plan, or completion claim, label it exactly as **`TBD — user decision required`** and state the consequence of leaving it unresolved.
+- In every response that relies on one or more active `TBD`s, end with a concise **User decisions required** list containing every still-active item. Do not hide a decision inside code, a default value, or an implementation note.
+- Give optional alternatives only as suggestions. Do not choose a balance value, room route, fallback mechanism, asset, dependency, identifier, callback, or persistence policy on the user's behalf.
+- If safe discovery or validation can continue, continue it conditionally while keeping the decision visible. If the next mutation depends on the `TBD`, stop before that mutation and ask the user.
+- Do not create artificial `TBD`s for facts already confirmed by the project or explicitly decided by the user. Once a decision is confirmed, remove it from later reminders.
+
+Read `../isaac-mod-context/references/tbd-disclosure.md` whenever an unresolved fact or user decision remains active.
+
 Use this skill for registered or behavior-owning entities.
 
 Read `../isaac-mod-context/references/design-authority.md` before choosing entity kind, gameplay behavior, collision intent, reward behavior, or visual direction. Registration details remain technical choices; design intent does not.
@@ -37,7 +49,7 @@ third-party mod checkout.
 - **State lifecycle**: entity `GetData()`, owner player links, saved plain data, room cleanup, reload safety. Use `isaac-state-lifecycle`.
 - **Final review**: read `references/entity-review-checklist.md`.
 
-For every spawn, morph, or variant lookup, also read `../isaac-validators/references/owned-spawn-safety.md`.
+For every spawn, morph, or variant lookup, also read `../isaac-validators/references/owned-spawn-safety.md`. For `Isaac.Spawn`, `game:Spawn`, or another engine API that receives `Vector`, `Color`, `KColor`, `EntityRef`, or a similarly engine-owned value, also read `references/engine-value-boundaries.md`.
 
 ## Hard Rules
 
@@ -49,6 +61,9 @@ For every spawn, morph, or variant lookup, also read `../isaac-validators/refere
 - If the entity can damage enemies or players, specify damage source, collision route, flags, cooldown, and whether it can self-trigger loops.
 - If this is only a decorative effect, say so and route back to `isaac-anm2-visuals`.
 - Do not spawn a custom entity after a failed name/variant lookup, and do not delete unknown third-party entities to compensate.
+- Never pass a plain Lua table as a lookalike for an engine-valued API argument. A `{ X = x, Y = y }` table is not a fallback for a required `Vector`.
+- Do not infer an engine constructor from `type(...) == "function"`; a constructor may be callable through another discovered shape. Invoke the discovered constructor safely, and stop the owned operation when it cannot produce a usable engine value.
+- Keep test-only fallbacks behind an explicit adapter. They must not reach a real engine boundary such as `Isaac.Spawn`.
 
 ## Handoff Prompt Template
 
@@ -79,3 +94,4 @@ Before saying entity work is complete, report:
 - The state owner and cleanup path.
 - The anm2 path and animation names.
 - Any collision, damage, or remove behavior that still needs in-game verification.
+- For every engine-valued Spawn argument, the discovered construction route and the failure behavior; report this separately from a Lua-table test double.

@@ -1,9 +1,21 @@
 ---
 name: isaac-anm2-visuals
-description: Work with `.anm2` visual assets for Binding of Isaac Repentance mods. Use this whenever the user asks to create, fix, review, or write a prompt for Isaac `.anm2` visuals, costumes, Lua-loaded Sprite effects, UI/HUD sprites, collectible death portraits, ESC My Stuff sketches, collection-page or Last Will item sketches, EID inline icons, or vanilla animation-template reuse. If the visual needs collision, AI, HP, pickup behavior, contact damage, or entities2.xml registration, also use isaac-entities; use isaac-familiars first when the registered entity is a custom familiar. 中文触发：anm2、贴图、外观、服装、变身、以撒身上、头上特效、光环、HUD、ESC 草图、死亡遗嘱道具图、收藏页道具草图、图标、动画不显示。
+description: Work with `.anm2` visual assets for Binding of Isaac Repentance mods. Use this whenever the user asks to create, fix, review, or write a prompt for Isaac `.anm2` visuals, costumes, Lua-loaded Sprite effects, UI/HUD sprites, collectible death portraits, ESC My Stuff sketches, collection-page or Last Will item sketches, EID inline icons, weapon appearances, weapon icons, or vanilla animation-template reuse. If the visual needs collision, AI, HP, pickup behavior, contact damage, or entities2.xml registration, also use isaac-entities; use isaac-familiars first when the registered entity is a custom familiar. 中文触发：anm2、贴图、外观、服装、变身、以撒身上、头上特效、光环、HUD、ESC 草图、死亡遗嘱道具图、收藏页道具草图、图标、动画不显示。
 ---
 
 # Isaac ANM2 Visuals
+
+## TBD Disclosure Contract
+
+A `TBD` is an unresolved project fact or user decision, not permission to guess.
+
+- Whenever an active `TBD` affects this turn's recommendation, implementation, test plan, or completion claim, label it exactly as **`TBD — user decision required`** and state the consequence of leaving it unresolved.
+- In every response that relies on one or more active `TBD`s, end with a concise **User decisions required** list containing every still-active item. Do not hide a decision inside code, a default value, or an implementation note.
+- Give optional alternatives only as suggestions. Do not choose a balance value, room route, fallback mechanism, asset, dependency, identifier, callback, or persistence policy on the user's behalf.
+- If safe discovery or validation can continue, continue it conditionally while keeping the decision visible. If the next mutation depends on the `TBD`, stop before that mutation and ask the user.
+- Do not create artificial `TBD`s for facts already confirmed by the project or explicitly decided by the user. Once a decision is confirmed, remove it from later reminders.
+
+Read `../isaac-mod-context/references/tbd-disclosure.md` whenever an unresolved fact or user decision remains active.
 
 Use this skill for `.anm2` visual work in Isaac Repentance mods.
 
@@ -25,7 +37,28 @@ Answer these questions before choosing a route:
 2. Does it need to follow player body animation and facing direction?
 3. Does it need collision, damage, AI, or entity variant/subtype?
 4. How long does it live: permanent, conditional, timed, or one-shot?
-5. Who owns it: costume XML, Lua `Sprite`, `deathanm2`, EID, vanilla template, or entity XML?
+5. Who owns it: costume XML, Lua `Sprite`, `deathanm2`, EID, vanilla template, or entity XML? For a collectible registration, require an explicit stable local `items.xml` id under `isaac-collectible-registration`; for `deathanm2`, prove how that id and any project-declared custom loader supply the frame key, and distinguish both from a runtime global ItemConfig id.
+
+## Asset Purpose Gate
+
+Before generating, commissioning, replacing, or naming an art asset, output this resource-purpose card. Do not infer it from the art theme or a word such as "weapon".
+
+| Field | Required decision |
+| --- | --- |
+| Asset purpose | One primary purpose: world/combat appearance, player-body appearance, UI/menu icon, EID inline icon, colored collectible art, death portrait, card face, or another named native surface. |
+| Display surface | The exact requested in-game surface; keep it `TBD` when the user only says "icon". |
+| Carrier / mapping | The discovered costume, Lua Sprite, registered entity, XML, ANM2, atlas, or UI mapping route. |
+| Animation need | Required, not required, or `TBD`; a world appearance may need animation while a UI icon usually does not. |
+| Not for | Name the adjacent surfaces this asset must not silently replace. |
+
+A weapon is a theme, not a resource route:
+
+- **Weapon appearance** means a world/combat or player-body visual. Its carrier remains `TBD` until the project proves costume, familiar, Lua Sprite, or registered-entity ownership. It is not a HUD, EID, colored-collectible, or ESC icon by default.
+- **Weapon icon** means a UI/native-surface asset. HUD, EID, colored collectible art, ESC My Stuff, and other menus are separate surfaces; if the user does not name one, keep the display surface `TBD` rather than defaulting to `32x32` or a world appearance.
+- If one design needs both an animated weapon appearance and an icon, create two resource-purpose cards. They may share art direction or be derived from one source illustration, but they need separate export sizes and discovered loading/mapping routes.
+- If any card field is `TBD`, do project discovery before generating pixels or proposing a file path.
+
+
 
 When the task targets a native menu or HUD surface, read `references/official-native-ui-baselines.md` for the asset decision gate and overrideable official size/ANM2 baselines. If the user asks to generate an absent asset, generate the listed source frame and integrate it into the discovered atlas/mapping.
 
@@ -34,7 +67,7 @@ Then identify the visual route:
 - **Costume / player overlay**: player head/body/wing/mask/held visual tied to costumes. Read `references/costumes.md`.
 - **Lua Sprite effect**: visual feedback loaded and rendered by Lua with `Sprite:Load`, `:Play`, `:Update`, `:Render`. Read `references/lua-sprite-effects.md`.
 - **UI / HUD sprite**: screen-space sprite, button guide, meter, counter, choice panel, or overlay. Read `references/ui-hud-sprites.md`.
-- **Collectible death portrait**: native item sketch for ESC My Stuff, the collection page, or Last Will. Discover `items.xml` root `deathanm2`, the ANM2/spritesheet, and the item-id animation mapping. Read `references/collectible-death-portraits.md`. This is separate from the colored `gfxroot + gfx` PNG route owned by `isaac-collectible-registration`.
+- **Collectible death portrait**: native item sketch for ESC My Stuff, the collection page, or Last Will. Discover `items.xml` root `deathanm2`, the ANM2/spritesheet, and its declared local-id-to-frame mapping. If any target entry lacks its required declared local id, keep both registration and mapping blocked/TBD until a user-approved append-only migration is completed; an existing loader may add a mapping key but cannot waive the registration requirement. Never use a Lua/runtime global ItemConfig id as the frame key. Read `references/collectible-death-portraits.md`. This is separate from the colored `gfxroot + gfx` PNG route owned by `isaac-collectible-registration`.
 - **EID / inline icon**: EID icon, transformation icon, card/pill icon, or text inline visual. Read `references/eid-icons.md`.
 - **Vanilla template reuse**: reusing an existing Isaac `.anm2` skeleton and replacing spritesheets or animation/frame. Read `references/vanilla-template-reuse.md`.
 
@@ -52,7 +85,8 @@ is required.
 - Always connect `.anm2` path, spritesheet PNG path, animation name, and Lua/XML reference as one unit.
 - Do not invent animation names. Read the `.anm2` and use its `DefaultAnimation` or named `Animation`.
 - Do not assume case-insensitive paths. Match existing repo casing and Isaac's resource-root conventions.
-- For a native collectible death portrait, do not use `MC_POST_RENDER` or a manual HUD sprite as a substitute. Discover the `deathanm2` root, source ANM2/spritesheet, required item-id animation mapping, and the exact native surface before editing.
+- Native `deathanm2` ID rule: when the target entry declares a stable local `<active|passive|familiar id="N">` in `items.xml`, use that declared local id as the ANM2 frame key. If it lacks that required declared local id, do not infer a key from document order, `Isaac.GetItemIdByName`, a debug log, or a runtime/global ItemConfig number such as `733`; block registration and propose a user-approved append-only migration. A declared custom loader may add a mapping key but cannot substitute for the local id. Read the actual ANM2 to preserve any frame-0 or reserved-frame convention.
+- For a native collectible death portrait, do not use `MC_POST_RENDER` or a manual HUD sprite as a substitute. Discover the `deathanm2` root, source ANM2/spritesheet, required declared-local-id-to-frame mapping, or an explicitly blocked/migration state, and the exact native surface before editing.
 - For generated `.anm2`, keep the first version simple: one spritesheet, one layer, clear pivot, explicit width/height, and one or two animation names.
 - For a manual Lua `Sprite`, keep world anchor and screen render position separate:
   calculate the owner-relative world anchor, then pass
@@ -79,7 +113,7 @@ is required.
 Before saying the visual work is complete, report:
 
 - The selected route.
-- For a death portrait, the `items.xml` root `deathanm2`, ANM2/spritesheet, item-id animation mapping, and requested native surfaces.
+- For a death portrait, the `items.xml` root `deathanm2`, ANM2/spritesheet, declared-local-id-to-frame mapping or blocked/migration state, confirmation that no runtime/global ItemConfig ID was used, and requested native surfaces.
 - Every `.anm2` path and PNG spritesheet path touched.
 - Every XML or Lua file that references the `.anm2`.
 - The animation names used.

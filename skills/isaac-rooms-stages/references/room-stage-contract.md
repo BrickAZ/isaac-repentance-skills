@@ -18,3 +18,6 @@ Track selection attempt, mutation success, and optional retry policy as
 separate facts. Set a once-per-room/floor success marker only after the owned
 mutation is complete; missing or vanished targets do not consume it by
 default.
+
+
+When a custom room flow is only *like* a vanilla mechanism, do not call and then clean vanilla-owned room or dimension resources as a shortcut. Use `isaac-mechanic-contracts` and its native-mechanism isolation reference to choose an owned independent route or prove explicit native reuse.

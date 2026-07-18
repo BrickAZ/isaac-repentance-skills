@@ -43,6 +43,39 @@
       "files": [
         "docs/skills/isaac-compat-descriptions/references/optional-dependency-gates.md"
       ]
+    },
+    {
+      "id": "static-xml-localization-is-optional",
+      "prompt": "一个 Isaac 模组已维护 items.en_us.xml、items.zh_cn.xml、itempools.en_us.xml、itempools.zh_cn.xml，并希望游戏原生道具名和池子随开局语言变。项目有自己的启动脚本，但用户没有要求运行中切语言。请设计路由。",
+      "expected_output": "应把启动前静态 XML 实体化列为可选、项目已证明的模式：发现语言映射、模板与实际游戏读取目标；让 items 和匹配 itempools 一起同步；用检查器拒绝 mixed 状态；说明改语言需要重新同步并重启。不得把该模式说成所有模组的默认多语言方案。",
+      "files": [
+        "docs/skills/isaac-compat-descriptions/references/static-xml-localization.md"
+      ]
+    },
+    {
+      "id": "static-xml-localization-is-not-a-default",
+      "prompt": "陌生 Isaac 模组只要给一个 Lua HUD 提示加中文，没有提供 locale XML、启动脚本、原生 items 名称需求或文件树。代码 Agent 打算新建 en_us/zh_cn 模板并在每次启动前复制覆盖 items.xml。请审查。",
+      "expected_output": "应拒绝凭空引入静态 XML 复制路线；先发现实际文本 surface、语言码和现有加载方式。少量运行时 HUD 文本应走 isaac-localization-runtime 的项目表/resolver与回退，缺少项目事实保持 TBD。",
+      "files": [
+        "docs/skills/isaac-compat-descriptions/SKILL.md",
+        "docs/skills/isaac-localization-runtime/SKILL.md"
+      ]
+    },
+    {
+      "id": "localized-registered-name-needs-runtime-resolution",
+      "prompt": "项目把 items.xml 的道具 name 分别翻译进 en_us 与 zh_cn 模板。Lua 仍只写 Isaac.GetItemIdByName(\"English Name\")，中文启动后道具行为和 EID 都找不到 id。请审查。",
+      "expected_output": "应区分稳定的本地注册 id 与运行时 ItemConfig id；若项目确实让 XML 注册名随 locale 变化，要求以语义 key 维护已发现的 locale 候选名或项目 resolver，并在每个支持的模板下验证同一逻辑道具解析成功。不得把当前运行时全局数字硬编码为本地 key。",
+      "files": [
+        "docs/skills/isaac-compat-descriptions/references/static-xml-localization.md"
+      ]
+    },
+    {
+      "id": "optional-integration-may-arrive-late",
+      "prompt": "模组启动时 EID 尚未初始化，但数帧后才出现。代码 Agent 只在 main.lua 顶层 if EID then 注册一次，之后永不重试。EID 可能完全不存在。请审查。",
+      "expected_output": "应先确认项目是否真的存在晚初始化；若存在，使用项目拥有的幂等 try-register helper：能力存在后一次性注册并记成功，成功后停止重试，缺失 EID 不影响核心玩法。不得无证据给所有可选依赖加逐帧轮询。",
+      "files": [
+        "docs/skills/isaac-compat-descriptions/references/optional-dependency-gates.md"
+      ]
     }
   ]
 }

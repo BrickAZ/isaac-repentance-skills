@@ -39,6 +39,15 @@
       "prompt": "陌生 mod 的奖励逻辑分散在 src/ 和 scripts/，我要做一个首次击杀奖励，但还没决定奖励内容。",
       "expected_output": "先发现项目上下文；把奖励内容保持 TBD，机制合同只定义触发、所有权、重复边界和失败路径，再交给奖励与回调技能。",
       "files": []
+    },
+    {
+      "id": "native-mechanism-reuse-needs-isolation-proof",
+      "prompt": "我要做一个“外观和选择体验类似死亡证明”的自定义效果，同时要求同一局之后真正使用原版死亡证明绝不受影响。代码 Agent 打算直接触发原版死亡证明，再清理和关闭它创建的维度 2 房间。请先写机制边界。",
+      "expected_output": "应区分独立复刻与明确复用原版机制；在“不影响之后原版”的约束下，禁止把调用原版后清理其内部资源当作方案。只有发现官方/项目已证明的隔离入口并通过同局“自定义一次 -> 清理 -> 真实原版一次”验证，才能复用；否则选择本模组拥有的独立房间/状态实现，或标记 blocked/TBD。",
+      "files": [
+        "docs/skills/isaac-mechanic-contracts/references/native-mechanism-isolation.md",
+        "docs/skills/isaac-mechanic-contracts/SKILL.md"
+      ]
     }
   ]
 }

@@ -32,6 +32,14 @@
       "files": [
         "docs/skills/isaac-state-lifecycle/references/state-ownership.md"
       ]
+    },
+    {
+      "id": "pending-entitlement-has-owner-and-settlement-boundary",
+      "prompt": "一个本局待兑现奖励会等到玩家进入某类房间才生成。实现只用一个全局 pending=true，没有玩家、楼层、目标房、成功结算或新局清理规则。",
+      "expected_output": "应要求 pending entitlement 的 owner、key、创建条件、目标上下文、成功后清除、目标永不出现时的 approved/TBD 策略，以及新局/读档边界；不能用无 owner 的全局布尔值。",
+      "files": [
+        "docs/skills/isaac-state-lifecycle/SKILL.md"
+      ]
     }
   ]
 }
