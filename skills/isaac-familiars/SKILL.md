@@ -1,9 +1,21 @@
 ---
 name: isaac-familiars
-description: Design, implement, review, or write handoff prompts for custom Binding of Isaac Repentance familiars and companion behavior. Use this whenever a collectible, trinket, character, or mechanic owns a familiar; when `MC_EVALUATE_CACHE`, `CACHE_FAMILIARS`, `CheckFamiliar`, `MC_FAMILIAR_INIT`, `MC_FAMILIAR_UPDATE`, `Familiar.Player`, followers, orbit, familiar collision/damage, multi-copy familiars, wisps, or co-op familiar ownership are involved. Use isaac-mod-context first in an unfamiliar project. This skill separates cache-owned familiar counts from per-familiar behavior so agents do not manually respawn or globally control the wrong companion. 中文触发：使魔、跟班、宝宝、familiar、CACHE_FAMILIARS、CheckFamiliar、MC_FAMILIAR_UPDATE、跟随、环绕、使魔攻击、多使魔、合作模式使魔、魂火。
+description: Design, implement, review, or write handoff prompts for custom Binding of Isaac Repentance familiars and companion behavior. Use this whenever a collectible, trinket, character, or mechanic owns an ordinary familiar; when `MC_EVALUATE_CACHE`, `CACHE_FAMILIARS`, `CheckFamiliar`, `MC_FAMILIAR_INIT`, `MC_FAMILIAR_UPDATE`, `Familiar.Player`, followers, orbit, familiar collision/damage, multi-copy familiars, or co-op familiar ownership are involved. Use isaac-wisps-virtues instead for Book of Virtues/item-wisp mapping and lifecycle. This skill separates cache-owned familiar counts from per-familiar behavior so agents do not manually respawn or globally control the wrong companion. 中文触发：使魔、跟班、宝宝、familiar、CACHE_FAMILIARS、CheckFamiliar、MC_FAMILIAR_UPDATE、跟随、环绕、使魔攻击、多使魔、合作模式使魔。
 ---
 
 # Isaac Familiars
+
+## TBD Disclosure Contract
+
+A `TBD` is an unresolved project fact or user decision, not permission to guess.
+
+- Whenever an active `TBD` affects this turn's recommendation, implementation, test plan, or completion claim, label it exactly as **`TBD — user decision required`** and state the consequence of leaving it unresolved.
+- In every response that relies on one or more active `TBD`s, end with a concise **User decisions required** list containing every still-active item. Do not hide a decision inside code, a default value, or an implementation note.
+- Give optional alternatives only as suggestions. Do not choose a balance value, room route, fallback mechanism, asset, dependency, identifier, callback, or persistence policy on the user's behalf.
+- If safe discovery or validation can continue, continue it conditionally while keeping the decision visible. If the next mutation depends on the `TBD`, stop before that mutation and ask the user.
+- Do not create artificial `TBD`s for facts already confirmed by the project or explicitly decided by the user. Once a decision is confirmed, remove it from later reminders.
+
+Read `../isaac-mod-context/references/tbd-disclosure.md` whenever an unresolved fact or user decision remains active.
 
 Use this skill when the primary gameplay object is a familiar or companion.
 
@@ -19,7 +31,7 @@ Before editing or writing a prompt:
 
 1. Use `isaac-mod-context` in an unfamiliar mod. Discover the mod object, entity XML, item/character owner, module entrypoint, familiar examples, and test commands.
 2. Read `../isaac-mod-context/references/design-authority.md`. Keep the intended count, attack, damage, persistence, and removal policy as `TBD` unless the user decided them.
-3. Classify the familiar route with `references/familiar-contract.md`: cache-owned custom familiar, event-spawned temporary familiar, or a tightly owned change to an existing vanilla familiar/wisp.
+3. Classify the familiar route with `references/familiar-contract.md`: cache-owned custom familiar, event-spawned temporary familiar, or a tightly owned change to an existing vanilla familiar. Route Book of Virtues/item wisps to `isaac-wisps-virtues`.
 4. Read the closest current-project cache handler and familiar update handler before choosing callbacks or state fields.
 5. Use `isaac-entities` for type/variant/subtype and `entities2.xml`; use `isaac-anm2-visuals` for ANM2 and spritesheet facts.
 6. Use `isaac-callback-contracts`, `isaac-state-lifecycle`, `isaac-testing-debugging`, and `isaac-validators` for the applicable secondary surfaces.
@@ -61,17 +73,17 @@ that is not the engine representation of a standing item count.
 - Do not also recreate it through `CheckFamiliar` unless the mechanic
   explicitly has two different, documented familiar types.
 
-### Existing Vanilla Familiar Or Wisp
+### Existing Vanilla Familiar
 
 Use this only for an explicitly requested, narrowly identified existing
-familiar/wisp behavior or presentation change.
+familiar behavior or presentation change.
 
 - Filter by the intended variant and, when relevant, subtype/source item and
   owner. Variant alone is not proof that every matching familiar is yours.
 - Never globally rewrite all familiars of a shared vanilla variant just because
   the current player owns one related item.
-- Treat a wisp's subtype/item source and a custom familiar's XML variant as
-  different identity contracts.
+- Treat a Book of Virtues wisp's subtype/item source as a different identity
+  contract and route it to `isaac-wisps-virtues`.
 
 ## Per-Familiar Behavior Contract
 
@@ -99,6 +111,24 @@ Read `references/familiar-contract.md` before implementation.
   familiar count, owner, and behavior.
 - Read the actual ANM2 before playing animation names. Update movement and
   animation from the chosen state, not from an unrelated global render loop.
+
+## Combat Capability And Inheritance Matrix
+
+“Uses the owner's stats” or “inherits all tear effects” is not an implementation contract. The official API does not make an arbitrary custom familiar inherit every player value or tear behavior automatically.
+
+For every combat familiar, list:
+
+| Capability | Required decision |
+| --- | --- |
+| Damage | owner source, multiplier/override, sampling time, copy scaling |
+| Fire rate | owner source and conversion into cooldown/trigger cadence |
+| Shot speed/range/scale | direct sample, conversion, cap, or independent value |
+| Tear flags | copied, explicitly translated, intentionally unsupported, or fallback |
+| Tear variant/effects | owner-derived mapping, familiar-owned projectile, or unsupported |
+| Status/on-hit effects | application owner, proc chance, damage source, immunity boundary |
+| Refresh | init, cache update, room entry, owner-stat dirty edge, or another proven event |
+
+Do not claim “all effects” unless every relevant flag/variant/effect has a supported mapping and tests. Unsupported or dangerous combinations must be named, not silently dropped. Project helpers or third-party libraries may be used only after discovery; otherwise implement with official API and project-owned code. User-undecided multipliers, exclusions, and refresh timing remain **`TBD — user decision required`**.
 
 ## Owner, Copies, And Co-op
 
@@ -131,7 +161,7 @@ Read `references/familiar-contract.md` before implementation.
 ```markdown
 ## Familiar Contract
 
-- Route: cache-owned | temporary event-spawned | owned vanilla/wisp change
+- Route: cache-owned | temporary event-spawned | owned vanilla familiar change
 - Source/count authority:
 - Entity type / variant / subtype:
 - XML and ANM2 facts to discover:

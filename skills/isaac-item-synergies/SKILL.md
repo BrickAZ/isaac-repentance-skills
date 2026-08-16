@@ -1,9 +1,25 @@
 ---
 name: isaac-item-synergies
-description: Design, implement, review, or write handoff prompts for Binding of Isaac Repentance content synergies that require two or more qualifying inputs, such as collectibles, trinkets, cards, player forms, familiars, or explicitly supported mod content. Use this when a combined effect needs eligibility, per-player ownership, precedence, duplicate prevention, loss/reroll retraction, or third-party compatibility boundaries. Use isaac-mod-context first in an unfamiliar project. 中文触发：道具联动、组合效果、同时拥有、A 加 B、协同、套装、联动优先级、联动失效、失去其中一个、重掷后联动、合作联动。
+description: Design, implement, review, or write handoff prompts for Binding of Isaac Repentance content synergies that require two or more qualifying inputs, such as collectibles, trinkets, cards, existing player forms, familiars, or explicitly supported mod content. Use this when a combined effect needs eligibility, per-player ownership, precedence, duplicate prevention, loss/reroll retraction, or third-party compatibility boundaries. Use isaac-transformations-forms instead when the combined inputs create a named or thresholded transformation with activation/deactivation and persistence. 中文触发：道具联动、组合效果、同时拥有、A 加 B、协同、套装联动、联动优先级、联动失效、失去其中一个、重掷后联动、合作联动。
 ---
 
 # Isaac Item Synergies
+
+## TBD Disclosure Contract
+
+A `TBD` is an unresolved project fact or user decision, not permission to guess.
+
+- Whenever an active `TBD` affects this turn's recommendation, implementation, test plan, or completion claim, label it exactly as **`TBD — user decision required`** and state the consequence of leaving it unresolved.
+- In every response that relies on one or more active `TBD`s, end with a concise **User decisions required** list containing every still-active item. Do not hide a decision inside code, a default value, or an implementation note.
+- Give optional alternatives only as suggestions. Do not choose a balance value, room route, fallback mechanism, asset, dependency, identifier, callback, or persistence policy on the user's behalf.
+- If safe discovery or validation can continue, continue it conditionally while keeping the decision visible. If the next mutation depends on the `TBD`, stop before that mutation and ask the user.
+- Do not create artificial `TBD`s for facts already confirmed by the project or explicitly decided by the user. Once a decision is confirmed, remove it from later reminders.
+
+Read `../isaac-mod-context/references/tbd-disclosure.md` whenever an unresolved fact or user decision remains active.
+
+This skill owns combined-effect eligibility and delta. A named/thresholded form,
+one-time transformation activation, reversible/permanent form state, or EID
+transformation group routes to `isaac-transformations-forms`.
 
 Use this skill for an effect that exists only because a defined combination is
 currently true. It owns the combination contract, not either input's base

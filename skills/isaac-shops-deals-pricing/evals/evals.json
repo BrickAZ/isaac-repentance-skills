@@ -1,0 +1,32 @@
+{
+  "skill_name": "isaac-shops-deals-pricing",
+  "evals": [
+    {
+      "id": "blind-custom-shop-price",
+      "prompt": "陌生 Isaac 模组想让一个新道具在商店里售价 15 金币，但没有提供项目文件、生成路径、价格回调或补货逻辑。只输出交易合同，不要写 Lua。",
+      "expected_output": "Keeps the user-specified 15 coin price locked, discovers pickup creation and exact price API/callback, separates pool placement from runtime transaction, and does not invent files, ShopItemId values, or callback signatures.",
+      "files": [
+        "skills/isaac-shops-deals-pricing/SKILL.md",
+        "skills/isaac-shops-deals-pricing/references/shop-transaction-contract.md"
+      ]
+    },
+    {
+      "id": "coop-display-charge-mismatch",
+      "prompt": "合作模式中玩家二有折扣，屏幕显示 7 金币，却总是从玩家一扣 15 金币。请审查，不要假设具体 API。",
+      "expected_output": "Identifies separate buyer-resolution and price-authority failures, requires the actual purchaser and one shared display/charge calculation, and calls for in-game co-op verification without guessing a callback.",
+      "files": [
+        "skills/isaac-shops-deals-pricing/SKILL.md",
+        "skills/isaac-shops-deals-pricing/references/shop-transaction-contract.md"
+      ]
+    },
+    {
+      "id": "custom-deal-rollback",
+      "prompt": "一个自定义交易先移除祭品再 Spawn 奖励；奖励生成失败时祭品也没了。重掷和补货后旧价格还会残留。给出修复合同。",
+      "expected_output": "Requires an atomic payment/delivery sequence or rollback/deferred entitlement, preserves the pickup/resource on failure, and invalidates slot price state on reroll, Morph, and restock.",
+      "files": [
+        "skills/isaac-shops-deals-pricing/SKILL.md",
+        "skills/isaac-shops-deals-pricing/references/shop-transaction-contract.md"
+      ]
+    }
+  ]
+}

@@ -6,7 +6,8 @@
       "prompt": "用户想要一个忏悔龙优化，但未明确允许模组强制依赖忏悔龙。",
       "expected_output": "应保留官方核心实现，先取得用户意图和 REPENTOGON global/version 证明；不存在或版本不足时安全回退或明确省略增强。",
       "files": [
-        "docs/skills/isaac-repentogon-compat/SKILL.md"
+        "skills/isaac-repentogon-compat/SKILL.md",
+        "skills/isaac-repentogon-compat/references/repentogon-contract.md"
       ]
     },
     {
@@ -14,7 +15,26 @@
       "prompt": "一个 REPENTOGON XML 属性在本机可解析，但部分玩家没有忏悔龙。",
       "expected_output": "应避免无守卫 XML/回调路径，验证 absent、insufficient、sufficient 三分支；不能用本机解析成功推导所有玩家可加载。",
       "files": [
-        "docs/skills/isaac-repentogon-compat/SKILL.md"
+        "skills/isaac-repentogon-compat/SKILL.md",
+        "skills/isaac-repentogon-compat/references/repentogon-contract.md"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "运行时有 REPENTOGON.MeetsVersion，Agent 只要它返回 true 就认为任何版本门都可靠。",
+      "expected_output": "不可靠。要识别官方记录的 1.0.10b 及以前恒 true 缺陷，确认安装版本和 API 表面后再决定门控。",
+      "files": [
+        "skills/isaac-repentogon-compat/SKILL.md",
+        "skills/isaac-repentogon-compat/references/repentogon-contract.md"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "用户明确要求模组必须依赖 REPENTOGON，是否仍要偷偷写一个行为不一致的 vanilla 回退？",
+      "expected_output": "不需要伪造回退；应记录明确依赖、最低版本和所有扩展专用表面，缺失或版本不足时清晰拒绝加载/省略，而不是冒充等价实现。",
+      "files": [
+        "skills/isaac-repentogon-compat/SKILL.md",
+        "skills/isaac-repentogon-compat/references/repentogon-contract.md"
       ]
     }
   ]

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items>
+  <passive id="BROKEN" name="This long payload must not be repeated in the validator failure output" gfx="missing.png">
+  <passive id="SECOND" name="More payload that should remain private to the file" />
+</items>

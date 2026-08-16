@@ -5,7 +5,23 @@ description: "Review, design, implement, or write handoff prompts for Binding of
 
 # Isaac Item Economy
 
+## TBD Disclosure Contract
+
+A `TBD` is an unresolved project fact or user decision, not permission to guess.
+
+- Whenever an active `TBD` affects this turn's recommendation, implementation, test plan, or completion claim, label it exactly as **`TBD — user decision required`** and state the consequence of leaving it unresolved.
+- In every response that relies on one or more active `TBD`s, end with a concise **User decisions required** list containing every still-active item. Do not hide a decision inside code, a default value, or an implementation note.
+- Give optional alternatives only as suggestions. Do not choose a balance value, room route, fallback mechanism, asset, dependency, identifier, callback, or persistence policy on the user's behalf.
+- If safe discovery or validation can continue, continue it conditionally while keeping the decision visible. If the next mutation depends on the `TBD`, stop before that mutation and ask the user.
+- Do not create artificial `TBD`s for facts already confirmed by the project or explicitly decided by the user. Once a decision is confirmed, remove it from later reminders.
+
+Read `../isaac-mod-context/references/tbd-disclosure.md` whenever an unresolved fact or user decision remains active.
+
 Use this skill when an item needs to enter the run economy, not merely exist in `items.xml`.
+
+This skill does not own a live shop pickup's price, purchaser, payment,
+delivery, discount, or restock transaction. Route those runtime semantics to
+`isaac-shops-deals-pricing`; a shop/deal pool entry remains item economy.
 
 Read `../isaac-mod-context/references/design-authority.md` alongside this skill's economy-specific approval rules. The shared rule governs all design authority; this skill adds the pool and XML review surface.
 
@@ -41,6 +57,9 @@ Read the relevant reference:
 - Keep tags coherent with actual mechanics and item category. Do not use tags as decorative metadata.
 - If an unlock or challenge gate changes availability, write the gate separately from default pool placement.
 - If the task chooses or replaces a concrete runtime reward/pickup, route that path to `isaac-rewards-pickups`; item economy does not authorize an unapproved reward subtype or quantity.
+- If the task calculates or changes a live shop/deal price, buyer, payment,
+  discount, free purchase, or restock behavior, route it to
+  `isaac-shops-deals-pricing`; pool placement and runtime purchase are separate.
 
 ## Required Output
 

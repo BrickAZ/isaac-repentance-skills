@@ -5,6 +5,18 @@ description: "Review, design, implement, or write handoff prompts for Binding of
 
 # Isaac Performance Hot Paths
 
+## TBD Disclosure Contract
+
+A `TBD` is an unresolved project fact or user decision, not permission to guess.
+
+- Whenever an active `TBD` affects this turn's recommendation, implementation, test plan, or completion claim, label it exactly as **`TBD — user decision required`** and state the consequence of leaving it unresolved.
+- In every response that relies on one or more active `TBD`s, end with a concise **User decisions required** list containing every still-active item. Do not hide a decision inside code, a default value, or an implementation note.
+- Give optional alternatives only as suggestions. Do not choose a balance value, room route, fallback mechanism, asset, dependency, identifier, callback, or persistence policy on the user's behalf.
+- If safe discovery or validation can continue, continue it conditionally while keeping the decision visible. If the next mutation depends on the `TBD`, stop before that mutation and ask the user.
+- Do not create artificial `TBD`s for facts already confirmed by the project or explicitly decided by the user. Once a decision is confirmed, remove it from later reminders.
+
+Read `../isaac-mod-context/references/tbd-disclosure.md` whenever an unresolved fact or user decision remains active.
+
 Use `isaac-mod-context` first in an unfamiliar mod. Discover actual callbacks,
 state owners, asset loading, and resource conventions before changing a hot path.
 
@@ -33,8 +45,22 @@ For each suspect path, identify:
   cache evaluation, or save serialization;
 - trigger signal, behavior that must remain unchanged, and evidence method.
 
+Discover or measure callback cadence for the target build; do not budget work from an assumed 60-callbacks-per-second rule. Update, player-update, render, and animation callbacks are different clocks, and pause or time-scale behavior can change their observed cadence.
+
 Treat `MC_POST_RENDER` as visual-only unless project facts prove an exception. Do
 not move gameplay settlement into render simply to remove an update callback.
+
+## Asset Loading Is A Dirty-Edge Operation
+
+Treat `Sprite:Load`, `ReplaceSpritesheet`, and `LoadGraphics` inside `MC_POST_RENDER`, player update/render, familiar update, or another high-frequency callback as review warnings.
+
+- Move immutable loads to construction/init.
+- Re-run replacement only when a discovered player type, skin, costume, resource, or compatibility state becomes dirty.
+- Keep render callbacks focused on screen-space calculation and rendering.
+- Keep update callbacks focused on state progression; do not use reload as visual persistence.
+- Verify that optimization does not reset the current animation, frame, event, overlay, or per-player ownership.
+
+A maximum costume priority or per-room/per-frame reapplication is not a performance-safe compatibility policy.
 
 ## Choose the Smallest Safe Reduction
 
@@ -50,6 +76,8 @@ not move gameplay settlement into render simply to remove an update callback.
 
 Never cache entity references across room/run boundaries without lifecycle proof,
 and never replace per-owner state with one global shortcut.
+
+Temporary enumeration, forced spawn hooks, timing logs, and per-frame counters are diagnostic instrumentation. Gate and bound them, then remove or disable them before delivery; a debug scan must not become the permanent implementation merely because it exposed the right entity once.
 
 ## Handoff and Review
 

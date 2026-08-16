@@ -24,6 +24,9 @@ an Isaac mod project.
   declares them. Never assume, Reverie, CuerLib, EID, MCM, or StageAPI.
 - Keep unknown project facts as `TBD`; do not invent paths, IDs, callbacks,
   animation names, entities, or dependency APIs.
+- Every active `TBD` must be labeled `TBD — user decision required`, explain its
+  consequence, and appear again in the response-level `User decisions required`
+  list until the project or user resolves it. Never turn a `TBD` into a silent default.
 - Do not replace user-owned design choices such as balance, pools, weights,
   unlock criteria, visual direction, or naming.
 - Distinguish static validation, isolated behavior tests, and in-game results.

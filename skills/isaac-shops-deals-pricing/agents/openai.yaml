@@ -1,0 +1,4 @@
+interface:
+  display_name: "Isaac Shops Deals Pricing"
+  short_description: "Design safe Isaac purchase and price contracts"
+  default_prompt: "Design or review an Isaac shop or deal transaction with explicit buyer, price, payment, delivery, and restock behavior."

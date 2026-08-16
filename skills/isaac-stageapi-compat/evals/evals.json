@@ -6,7 +6,8 @@
       "prompt": "给楼层做 StageAPI 专属房间，但没有证明玩家安装 StageAPI。",
       "expected_output": "应先发现声明、对象和版本；无 StageAPI 时走官方等价路线或明确不提供该可选增强，不能崩溃或污染普通房间。",
       "files": [
-        "docs/skills/isaac-stageapi-compat/SKILL.md"
+        "skills/isaac-stageapi-compat/SKILL.md",
+        "skills/isaac-stageapi-compat/references/stageapi-contract.md"
       ]
     },
     {
@@ -14,7 +15,26 @@
       "prompt": "StageAPI 注册在房间切换时重复执行。",
       "expected_output": "应只拥有本整合创建的房间/门/状态，注册幂等并在转场清理；分别测试无库、支持库、重复注册和转场。",
       "files": [
-        "docs/skills/isaac-stageapi-compat/SKILL.md"
+        "skills/isaac-stageapi-compat/SKILL.md",
+        "skills/isaac-stageapi-compat/references/stageapi-contract.md"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "参考模组里有 StageAPI.NewRoom，当前项目没声明 StageAPI，能否照抄并给官方 API 做同名假实现？",
+      "expected_output": "不能。先确认项目依赖和安装 API；未声明时使用真正官方能力或明确省略增强，禁止伪造等价 StageAPI。",
+      "files": [
+        "skills/isaac-stageapi-compat/SKILL.md",
+        "skills/isaac-stageapi-compat/references/stageapi-contract.md"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "项目已有 Basement Renovator 转换脚本，Agent 想换成网上最新 StageAPI 文件布局。",
+      "expected_output": "应保留并发现项目实际 converter/test-hook 与房间权威来源；网页快照不能覆盖安装版本和现有工具链。",
+      "files": [
+        "skills/isaac-stageapi-compat/SKILL.md",
+        "skills/isaac-stageapi-compat/references/stageapi-contract.md"
       ]
     }
   ]

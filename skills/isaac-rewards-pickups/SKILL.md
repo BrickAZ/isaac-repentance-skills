@@ -5,6 +5,18 @@ description: 设计、实现、审查或编写《以撒的结合：忏悔》模�
 
 # Isaac Rewards and Pickups
 
+## TBD Disclosure Contract
+
+A `TBD` is an unresolved project fact or user decision, not permission to guess.
+
+- Whenever an active `TBD` affects this turn's recommendation, implementation, test plan, or completion claim, label it exactly as **`TBD — user decision required`** and state the consequence of leaving it unresolved.
+- In every response that relies on one or more active `TBD`s, end with a concise **User decisions required** list containing every still-active item. Do not hide a decision inside code, a default value, or an implementation note.
+- Give optional alternatives only as suggestions. Do not choose a balance value, room route, fallback mechanism, asset, dependency, identifier, callback, or persistence policy on the user's behalf.
+- If safe discovery or validation can continue, continue it conditionally while keeping the decision visible. If the next mutation depends on the `TBD`, stop before that mutation and ask the user.
+- Do not create artificial `TBD`s for facts already confirmed by the project or explicitly decided by the user. Once a decision is confirmed, remove it from later reminders.
+
+Read `../isaac-mod-context/references/tbd-disclosure.md` whenever an unresolved fact or user decision remains active.
+
 Use this skill when the question is what a reward should be and how an owned
 pickup should be selected, spawned, replaced, or preserved. It complements
 `isaac-entities`: entity safety answers whether a target is registered and
@@ -40,6 +52,8 @@ Selection rule:
 Repeat and de-duplication boundary:
 Spawn or Morph target:
 Failure policy:
+Pickup confirmation evidence, if collision starts the path:
+Pending entitlement / fulfillment timing, if delayed:
 Original-pickup preservation:
 Third-party compatibility boundary:
 Locked / approved / TBD / suggestions:
@@ -68,6 +82,8 @@ Read [reward-selection.md](references/reward-selection.md). In particular:
 Read [spawn-morph-fallback.md](references/spawn-morph-fallback.md).
 
 - Spawn only after the final candidate has passed its source-specific check.
+- When a collision begins a one-time side effect, read [pickup-confirmation.md](references/pickup-confirmation.md); collision is not acquisition proof.
+- When a reward is earned now but must spawn later, read [deferred-entitlements.md](references/deferred-entitlements.md); a pending entitlement is not an already-spawned reward.
 - For Morph, keep the original pickup intact until the replacement candidate
   is proven usable. If selection or registration fails, preserve the original.
 - Optional rewards fail closed: log or skip the owned reward instead of
@@ -83,7 +99,7 @@ Read [spawn-morph-fallback.md](references/spawn-morph-fallback.md).
 | A custom entity or familiar/effect target | `isaac-entities` |
 | Normal run availability, pools, quality, and weights | `isaac-item-economy` |
 | Callback timing/filter for a reward trigger | `isaac-callback-contracts` |
-| Once-per-room/floor/player reward memory | `isaac-state-lifecycle` |
+| Once-per-room/floor/player reward memory or pending entitlement lifecycle | `isaac-state-lifecycle` |
 | Event semantics, exclusions, and ownership | `isaac-mechanic-contracts` |
 | Custom world-pickup visual format | `references/official-world-pickup-baselines.md` plus `isaac-anm2-visuals` |
 
@@ -99,6 +115,8 @@ Read [spawn-morph-fallback.md](references/spawn-morph-fallback.md).
   replace it.
 - `pcall`, a non-nil object, or a numeric subtype alone is not a reward
   validator.
+- A pickup collision alone is not proof that the pickup was acquired or that a
+  pending side effect may settle.
 - Spawning an existing official subtype does not require new art. Generate pickup art only for a requested custom world-pickup visual, using the matching official frame baseline unless the user or project explicitly overrides it.
 
 ## Review and Test
@@ -107,3 +125,9 @@ Use [reward-review-checklist.md](references/reward-review-checklist.md).
 For every reward path, cover the valid candidate, invalid/missing candidate,
 repeat attempt, and an untouched third-party or unrelated pickup where that
 boundary exists.
+
+
+When any active `TBD` remains, the **last section** of the response must be
+`**User decisions required**`. Repeat every unresolved reward-source,
+replacement, ownership, and lifecycle decision there; do not end on the test
+matrix.

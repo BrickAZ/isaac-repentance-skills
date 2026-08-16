@@ -1,0 +1,32 @@
+{
+  "skill_name": "isaac-status-effects",
+  "evals": [
+    {
+      "id": "blind-poison-on-hit",
+      "prompt": "陌生 Isaac 模组要让某个道具的眼泪命中敌人后有概率中毒，但没有提供项目文件、概率、持续时间、Boss 规则或回调信息。只写实现合同，不要编造 Lua。",
+      "expected_output": "Discovers the project/API first; separates projectile hit ownership from status application and damage; labels chance, duration, repeat policy, and Boss immunity as TBD — user decision required; does not invent a callback or AddPoison signature.",
+      "files": [
+        "skills/isaac-status-effects/SKILL.md",
+        "skills/isaac-status-effects/references/status-effect-contract.md"
+      ]
+    },
+    {
+      "id": "refresh-not-global-stack",
+      "prompt": "两个合作玩家都能给敌人附加一个自定义减速标记。重复命中只刷新各自来源的 60 帧计时，不能让一个全局 timer 控制所有敌人。审查设计。",
+      "expected_output": "Requires per-target and per-source ownership, a verified 60-frame refresh edge, independent co-op attribution, removal on expiry/invalid target, and rejects a run-global timer or broad flag cleanup.",
+      "files": [
+        "skills/isaac-status-effects/SKILL.md",
+        "skills/isaac-status-effects/references/status-effect-contract.md"
+      ]
+    },
+    {
+      "id": "built-in-burn-double-damage",
+      "prompt": "代码先调用一个内置燃烧状态，又在 update 中每隔几帧手动造成燃烧伤害。应该怎么判断是否重复结算？",
+      "expected_output": "Requires proof of the built-in status damage behavior and timing before adding custom ticks, routes replacement/recursive damage through damage-health contracts, and distinguishes static inspection from in-game cadence verification.",
+      "files": [
+        "skills/isaac-status-effects/SKILL.md",
+        "skills/isaac-status-effects/references/status-effect-contract.md"
+      ]
+    }
+  ]
+}

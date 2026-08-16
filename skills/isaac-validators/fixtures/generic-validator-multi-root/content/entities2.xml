@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<entities anm2root="gfx/">
+  <entity name="Fixture Familiar" anm2path="test.anm2" />
+</entities>

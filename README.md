@@ -17,7 +17,7 @@
 - 先读取目标模组，再写实现。
 - 默认使用官方 Isaac API 和目标模组已有代码。
 - CuerLib、EID、MCM、StageAPI 等均不是默认前置。
-- 用户未决定的数值、池子、权重、美术和机制细节保持 `TBD`。
+- 用户未决定的数值、池子、权重、美术和机制细节保持 `TBD`，并在每次涉及它们的答复中标为“需要用户决定”。
 - 不编造路径、实体 Variant、ANM2 动画名、回调注册位置或第三方 API。
 - 静态校验、隔离行为测试和实际游戏验证分别报告，不能混为“已验证”。
 - 原生 UI 表面彼此独立：彩色道具图、ESC My Stuff、卡面、HUD、角色选择、合作菜单、成就和 Boss 肖像必须分别发现并验证。
@@ -29,8 +29,20 @@
 - 强化世界坐标与屏幕坐标边界：手动 Sprite:Render 必须经过 Isaac.WorldToScreen，并按 owner 偏移与尺寸策略验证。
 - 强化空白/无意义实体防护：只校验、替换或清理当前模组明确拥有的 Spawn/Morph 路径，不干扰其他模组。
 - 为 EID、MCM、StageAPI 与 REPENTOGON 补齐缺失依赖和重复注册等 eval，保持官方 API fallback。
-- 全量复核 39 个 skill、171 条 eval 与 122 个 reference 链接；结构、引用和插件校验均通过。实际游戏验证仍由具体模组与运行环境完成。
+- 全量复核 48 个 skill 的结构、评测、引用与插件清单；静态校验通过。实际游戏验证仍由具体模组与运行环境完成。
 
+## 本版新增能力
+
+- **全局 TBD 提醒**：48 个 skill 都会把影响当前工作的未知项标为“需要用户决定”，说明影响，并在答复末尾汇总未决事项。
+- **五个独立运行合同**：新增状态效果、商店/交易定价、GridEntity、Book of Virtues 魂火和套装变身，分别处理来源、计时、付款、网格坐标、魂火映射与形态激活，避免继续塞进伤害、经济、房间或普通使魔 skill。
+- **实体引擎类型边界**：`isaac-entities` 与 `isaac-testing-debugging` 防止把 Lua table 当作 `Vector` 等引擎值传入 API，并要求测试桩验证真实调用边界。
+- **房间拓扑与门位验证**：`isaac-rooms-stages` 与测试 skill 区分调试房、真实地图连通、合法门槽与本地坐标；无候选时不得静默消耗状态或删除无关门。
+- **原生机制隔离**：`isaac-mechanic-contracts` 防止借用原版机制后清理原版拥有的房间、维度或实体，并要求同局隔离验证。
+- **奖励、文本与注册一致性**：补齐奖励确认/延迟结算、静态 XML 多语言、运行期本地 ID 解析、可选依赖延迟出现，以及道具注册的稳定本地 ID 约束。
+- **彩色道具透明通道合同**：彩色 `gfx` 必须用主体 alpha 蒙版而非“非色键像素全不透明”；在浅灰棋盘、白色、房间近似色复核，并逐 ANM2 裁切帧验收。`isaac-validators -CheckPngTransparency` 会警告缺失 alpha、统一外底或疑似内嵌深色底板，仍要求原生游戏表面验收。
+- **角色美术表面分流**：严格区分游戏内 skin、头发/头饰挂饰、肖像、名称、角色选择、合作与死亡界面素材；图集裁切是坐标容量，不是视觉占满目标，普通头发以原版头部和原生 1× 叠加比例为准。
+- **原版换皮与资源覆盖合同**：识别无 Lua 的纯资源模组，发现 `resources/` 与版本化资源根，区分精确路径覆盖、运行时换图和 Null Costume，并把加载顺序与遮挡策略保留为显式兼容决策。
+- **音效与音乐证据合同**：区分 `sounds.xml`/`SFXManager` 和 `music.xml`/`MusicManager`；普通短音效优先采用 PCM WAV，除非目标项目已证明其他加载路线可用。`pcall` 或测试桩无报错只证明 Lua 调用成功，最终仍需最新游戏日志与实机可听结果。
 ## Skill Map
 
 ### 项目发现与可靠实现
@@ -53,10 +65,19 @@
 | --- | --- |
 | `isaac-entities` | 处理注册实体、碰撞、生命周期和视觉载体。 |
 | `isaac-familiars` | 处理跟随物生成、所有权、多玩家和重生。 |
+| `isaac-wisps-virtues` | 处理 Book of Virtues、`wisps.xml`、魂火来源、重复使用、容量、死亡和资源映射。 |
 | `isaac-npc-boss-ai` | 设计 NPC/Boss 状态机和攻击节奏。 |
 | `isaac-projectile-combat` | 管理弹幕归属、伤害、命中和清理。 |
+| `isaac-status-effects` | 管理异常状态的目标资格、来源、持续、叠加/刷新、免疫、周期伤害与清理。 |
 | `isaac-players-characters` | 开发自定义角色和 Tainted 变体。 |
-| `isaac-rooms-stages` | 处理房间、楼层、门和切层。 |
+### 世界与空间
+
+| Skill | 作用 |
+| --- | --- |
+| `isaac-rooms-stages` | 处理单房、楼层、门、房间拓扑和切层。 |
+| `isaac-grid-entities` | 处理 GridEntity 的格子索引、合法位置、碰撞、破坏、归属和房间重访。 |
+| `isaac-room-networks` | 处理多个自定义房间组成的独立区域、入口、路线、返回与局部失败。 |
+| `isaac-dimensions` | 处理游戏层面的独立 Dimension、跨维度进入/返回、隔离与生命周期。 |
 
 ### 道具、掉落与进度
 
@@ -68,7 +89,9 @@
 | `isaac-cards-pockets` | 处理卡牌、符文、药丸和口袋物品，分开卡面、Pickup、HUD/EID，并防止空白实体。 |
 | `isaac-trinkets` | 处理饰品注册、持有判断、叠加及其独立视觉表面。 |
 | `isaac-item-economy` | 审核品质、池子、权重、tags 和解锁后的经济影响。 |
+| `isaac-shops-deals-pricing` | 处理商店/交易的运行时价格、购买者、付款、交付、补货和重掷重算。 |
 | `isaac-item-synergies` | 定义多道具、饰品和角色联动的归属、叠加与失效边界。 |
+| `isaac-transformations-forms` | 处理原版 PlayerForm 查询、自定义套装变身、贡献计数、激活、可逆性和展示分流。 |
 | `isaac-reroll-removal-contracts` | 管理重掷、移除、替换后的幂等 reconciliation。 |
 | `isaac-rng-determinism` | 管理随机源、抽取边界、种子范围和多人可复现性。 |
 | `isaac-rewards-pickups` | 处理奖励选择、已拥有目标的 Spawn/Morph、世界 Pickup 资源链和失败保留原物。 |
@@ -86,8 +109,10 @@
 
 | Skill | 作用 |
 | --- | --- |
+| `isaac-character-art-surfaces` | 拆分角色各类美术表面，并约束原版参考编辑、头发/头饰比例、1× 叠加预览、服装遮挡矩阵和头套式失败。 |
+| `isaac-reskins-resource-overrides` | 处理原版角色换皮、纯资源模组、精确路径覆盖、多资源根、运行时换图与加载顺序冲突。 |
 | `isaac-anm2-visuals` | 处理 ANM2、Sprite、坐标系、视觉载体和可覆盖的原生 UI 资源基线。 |
-| `isaac-audio-render-feedback` | 处理音效、shader、render 和输入拦截。 |
+| `isaac-audio-render-feedback` | 处理 SFX/音乐注册与格式、播放器职责、解码证据、shader、render 和输入拦截。 |
 | `isaac-hud-ui-state` | 管理 HUD/UI 显示、世界坐标转屏幕坐标和短效状态清理。 |
 | `isaac-localization-runtime` | 处理运行期多语言和依赖分流。 |
 | `isaac-compat-descriptions` | 处理 EID/百科描述与可选依赖兼容。 |
@@ -96,6 +121,19 @@
 | `isaac-mcm-compat` | 处理可选 Mod Config Menu 配置界面与重复注册。 |
 | `isaac-stageapi-compat` | 处理可选 StageAPI 房间、楼层与版本兼容。 |
 | `isaac-repentogon-compat` | 处理可选 REPENTOGON API、版本门控和官方 fallback。 |
+## 验证与证据边界
+
+仓库级检查会验证 48 个 skill 的 frontmatter、内部引用、TBD 合同、路由
+覆盖、eval schema、离线第三方 API 参考和证据矩阵。Windows 下脚本会主动为
+`quick_validate.py` 设置 UTF-8，避免系统 GBK 把合法中文误判为编码错误。
+
+```powershell
+powershell -ExecutionPolicy Bypass -File tests/test-skill-repository.ps1
+```
+
+`evals.json` 中的 `files` 是仓库内真实上下文，`fixture_files` 是题目中的
+虚构项目文件；完整约定见 `docs/eval-schema.md`。静态审计、盲测回答、模拟
+运行和游戏内验证是四种不同证据，前一层通过不得冒充后一层通过。
 ## 不做什么
 
 这套 skills 不替用户决定平衡数值、视觉风格或机制设计，也不承诺未经运行的
@@ -105,6 +143,6 @@
 
 ```text
 .codex-plugin/plugin.json  Codex plugin 清单
-skills/                    39 个通用 Isaac skills
+skills/                    48 个通用 Isaac skills
 AGENTS.md                  给维护本仓库的 AI 的边界说明
 ```

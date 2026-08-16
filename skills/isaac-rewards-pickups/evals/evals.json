@@ -4,29 +4,57 @@
     {
       "id": 1,
       "prompt": "清理房间后掉一张用户指定的卡牌。用户只指定卡牌，没说重复规则；配置可能包含本模组卡，也可能包含其他模组卡。请实现。",
-      "expected": "先输出 Reward/Pickup Contract：指定卡牌为 Locked，重复边界为 TBD，不能擅自填充；验证本模组候选，保留合法的第三方卡，不为无效配置生成 0/-1 或随机空白卡，并要求有效/无效/重复/第三方测试。"
+      "expected_output": "先输出 Reward/Pickup Contract：指定卡牌为 Locked，重复边界为 TBD，不能擅自填充；验证本模组候选，保留合法的第三方卡，不为无效配置生成 0/-1 或随机空白卡，并要求有效/无效/重复/第三方测试。",
+      "files": [
+        "skills/isaac-rewards-pickups/SKILL.md"
+      ]
     },
     {
       "id": 2,
       "prompt": "挑战中把指定掉落替换为自定义灵魂石；如果目标注册失败也要继续游戏。",
-      "expected": "先验证自定义灵魂石注册，再执行一次受限 Morph/替换；注册或选择失败时保留原掉落，不做全局 Pickup 改写，并路由 cards-pockets、entities 与 callbacks。"
+      "expected_output": "先验证自定义灵魂石注册，再执行一次受限 Morph/替换；注册或选择失败时保留原掉落，不做全局 Pickup 改写，并路由 cards-pockets、entities 与 callbacks。",
+      "files": [
+        "skills/isaac-rewards-pickups/SKILL.md"
+      ]
     },
     {
       "id": 3,
       "prompt": "天使房每层给每位玩家一个奖励，不能重复。数量和奖励内容以后再决定。",
-      "expected": "不擅自发明奖励内容、数量或平衡数值；把它们标为 TBD，机制层明确每玩家/每层状态和去重边界，奖励 skill 只在内容获批后实现候选选择与安全生成。"
+      "expected_output": "不擅自发明奖励内容、数量或平衡数值；把它们标为 TBD，机制层明确每玩家/每层状态和去重边界，奖励 skill 只在内容获批后实现候选选择与安全生成。",
+      "files": [
+        "skills/isaac-rewards-pickups/SKILL.md"
+      ]
     },
     {
       "id": 4,
       "prompt": "陌生 mod 想在房间清理后生成自定义掉落，但我不知道注册表、模块目录和奖励内容。",
-      "expected": "先用 isaac-mod-context 发现项目结构和注册表；奖励内容标为 TBD，不生成裸 subtype，并在确认所有权后才选择 Spawn/Morph 路径。"
+      "expected_output": "先用 isaac-mod-context 发现项目结构和注册表；奖励内容标为 TBD，不生成裸 subtype，并在确认所有权后才选择 Spawn/Morph 路径。",
+      "files": [
+        "skills/isaac-rewards-pickups/SKILL.md"
+      ]
     },
     {
       "id": 5.0,
       "prompt": "用户要新增一个会掉在地上的自定义药丸奖励，没有提供美术，要求 AI 直接生成并接入。",
-      "expected": "应把它识别为 custom world pickup visual：推荐并生成 32x32 药丸帧，发现并接入项目的 pickup ANM2/atlas；不能把 32x32 HUD、卡面或 loose PNG 当作自动加载的世界掉落物。若只生成官方药丸 subtype，则不应生成新美术。",
+      "expected_output": "应把它识别为 custom world pickup visual：推荐并生成 32x32 药丸帧，发现并接入项目的 pickup ANM2/atlas；不能把 32x32 HUD、卡面或 loose PNG 当作自动加载的世界掉落物。若只生成官方药丸 subtype，则不应生成新美术。",
       "files": [
-        "docs/skills/isaac-rewards-pickups/references/official-world-pickup-baselines.md"
+        "skills/isaac-rewards-pickups/references/official-world-pickup-baselines.md"
+      ]
+    },
+    {
+      "id": "pickup-collision-is-not-confirmed-acquisition",
+      "prompt": "玩家碰到一个 collectible pickup 时，要显示本模组自定义横幅并结算一次附加奖励。代码 Agent 在 MC_PRE_PICKUP_COLLISION 立即显示并发奖励。合作模式中同一个 pickup 可能被多次碰撞，且碰撞不一定完成拾取。",
+      "expected_output": "应把碰撞仅当候选：以项目验证的玩家与来源 key 去重，记录前置状态；只在已发现的可靠证据（如持有数量增加或已排队道具）确认后显示/结算一次；来源消失或玩家无效时清理 pending。不能把碰撞本身当作成功拾取。",
+      "files": [
+        "skills/isaac-rewards-pickups/references/pickup-confirmation.md"
+      ]
+    },
+    {
+      "id": "deferred-entitlement-is-not-a-spawn",
+      "prompt": "主动道具承诺玩家下次进入指定房间类型时给奖励。当前房间不是目标房，代码 Agent 仍马上 Spawn，并把 pending 标记清掉。目标房可能本层根本不出现。",
+      "expected_output": "应把承诺资格、目标上下文、兑现时机和过期/保留策略写入 contract；仅在目标房真实存在且候选验证后 Spawn，成功后才清除 pending。目标未出现时的跨层、取消或保留不能擅自决定，保持 TBD 或用户批准。",
+      "files": [
+        "skills/isaac-rewards-pickups/references/deferred-entitlements.md"
       ]
     }
   ]

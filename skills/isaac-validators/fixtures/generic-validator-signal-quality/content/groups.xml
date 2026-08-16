@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<registry>
+  <group name="one"><entry id="1" /></group>
+  <group name="two"><entry id="1" /></group>
+  <group name="three"><entry id="2" /><entry id="2" /></group>
+</registry>

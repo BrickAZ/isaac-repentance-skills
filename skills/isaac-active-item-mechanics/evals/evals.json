@@ -6,9 +6,9 @@
       "prompt": "写给代码 Codex 的提示词：一个 0 充能主动道具，按下后弹出两个选项，玩家用射击方向选择；如果当前房间没有敌人，使用失败且不消耗。不要只写 MC_USE_ITEM 模板。",
       "expected_output": "应该路由到 use callback + input selection + temporary UI/render + room state；明确失败不消耗、active slot、MC_INPUT_ACTION 或 player update 读输入、render 画选项、无敌人失败、测试成功/失败/取消。",
       "files": [
-        "docs/skills/isaac-active-item-mechanics/references/use-callback-charge.md",
-        "docs/skills/isaac-active-item-mechanics/references/input-selection.md",
-        "docs/skills/isaac-active-item-mechanics/references/ui-render-active.md"
+        "skills/isaac-active-item-mechanics/references/use-callback-charge.md",
+        "skills/isaac-active-item-mechanics/references/input-selection.md",
+        "skills/isaac-active-item-mechanics/references/ui-render-active.md"
       ]
     },
     {
@@ -16,8 +16,8 @@
       "prompt": "新增主动道具：使用后本层记住一个旋律，之后每次用卡牌都会追加触发一次旋律效果。请先判断需要哪些回调和状态。",
       "expected_output": "应该说明 active use 只是开始状态，还需要 MC_USE_CARD、floor/run state、per-player 或 floor state、MC_POST_NEW_LEVEL reset、同帧递归防护；不能只写 active XML。",
       "files": [
-        "docs/skills/isaac-active-item-mechanics/references/card-pill-active.md",
-        "docs/skills/isaac-active-item-mechanics/references/room-floor-state.md"
+        "skills/isaac-active-item-mechanics/references/card-pill-active.md",
+        "skills/isaac-active-item-mechanics/references/room-floor-state.md"
       ]
     },
     {
@@ -25,7 +25,7 @@
       "prompt": "检查一个主动道具设计：长按丢弃键蓄力，松开后按蓄力时间冲刺并显示充能条。它应该归到哪个 skill？",
       "expected_output": "应该使用 active mechanic skill，并指出 input selection、temporary UI/render、room/player state；视觉条若有 anm2 还要用 anm2 skill，SFX/render 细节用 audio-render skill。",
       "files": [
-        "docs/skills/isaac-active-item-mechanics/SKILL.md"
+        "skills/isaac-active-item-mechanics/SKILL.md"
       ]
     },
     {
@@ -33,9 +33,17 @@
       "prompt": "陌生模组的 Lua 都在 src/items/，启动文件叫 bootstrap.lua。新增一个长按选择主动道具前，第一步不应该猜什么？",
       "expected_output": "应该先用 isaac-mod-context 发现 RegisterMod 对象、加载顺序、道具 XML 和现有主动道具；不能假设 main.lua、content/ 或既有项目的注册规则。",
       "files": [
-        "docs/skills/isaac-mod-context/SKILL.md",
-        "docs/skills/isaac-active-item-mechanics/SKILL.md"
+        "skills/isaac-mod-context/SKILL.md",
+        "skills/isaac-active-item-mechanics/SKILL.md"
       ]
+    },
+    {
+      "expected_output": "Routes the remaining work to isaac-wisps-virtues while active-item mechanics remains responsible only for the already-defined use/charge/slot shell.",
+      "prompt": "主动道具充能和使用返回已经正确，只缺美德书魂火的 XML、重复使用、归属和死亡逻辑。哪个 skill 主导？",
+      "files": [
+        "skills/isaac-active-item-mechanics/SKILL.md"
+      ],
+      "id": "virtues-wisp-boundary"
     }
   ]
 }

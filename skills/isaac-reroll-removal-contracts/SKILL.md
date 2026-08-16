@@ -5,6 +5,18 @@ description: Design, implement, review, or write handoff prompts for Binding of 
 
 # Isaac Reroll And Removal Contracts
 
+## TBD Disclosure Contract
+
+A `TBD` is an unresolved project fact or user decision, not permission to guess.
+
+- Whenever an active `TBD` affects this turn's recommendation, implementation, test plan, or completion claim, label it exactly as **`TBD — user decision required`** and state the consequence of leaving it unresolved.
+- In every response that relies on one or more active `TBD`s, end with a concise **User decisions required** list containing every still-active item. Do not hide a decision inside code, a default value, or an implementation note.
+- Give optional alternatives only as suggestions. Do not choose a balance value, room route, fallback mechanism, asset, dependency, identifier, callback, or persistence policy on the user's behalf.
+- If safe discovery or validation can continue, continue it conditionally while keeping the decision visible. If the next mutation depends on the `TBD`, stop before that mutation and ask the user.
+- Do not create artificial `TBD`s for facts already confirmed by the project or explicitly decided by the user. Once a decision is confirmed, remove it from later reminders.
+
+Read `../isaac-mod-context/references/tbd-disclosure.md` whenever an unresolved fact or user decision remains active.
+
 Use this skill when the important question is not what an item does, but what
 must happen when the content that authorized an effect changes. It owns change
 detection and reconciliation contracts, not the item's normal mechanic.
@@ -27,6 +39,10 @@ detection and reconciliation contracts, not the item's normal mechanic.
   This skill adds only the change boundary.
 - **A combination becoming invalid**: use `isaac-item-synergies` for the
   eligibility and result contract, then use this skill for change detection.
+- **A named form becoming active/inactive**: use
+  `isaac-transformations-forms` for contributors, threshold, activation, and
+  reversible/permanent policy; use this skill only for inventory-change
+  observation and idempotent reconciliation.
 - **Runtime owner, resets, and persistence**: use `isaac-state-lifecycle`.
 - **Actual callback/filter/return semantics**: use `isaac-callback-contracts`.
 - **Replacement reward or pickup policy**: use `isaac-rewards-pickups`; do not

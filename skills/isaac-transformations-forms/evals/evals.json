@@ -1,0 +1,32 @@
+{
+  "skill_name": "isaac-transformations-forms",
+  "evals": [
+    {
+      "id": "blind-five-item-form",
+      "prompt": "陌生 Isaac 模组要做一个收集若干道具后触发的套装变身，但没有提供参与道具、阈值、重复道具是否计数、可逆性、效果或项目结构。只写设计合同。",
+      "expected_output": "Requires discovery and keeps contributors, threshold, duplicate/temp-effect counting, reversible/permanent policy, effects, visuals, and persistence as TBD — user decision required; invents no IDs, files, PlayerForm enum, or EID API.",
+      "files": [
+        "skills/isaac-transformations-forms/SKILL.md",
+        "skills/isaac-transformations-forms/references/transformation-contract.md"
+      ]
+    },
+    {
+      "id": "eid-group-is-not-engine-form",
+      "prompt": "项目已经在 EID 里给四个道具分配了同一个 transformation 图标。代码bot说现在可以直接用 GetPlayerForm 读取这个自定义变身。审查这个结论。",
+      "expected_output": "Rejects the inference that EID presentation registers an engine PlayerForm, requires a project-owned gameplay qualification/state route unless a proven API exists, and keeps EID optional.",
+      "files": [
+        "skills/isaac-transformations-forms/SKILL.md",
+        "skills/isaac-transformations-forms/references/transformation-contract.md"
+      ]
+    },
+    {
+      "id": "reversible-versus-permanent-reroll",
+      "prompt": "一个变身在首次达到阈值时奖励一次能力。重掷掉参与道具后，普通形态要取消，但永久解锁版不能取消；reload 不能再次发奖励。给出状态机。",
+      "expected_output": "Separates reversible qualification from a stable permanent activation key, uses false-to-true activation and idempotent reconciliation, removes only transformation-owned reversible effects, and prevents reward replay on reload.",
+      "files": [
+        "skills/isaac-transformations-forms/SKILL.md",
+        "skills/isaac-transformations-forms/references/transformation-contract.md"
+      ]
+    }
+  ]
+}

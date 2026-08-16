@@ -6,8 +6,8 @@
       "prompt": "给新道具补 EID：中文和英文都要有，还要加一个内联图标。请写给代码 Codex 的提示词，别让它直接假设 EID 一定存在。",
       "expected_output": "应该要求 if EID then guard，区分 items.xml/en_us/zh_cn 与 EID 文本，使用正确 collectible id，图标注册若用 anm2 要交给 anm2 skill，英文和中文分离。",
       "files": [
-        "docs/skills/isaac-compat-descriptions/references/eid-descriptions.md",
-        "docs/skills/isaac-compat-descriptions/references/localization-sync.md"
+        "skills/isaac-compat-descriptions/references/eid-descriptions.md",
+        "skills/isaac-compat-descriptions/references/localization-sync.md"
       ]
     },
     {
@@ -15,8 +15,8 @@
       "prompt": "我想给一个道具加 MCM 开关和百科描述，但没有装 MCM/Encyclopedia 时不能坏。这个需求该怎么拆？",
       "expected_output": "应该路由到 optional dependency gates + compat modules + localization；说明 MCM/Encyclopedia 都是可选依赖，兼容模块单独加载，缺失时核心道具不受影响。",
       "files": [
-        "docs/skills/isaac-compat-descriptions/references/optional-dependency-gates.md",
-        "docs/skills/isaac-compat-descriptions/references/compat-modules.md"
+        "skills/isaac-compat-descriptions/references/optional-dependency-gates.md",
+        "skills/isaac-compat-descriptions/references/compat-modules.md"
       ]
     },
     {
@@ -24,7 +24,7 @@
       "prompt": "审核这个补丁：它只改了中文 EID，说英文以后再补，而且直接在 main.lua 顶层调用 EID:addCollectible。有什么问题？",
       "expected_output": "应该指出缺少 EID guard、语言未同步、顶层直接调用可选依赖会崩、XML/EID 可能不同步，并要求最终报告列出未改 surfaces。",
       "files": [
-        "docs/skills/isaac-compat-descriptions/SKILL.md"
+        "skills/isaac-compat-descriptions/SKILL.md"
       ]
     },
     {
@@ -32,8 +32,8 @@
       "prompt": "陌生模组只有 ja_jp 本地化，兼容模块在 src/integrations/。我要补一个可选百科条目，开始前不能假设什么？",
       "expected_output": "应该先用 isaac-mod-context 发现实际 locale、描述 XML、加载顺序和可选依赖约定；不能硬写 en_us/zh_cn、main.lua 或把百科当作必装依赖。",
       "files": [
-        "docs/skills/isaac-mod-context/SKILL.md",
-        "docs/skills/isaac-compat-descriptions/SKILL.md"
+        "skills/isaac-mod-context/SKILL.md",
+        "skills/isaac-compat-descriptions/SKILL.md"
       ]
     },
     {
@@ -41,7 +41,40 @@
       "prompt": "为了省事，代码 Codex 想给一个没有声明前置的模组直接引入 CuerLib 来做两句提示文字。应该怎么处理？",
       "expected_output": "应该先检查官方 API 与现有项目文本路径；未声明 CuerLib 时不能把它设为默认依赖。若仍需要联动，只能作为 guard 的独立兼容层，且核心机制有不依赖该库的 fallback。",
       "files": [
-        "docs/skills/isaac-compat-descriptions/references/optional-dependency-gates.md"
+        "skills/isaac-compat-descriptions/references/optional-dependency-gates.md"
+      ]
+    },
+    {
+      "id": "static-xml-localization-is-optional",
+      "prompt": "一个 Isaac 模组已维护 items.en_us.xml、items.zh_cn.xml、itempools.en_us.xml、itempools.zh_cn.xml，并希望游戏原生道具名和池子随开局语言变。项目有自己的启动脚本，但用户没有要求运行中切语言。请设计路由。",
+      "expected_output": "应把启动前静态 XML 实体化列为可选、项目已证明的模式：发现语言映射、模板与实际游戏读取目标；让 items 和匹配 itempools 一起同步；用检查器拒绝 mixed 状态；说明改语言需要重新同步并重启。不得把该模式说成所有模组的默认多语言方案。",
+      "files": [
+        "skills/isaac-compat-descriptions/references/static-xml-localization.md"
+      ]
+    },
+    {
+      "id": "static-xml-localization-is-not-a-default",
+      "prompt": "陌生 Isaac 模组只要给一个 Lua HUD 提示加中文，没有提供 locale XML、启动脚本、原生 items 名称需求或文件树。代码 Agent 打算新建 en_us/zh_cn 模板并在每次启动前复制覆盖 items.xml。请审查。",
+      "expected_output": "应拒绝凭空引入静态 XML 复制路线；先发现实际文本 surface、语言码和现有加载方式。少量运行时 HUD 文本应走 isaac-localization-runtime 的项目表/resolver与回退，缺少项目事实保持 TBD。",
+      "files": [
+        "skills/isaac-compat-descriptions/SKILL.md",
+        "skills/isaac-localization-runtime/SKILL.md"
+      ]
+    },
+    {
+      "id": "localized-registered-name-needs-runtime-resolution",
+      "prompt": "项目把 items.xml 的道具 name 分别翻译进 en_us 与 zh_cn 模板。Lua 仍只写 Isaac.GetItemIdByName(\"English Name\")，中文启动后道具行为和 EID 都找不到 id。请审查。",
+      "expected_output": "应区分稳定的本地注册 id 与运行时 ItemConfig id；若项目确实让 XML 注册名随 locale 变化，要求以语义 key 维护已发现的 locale 候选名或项目 resolver，并在每个支持的模板下验证同一逻辑道具解析成功。不得把当前运行时全局数字硬编码为本地 key。",
+      "files": [
+        "skills/isaac-compat-descriptions/references/static-xml-localization.md"
+      ]
+    },
+    {
+      "id": "optional-integration-may-arrive-late",
+      "prompt": "模组启动时 EID 尚未初始化，但数帧后才出现。代码 Agent 只在 main.lua 顶层 if EID then 注册一次，之后永不重试。EID 可能完全不存在。请审查。",
+      "expected_output": "应先确认项目是否真的存在晚初始化；若存在，使用项目拥有的幂等 try-register helper：能力存在后一次性注册并记成功，成功后停止重试，缺失 EID 不影响核心玩法。不得无证据给所有可选依赖加逐帧轮询。",
+      "files": [
+        "skills/isaac-compat-descriptions/references/optional-dependency-gates.md"
       ]
     }
   ]

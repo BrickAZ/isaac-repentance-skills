@@ -6,7 +6,7 @@
       "prompt": "给模组新增一个可选角色：开局有一张自定义卡，死亡后本层第一次复活。用户没说里角色、初始血量和 Birthright。先写实现合同。",
       "expected_output": "应该先发现 players.xml、player id、开局授予边界和现有复活逻辑；把里角色、血量和 Birthright 标为 TBD；将自定义卡交给 cards-pockets，将复活状态交给 state-lifecycle。",
       "files": [
-        "docs/skills/isaac-players-characters/references/character-contract.md"
+        "skills/isaac-players-characters/references/character-contract.md"
       ]
     },
     {
@@ -14,7 +14,7 @@
       "prompt": "双人合作时只要第一个玩家选了新角色，所有玩家都得到一次角色被动。这个方案要怎么审？",
       "expected_output": "应该拒绝全局角色标记，要求按实际 player type 和每个玩家状态处理，并明确加入、死亡、复活和继续游戏时不会重复授予。",
       "files": [
-        "docs/skills/isaac-players-characters/SKILL.md"
+        "skills/isaac-players-characters/SKILL.md"
       ]
     },
     {
@@ -22,7 +22,7 @@
       "prompt": "陌生模组想做角色选择界面，但没有声明 StageAPI、EID 或 CuerLib。第一步是什么？",
       "expected_output": "应该先发现项目已有角色/选择 UI 与官方 API 路径；不能为了角色选择默认新增任何第三方前置，也不能假设 players.xml 或现成里角色存在。",
       "files": [
-        "docs/skills/isaac-mod-context/SKILL.md"
+        "skills/isaac-mod-context/SKILL.md"
       ]
     },
     {
@@ -30,7 +30,7 @@
       "prompt": "没有项目文件时，给这个角色合同列出 Lua 状态字段和 pocketitems.xml 的全部属性。",
       "expected_output": "应该拒绝把示例字段或 XML 属性伪装成已知事实；只描述状态目的、owner 和待发现的注册表面。",
       "files": [
-        "docs/skills/isaac-players-characters/SKILL.md"
+        "skills/isaac-players-characters/SKILL.md"
       ]
     },
     {
@@ -38,21 +38,23 @@
       "prompt": "用户只说角色开局有特殊内容，没说 continue、复活或中途加入时是否补发。请直接定为新局一次、继续和复活都不补发。",
       "expected_output": "应该将每个授予边界保留为 TBD；如给常见策略，只能标为 Suggestion，不能写成最终角色行为。",
       "files": [
-        "docs/skills/isaac-players-characters/references/character-contract.md"
+        "skills/isaac-players-characters/references/character-contract.md"
       ]
     },
     {
       "id": "character-portrait-surfaces",
       "prompt": "自定义角色能选中且角色选择头像正常，但 Boss Bar 肖像和死亡页空白。请写角色合同，不给文件。",
       "expected_output": "玩家类型/选择/Boss/死亡是独立表面；各自路径和注册保持 TBD；不改角色机制或用选择页资产推断其他 UI。",
-      "files": []
+      "files": [
+        "skills/isaac-players-characters/SKILL.md"
+      ]
     },
     {
       "id": "select-and-coop-are-separate",
       "prompt": "自定义角色在角色选择页和合作菜单都没有资源，我能直接复用一张肖像吗？",
       "expected_output": "应将两者拆开：可覆盖的官方默认是角色选择 48x48、512x1024 图集，合作菜单 32x32、192x128 或 192x224 图集；一张资源或一个成功表面不能证明另一个。",
       "files": [
-        "docs/skills/isaac-anm2-visuals/references/official-native-ui-baselines.md"
+        "skills/isaac-anm2-visuals/references/official-native-ui-baselines.md"
       ]
     },
     {
@@ -60,7 +62,7 @@
       "prompt": "用户没有角色选择和合作菜单的图片，要求 AI 直接生成。",
       "expected_output": "应分别生成 48x48 select frame 与 32x32 co-op frame，并分别接入发现的图集/ANM2；用户或项目已有替代资产时不可擅自覆盖。",
       "files": [
-        "docs/skills/isaac-anm2-visuals/references/official-native-ui-baselines.md"
+        "skills/isaac-anm2-visuals/references/official-native-ui-baselines.md"
       ]
     },
     {
@@ -68,8 +70,24 @@
       "prompt": "用户要求角色使用自定义心脏 HUD，但没有提供美术，要求 AI 直接生成。",
       "expected_output": "应按官方默认生成 16x16 heart HUD cell，并发现 ui_hearts ANM2/atlas mapping 后接入；不能顺带修改健康机制，非默认尺寸需要明确 override。",
       "files": [
-        "docs/skills/isaac-anm2-visuals/references/official-native-ui-baselines.md"
+        "skills/isaac-anm2-visuals/references/official-native-ui-baselines.md"
       ]
+    },
+    {
+      "files": [
+        "skills/isaac-players-characters/SKILL.md"
+      ],
+      "prompt": "用户要把原版 Isaac 换成新外观，但不新增可选角色、名字、属性或解锁。Agent 准备在 players.xml 注册一个新 player type。",
+      "expected_output": "应停止新增角色注册并路由到 isaac-reskins-resource-overrides：先比较精确路径资源覆盖、运行时 actor/spritesheet replacement 与 Null Costume overlay。只有用户真的要求独立可选角色时才使用本 skill 注册 player。",
+      "id": "vanilla-reskin-is-not-custom-player-registration"
+    },
+    {
+      "files": [
+        "skills/isaac-players-characters/SKILL.md"
+      ],
+      "prompt": "项目 players.xml 已声明普通角色与里角色关系，但 Agent 想用 normalPlayerType + 1 找里角色，并用 Isaac.GetPlayer(0) 判断所有玩家。请审查。",
+      "expected_output": "必须读取并使用项目声明的普通/里角色关系或按注册名分别解析实际 player type；禁止靠相邻数值推导。角色判断和状态应逐实际玩家执行，不能用 GetPlayer(0) 代表合作玩家。",
+      "id": "tainted-pair-uses-declared-relation"
     }
   ]
 }

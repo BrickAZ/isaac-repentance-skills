@@ -5,6 +5,18 @@ description: Discover the actual project context of a Binding of Isaac Repentanc
 
 # Isaac Mod Context
 
+## TBD Disclosure Contract
+
+A `TBD` is an unresolved project fact or user decision, not permission to guess.
+
+- Whenever an active `TBD` affects this turn's recommendation, implementation, test plan, or completion claim, label it exactly as **`TBD — user decision required`** and state the consequence of leaving it unresolved.
+- In every response that relies on one or more active `TBD`s, end with a concise **User decisions required** list containing every still-active item. Do not hide a decision inside code, a default value, or an implementation note.
+- Give optional alternatives only as suggestions. Do not choose a balance value, room route, fallback mechanism, asset, dependency, identifier, callback, or persistence policy on the user's behalf.
+- If safe discovery or validation can continue, continue it conditionally while keeping the decision visible. If the next mutation depends on the `TBD`, stop before that mutation and ask the user.
+- Do not create artificial `TBD`s for facts already confirmed by the project or explicitly decided by the user. Once a decision is confirmed, remove it from later reminders.
+
+Read `../isaac-mod-context/references/tbd-disclosure.md` whenever an unresolved fact or user decision remains active.
+
 Use this skill before a generic Isaac skill assumes a mod object name, module
 layout, XML file, language variant, test command, or project-specific profile.
 It discovers facts. It does not choose mechanics, balance values, rewards, or
@@ -20,6 +32,9 @@ From the target mod root, inspect:
    own equivalent. Do not assume all behavior belongs in `main.lua`.
 3. Existing `content/*.xml` files, including items, pools, pockets, entities,
    challenges, costumes, sounds, music, and shaders only when present.
+   Also discover every immediate resource root used by the project, including
+   `resources/` and versioned roots such as `resources-dlc3/`; do not assume
+   there is exactly one.
 4. Actual language variants by grouping files such as `items.xml`,
    `items.<locale>.xml`, and matching pool files. Do not assume English and
    Chinese files exist.
@@ -35,7 +50,9 @@ Before handing work to another skill, output only observed facts:
 ## Isaac Project Context
 
 - Mod root:
-- RegisterMod object(s) and source file:
+- Project archetype: registered Lua mod | resource-only exact-path override | runtime reskin | hybrid
+- Resource root(s) and target-version evidence:
+- RegisterMod object(s) and source file: none is valid for a confirmed resource-only mod
 - Bootstrap/load file(s):
 - Behavior module root(s):
 - Content XML actually present:
@@ -54,7 +71,9 @@ If more than one `RegisterMod` object or module root exists, keep the owner as
 ## Routes
 
 - Generic static validation: `isaac-validators` with the discovered root,
-  mod object name, and Lua directories.
+  optional mod object name, Lua directories, and every discovered resource root.
+- Existing-vanilla reskin, resource-only pack, or exact-path override:
+  `isaac-reskins-resource-overrides`.
 - Project-specific conventions: load that project's profile only after the
   contract confirms the project.
 - Content ownership and multi-surface ordering: use the project's router when
@@ -66,8 +85,9 @@ If more than one `RegisterMod` object or module root exists, keep the owner as
 ## Hard Rules
 
 - Do not invent a `Mod`, `Neverbirth`, `Main`, or other module object name.
-- Do not assume `content/`, `scripts/`, a language pair, or a test directory
-  exists until inspected.
+- Do not assume `main.lua`, `RegisterMod`, `content/`, `scripts/`, a language pair, or a test directory exists until inspected.
+- A project with only `metadata.xml` plus one or more resource roots can be a valid resource-only mod. Do not scaffold Lua or `content/` merely to satisfy a familiar layout.
+- Treat the same relative path under multiple resource roots as a version/load-condition fact to investigate, not an automatic duplicate-file error.
 - Do not infer that a PNG, XML entry, ANM2, or successful render on one native surface proves another surface uses the same chain. Keep every requested native surface as discovered or `TBD`.
 - When a target project/root is available, inspect it before marking its facts
   `TBD`. “Do not assume” means discover actual paths and names; it does not

@@ -1,0 +1,32 @@
+{
+  "skill_name": "isaac-grid-entities",
+  "evals": [
+    {
+      "id": "fixed-world-position-rock",
+      "prompt": "陌生 Isaac 模组想在每个房间中心向右 176 像素生成一块岩石，没有提供房间形状、Grid API、合法位置或失败策略。只写实现合同。",
+      "expected_output": "Treats the fixed world position only as a candidate, requires discovered world-to-grid conversion and live shape/door/occupancy validation, keeps the grid type and no-legal-cell behavior as TBD — user decision required, and does not invent an API signature.",
+      "files": [
+        "skills/isaac-grid-entities/SKILL.md",
+        "skills/isaac-grid-entities/references/grid-lifecycle-contract.md"
+      ]
+    },
+    {
+      "id": "custom-altar-carrier",
+      "prompt": "我要一个固定在格子上的祭坛，有生命值、受击回调、AI 和自定义碰撞。AI 打算注册新的 GridEntityType。请纠正路线。",
+      "expected_output": "Routes the requested HP, AI, callbacks, and custom collision to a normal registered entity unless a declared extension proves a custom-grid contract; rejects inventing a native GridEntityType.",
+      "files": [
+        "skills/isaac-grid-entities/SKILL.md",
+        "skills/isaac-grid-entities/references/grid-lifecycle-contract.md"
+      ]
+    },
+    {
+      "id": "revisit-and-foreign-grid-cleanup",
+      "prompt": "代码离开房间时删除所有同类型网格，回来再按 gridIndex 重建；结果会删掉原版和其他模组的岩石，而且不同房间串状态。审查修复。",
+      "expected_output": "Requires explicit mod ownership plus stable room identity, forbids type-wide cleanup, separates native room persistence from custom serializable intent, and tests revisit/continue without serializing GridEntity userdata.",
+      "files": [
+        "skills/isaac-grid-entities/SKILL.md",
+        "skills/isaac-grid-entities/references/grid-lifecycle-contract.md"
+      ]
+    }
+  ]
+}

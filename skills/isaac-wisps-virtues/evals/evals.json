@@ -1,0 +1,32 @@
+{
+  "skill_name": "isaac-wisps-virtues",
+  "evals": [
+    {
+      "id": "blind-custom-active-wisp",
+      "prompt": "陌生 Isaac 模组新增主动道具，希望持有美德书时生成专属魂火，但没有提供 items.xml、wisps.xml、资源路径、回调或动画名。只写实现合同。",
+      "expected_output": "Requires project discovery and registered local/runtime collectible identity, classifies native versus wisps.xml versus explicit creation authority, leaves count/combat/death decisions as TBD — user decision required, and invents no paths, callback, subtype, or animation.",
+      "files": [
+        "skills/isaac-wisps-virtues/SKILL.md",
+        "skills/isaac-wisps-virtues/references/wisp-virtues-contract.md"
+      ]
+    },
+    {
+      "id": "duplicate-active-use",
+      "prompt": "一个主动道具使用一次会触发两次 use handler，现在原生美德书已经生成魂火，模组又手动 AddWisp，结果出现四个。审查修复。",
+      "expected_output": "Requires a use-flag/event matrix, proves native creation authority, prevents a second manual authority, and tests ordinary, repeated, failed, and scripted uses without guessing exact flag values.",
+      "files": [
+        "skills/isaac-wisps-virtues/SKILL.md",
+        "skills/isaac-wisps-virtues/references/wisp-virtues-contract.md"
+      ]
+    },
+    {
+      "id": "wisp-versus-familiar",
+      "prompt": "我要一个永久跟随玩家、随道具持有数量由 CACHE_FAMILIARS 管理、没有美德书关系的火球宝宝。应该用魂火 skill 吗？",
+      "expected_output": "Routes the permanent cache-owned companion to isaac-familiars and explains that orbiting/fire appearance alone does not establish Book of Virtues or item-wisp identity.",
+      "files": [
+        "skills/isaac-wisps-virtues/SKILL.md",
+        "skills/isaac-wisps-virtues/references/wisp-virtues-contract.md"
+      ]
+    }
+  ]
+}

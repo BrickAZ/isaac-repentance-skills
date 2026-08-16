@@ -5,6 +5,18 @@ description: Design, implement, review, or write handoff prompts for custom play
 
 # Isaac Players And Characters
 
+## TBD Disclosure Contract
+
+A `TBD` is an unresolved project fact or user decision, not permission to guess.
+
+- Whenever an active `TBD` affects this turn's recommendation, implementation, test plan, or completion claim, label it exactly as **`TBD — user decision required`** and state the consequence of leaving it unresolved.
+- In every response that relies on one or more active `TBD`s, end with a concise **User decisions required** list containing every still-active item. Do not hide a decision inside code, a default value, or an implementation note.
+- Give optional alternatives only as suggestions. Do not choose a balance value, room route, fallback mechanism, asset, dependency, identifier, callback, or persistence policy on the user's behalf.
+- If safe discovery or validation can continue, continue it conditionally while keeping the decision visible. If the next mutation depends on the `TBD`, stop before that mutation and ask the user.
+- Do not create artificial `TBD`s for facts already confirmed by the project or explicitly decided by the user. Once a decision is confirmed, remove it from later reminders.
+
+Read `../isaac-mod-context/references/tbd-disclosure.md` whenever an unresolved fact or user decision remains active.
+
 Use this skill for a playable character system, not for a one-off item effect
 that happens to inspect a player.
 
@@ -36,11 +48,14 @@ Use this only when the task explicitly requests a custom heart HUD surface. Read
 - A non-16x16 heart cell requires an explicit user decision or project-owned mapping; otherwise report the mismatch instead of guessing a render route.
 ## Route The Work
 
+- **Existing vanilla character reskin**: when the request changes an existing character without adding a separately selectable identity, do not register a new player type. Route loading, exact-path overrides, runtime actor replacement, and Null Costume compatibility to `isaac-reskins-resource-overrides`.
 - **Registration**: player type, `players.xml`, and character identity.
 - **Native character visuals**: character select, co-op menu, in-run HUD, boss portrait, death screen, costumes, and optional completion marks are separate surfaces. Discover each requested route; use `isaac-anm2-visuals` for ANM2/assets and do not assume one portrait supplies another.
+- **Character art plan**: before generating or commissioning character pixels, use isaac-character-art-surfaces to produce the per-surface matrix and choose pure recolor versus original full skin. Preserve the actual player ANM2 coordinate contract, not the vanilla alpha silhouette by default. Route base body replacement through a discovered `players.xml` `skin`; route independent hair/clothes/horns through a project-proven `type="none"` Null Costume only when its ANM2, priority, and Add/Remove lifecycle are discovered. Keep portrait, name image, select, co-op, and death art separate.
 - **Starting kit**: starting collectibles, trinkets, cards, pills, health, and
   active slots. Use `isaac-cards-pockets` or `isaac-rewards-pickups` for the
   owned content surfaces.
+- **Base and runtime stats**: distinguish values supplied by discovered player registration/configuration from character-identity cache modifiers. This skill owns the character identity/stat contract; route only callback registration and return details to `isaac-callback-contracts`, while reusing the idempotent cache discipline documented by `isaac-passive-collectibles`. Do not repeatedly mutate stats from player init or update callbacks.
 - **Character mechanic**: callback choice and gameplay semantics belong to
   `isaac-mechanic-contracts` and `isaac-callback-contracts`.
 - **Per-player state**: co-op, twins, death, revive, and reset rules belong to
@@ -53,6 +68,8 @@ Use this only when the task explicitly requests a custom heart HUD surface. Read
 
 - Resolve a player type from a registered project name; never invent a raw
   type id or assume a tainted variant exists.
+- Resolve normal and tainted/alternate player types from their actual registered names and discovered XML relation. Never infer the alternate as `normalType + 1` or another numeric offset.
+- Evaluate identity and state for each actual callback player. `Isaac.GetPlayer(0)` is not a co-op ownership strategy.
 - Keep character state per actual player. Do not use one global flag for a
   co-op character mechanic.
 - State whether a starting grant happens on new run, continue, revive, or
@@ -67,6 +84,7 @@ Use this only when the task explicitly requests a custom heart HUD surface. Read
   third-party mod unless the project explicitly declares that dependency.
 - Do not invent starting items, health, Birthright behavior, or a tainted
   counterpart when the user has not decided them.
+- Keep user-specified starting/base stat values locked. When a stat is implemented through cache evaluation, derive an idempotent contribution from the actual callback player and current character identity, request only the affected cache flags on an identity/state transition, and test new run, continue, revive, and two-player isolation. A one-time visible value is not proof that cache refresh or reconstruction is correct.
 - In an unknown project, use semantic state labels, not invented variable
   names, XML attributes, or implementation keys. Concrete field names come
   only from discovered code.
@@ -79,6 +97,7 @@ Use this only when the task explicitly requests a custom heart HUD surface. Read
 - Registered player type and source:
 - Tainted/alternate variant:
 - Starting-kit grant boundary:
+- Base-stat source and cache-refresh route:
 - Character mechanic and sibling skills:
 - Per-player state owner and reset points:
 - Costume/visual route:

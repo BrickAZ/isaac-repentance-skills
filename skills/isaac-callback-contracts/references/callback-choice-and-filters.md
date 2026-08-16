@@ -17,6 +17,12 @@ Choose callbacks by the event in the Mechanic Contract, not by the content's nam
 
 Use the callback registration filter when the API supports it. Keep additional semantic guards in the handler, because registration filters rarely express item ownership, challenge gate, damage source, or state lifetime completely.
 
+A registration filter narrows delivery; it does not rewrite the callback's handler signature or parameter order. Verify the exact callback signature first, then pass the filter in the registration position documented by the discovered API/project pattern. Test one matching and one non-matching delivery instead of inferring correctness from a registration line.
+
 ## Timing Rule
 
 Write down whether the mechanic needs to act before an event, at the event, after the event, or once per frame. Do not substitute a frame update for an event callback merely because it is easier to find.
+
+Do not treat callback count as elapsed real time without runtime evidence. Update, player-update, render, animation-event, and room-frame clocks can pause, repeat, or diverge; route duration semantics to `isaac-state-lifecycle`.
+
+For `MC_EVALUATE_CACHE`, keep the handler idempotent: inspect the delivered cache flag, derive the contribution from current ownership/count/state, and request only affected flags when a cache-relevant transition becomes dirty. Do not call `EvaluateItems` every frame or accumulate the same bonus on every cache pass.

@@ -5,6 +5,18 @@ description: Add, review, or debug optional External Item Descriptions (EID) int
 
 # Isaac EID Compatibility
 
+## TBD Disclosure Contract
+
+A `TBD` is an unresolved project fact or user decision, not permission to guess.
+
+- Whenever an active `TBD` affects this turn's recommendation, implementation, test plan, or completion claim, label it exactly as **`TBD — user decision required`** and state the consequence of leaving it unresolved.
+- In every response that relies on one or more active `TBD`s, end with a concise **User decisions required** list containing every still-active item. Do not hide a decision inside code, a default value, or an implementation note.
+- Give optional alternatives only as suggestions. Do not choose a balance value, room route, fallback mechanism, asset, dependency, identifier, callback, or persistence policy on the user's behalf.
+- If safe discovery or validation can continue, continue it conditionally while keeping the decision visible. If the next mutation depends on the `TBD`, stop before that mutation and ask the user.
+- Do not create artificial `TBD`s for facts already confirmed by the project or explicitly decided by the user. Once a decision is confirmed, remove it from later reminders.
+
+Read `../isaac-mod-context/references/tbd-disclosure.md` whenever an unresolved fact or user decision remains active.
+
 EID is optional presentation integration. Core gameplay, XML localization, and
 other description paths must work without it.
 
@@ -32,6 +44,11 @@ other description paths must work without it.
 - Test both branches: EID absent causes no error; EID present receives only the
   expected registrations, once each.
 
+## Bundled Offline Reference
+
+Read `references/eid-api-contract.md` before choosing an EID registration or
+late-load strategy. It records maintainer-documented common calls and their
+guard boundaries, but the installed EID build remains authoritative.
 ## Required Output
 
 ```markdown

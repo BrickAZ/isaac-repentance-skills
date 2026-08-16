@@ -5,40 +5,100 @@
       "id": 1,
       "prompt": "新主动道具按了没反应，你不要直接猜修法，先给我调试路线。",
       "expected_output": "Triages id lookup, callback registration, ownership, active slot, charge/use return, state and tests before proposing a fix.",
-      "files": []
+      "files": [
+        "skills/isaac-testing-debugging/SKILL.md"
+      ]
     },
     {
       "id": 2,
       "prompt": "一个挑战规则退出挑战后还在普通局生效，怎么查？",
       "expected_output": "Checks challenge gate, state lifecycle cleanup, callback scope, continued save behavior, and proposes static/scripted/in-game verification.",
-      "files": []
+      "files": [
+        "skills/isaac-testing-debugging/SKILL.md"
+      ]
     },
     {
       "id": 3,
       "prompt": "贴图不显示，但 XML 看起来有路径，你帮我证明到底哪里坏了。",
       "expected_output": "Uses validator, anm2 visual checks, animation names, asset existence, render/load owner, and states which parts require in-game verification.",
-      "files": []
+      "files": [
+        "skills/isaac-testing-debugging/SKILL.md"
+      ]
     },
     {
       "id": 4,
       "prompt": "静态校验全通过，但新实体进游戏后完全不动。你能不能直接说已经修好了？",
       "expected_output": "Refuses to claim a fix from static success; routes to entity callbacks and a behavior test or in-game reproduction for registration, update delivery, owner/filter, and removal behavior.",
-      "files": []
+      "files": [
+        "skills/isaac-testing-debugging/SKILL.md"
+      ]
     },
     {
       "id": 5,
       "prompt": "陌生模组没有 tests/ 目录，入口在 src/init.lua。一个新卡牌生成后没有效果，调试前不应该假设什么？",
       "expected_output": "应该先用 isaac-mod-context 发现加载、验证和可用测试入口；不能假设 tests/ 或 main.lua，然后按卡牌 id、注册、生成 owner、回调和最小复现分层验证。",
       "files": [
-        "docs/skills/isaac-mod-context/SKILL.md",
-        "docs/skills/isaac-testing-debugging/SKILL.md"
+        "skills/isaac-mod-context/SKILL.md",
+        "skills/isaac-testing-debugging/SKILL.md"
       ]
     },
     {
       "id": "cross-surface-visual-proof",
       "prompt": "静态检查确认自定义角色的角色选择头像文件存在，但合作菜单头像空白。如何验证？",
       "expected_output": "建立角色选择与合作菜单的独立 surface matrix；不把选择页通过当作合作菜单通过；分别查资源/ANM2/注册并要求游戏内检查。",
-      "files": []
+      "files": [
+        "skills/isaac-testing-debugging/SKILL.md"
+      ]
+    },
+    {
+      "id": "engine-value-test-double-fidelity",
+      "prompt": "本地 Lua 测试通过，但实机 Isaac.Spawn 报 Vector expected, got table。测试桩只记录 Spawn 被调用过。如何排查和补测试？",
+      "expected_output": "Separates current-code/current-test execution proof from an old or stale fixture claim; requires the test double to model the discovered Vector call shape, reject table lookalikes at the Spawn boundary, exercise the exact spawn path, and leaves actual engine representation as discovered/in-game evidence rather than guessing it.",
+      "files": [
+        "skills/isaac-testing-debugging/SKILL.md"
+      ]
+    },
+    {
+      "id": "room-door-topology-test-matrix",
+      "prompt": "本地测试把每个门位置都模拟成房间内且无碰撞，结果实机日志说 no legal position for portal。要怎样补测试和报告？",
+      "expected_output": "Requires a legal-candidate matrix covering normal adjacency/valid door slot, blocked or invalid slot, no candidate, and debug-room-versus-normal-floor topology; verifies no portal and no success consumption when none is valid, and requires an in-game normal-floor check.",
+      "files": [
+        "skills/isaac-testing-debugging/SKILL.md"
+      ]
+    },
+    {
+      "id": "black-matte-pedestal-triage",
+      "prompt": "自定义收藏品在房间里显示正常大小，但每个物体背后都有整齐黑色方块。没有代码或资源文件。只给我调试路线。",
+      "expected_output": "应先确定是 native colored collectible gfx 还是其他 surface；要求解码最终 PNG alpha、四角/边界、分辨黑描边与矩形 matte、确认 gfxroot+gfx 指向该文件，并用正常底座游戏内复现。不得先改 Lua。",
+      "files": [
+        "skills/isaac-testing-debugging/SKILL.md"
+      ]
+    },
+    {
+      "id": "subject-mask-three-background-debug",
+      "prompt": "贴图在黑色预览背景上看起来没问题，进游戏后却出现方形暗底。没有文件可读，只写验证步骤。",
+      "expected_output": "应要求解码 alpha、建立主体 mask、检测内嵌低亮度矩形而非仅 RGB=0/四角，并在浅灰棋盘、白色、房间近似色和目标原生游戏 surface 上逐帧/逐表面验证。",
+      "files": [
+        "skills/isaac-testing-debugging/SKILL.md"
+      ]
+    },
+    {
+      "id": "character-decoration-static-pass-visual-fail",
+      "prompt": "自定义普通头发挂饰通过了 PNG、alpha、ANM2、锚点和帧间一致性测试，但游戏 1x 叠加图看起来像大头套。测试作者说自动测试全绿，所以美术可以交付。请给出判定与后续验证。",
+      "expected_output": "应拒绝用自动测试替代视觉判断；分开技术 verdict 与视觉 verdict，以匹配原版头部的四方向 1x 叠加为最终比例证据，4x 只看像素；普通头发若封闭、过大或板状则失败并重画，不能靠全绿测试宣布完成。",
+      "files": [
+        "skills/isaac-testing-debugging/SKILL.md"
+      ]
+    },
+    {
+      "id": "audio-pcall-static-pass-runtime-silence",
+      "prompt": "测试桩确认自定义声音 id 存在，pcall(SFXManager.Play) 也成功，所以 Agent 宣布声音已经修复；但是没有读取最新 log.txt，也没有进游戏听。这个结论成立吗？",
+      "expected_output": "结论不成立。应把 XML/路径/容器/编码静态检查、id 与调用参数的脚本分发检查、当前复现后的最新日志加载/解码结果、以及可听的游戏内播放分成四层。pcall 或 no-throw stub 不能证明 Isaac 打开、解码或输出声音。",
+      "files": [
+        "skills/isaac-testing-debugging/SKILL.md",
+        "skills/isaac-testing-debugging/references/verification-layers.md",
+        "skills/isaac-audio-render-feedback/references/sfx-music.md"
+      ]
     }
   ]
 }
