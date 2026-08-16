@@ -6,7 +6,7 @@
       "prompt": "每层第一次进入普通房时，若没有 Boss，则把一个石头替换为奖励门；离开房间后规则不能影响其他房。请先写房间合同。",
       "expected_output": "应该分离房间选择、目标验证和 mutation；定义每层/每房 state 与 reset；不假设房间 XML 或 door API 路径，并将奖励交给 rewards-pickups。",
       "files": [
-        "docs/skills/isaac-rooms-stages/references/room-stage-contract.md"
+        "skills/isaac-rooms-stages/references/room-stage-contract.md"
       ]
     },
     {
@@ -14,7 +14,7 @@
       "prompt": "普通局结束挑战后，特殊房间替换逻辑仍在下一局生效。该从哪里查？",
       "expected_output": "应该检查挑战 gate、room/floor/run state owner、new game cleanup 和保存边界；不能只在 MC_POST_NEW_ROOM 里加更多条件。",
       "files": [
-        "docs/skills/isaac-rooms-stages/SKILL.md"
+        "skills/isaac-rooms-stages/SKILL.md"
       ]
     },
     {
@@ -22,7 +22,7 @@
       "prompt": "项目没有声明 StageAPI，但代码 Codex 说做特殊房必须先依赖它。",
       "expected_output": "应该先寻找官方房间/楼层 API 与项目已有 loader；StageAPI 只能在项目已声明或用户明确要求时走 required/optional 分流，不能默认新增。",
       "files": [
-        "docs/skills/isaac-compat-descriptions/SKILL.md"
+        "skills/isaac-compat-descriptions/SKILL.md"
       ]
     },
     {
@@ -30,14 +30,24 @@
       "prompt": "本层第一次符合条件的房间选中了目标，但 mutation 前目标被另一机制移除了。该层的 once flag 怎么处理？",
       "expected_output": "应该保留原有内容或安全跳过，并且不提交成功 flag；尝试记录与成功记录分开，是否重试由用户决定。",
       "files": [
-        "docs/skills/isaac-rooms-stages/SKILL.md"
+        "skills/isaac-rooms-stages/SKILL.md"
       ]
     },
     {
       "id": "debug-room-is-not-topology",
       "prompt": "我在 goto s.default.2 进入 ROOM_DEBUG_IDX=-3 的调试房。翻页只是重进这个房间，但我想生成两个相连展厅和中间门；能否直接在固定 Y 偏移处调用一个看起来合适的开门 API？",
       "expected_output": "Rejects treating a negative/debug goto room or reload as proof of normal map adjacency; requires discovered normal-floor room/grid/door-slot facts and legal-candidate generation, preserves state when none exists, and marks a real normal-floor connection test as required.",
-      "files": []
+      "files": [
+        "skills/isaac-rooms-stages/SKILL.md"
+      ]
+    },
+    {
+      "expected_output": "Routes GridEntity placement, legality, destruction and revisit persistence to isaac-grid-entities; rooms-stages is only a companion when room selection or topology is also involved.",
+      "prompt": "房间已经选定，只需要在合法格子生成可破坏岩石并保证重进房间状态正确。rooms-stages 是否仍是 primary？",
+      "files": [
+        "skills/isaac-rooms-stages/SKILL.md"
+      ],
+      "id": "grid-entity-boundary"
     }
   ]
 }

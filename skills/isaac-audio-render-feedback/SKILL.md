@@ -1,6 +1,6 @@
 ---
 name: isaac-audio-render-feedback
-description: Add, review, or write handoff prompts for audiovisual feedback in Binding of Isaac Repentance mods. Use this whenever a task mentions sounds.xml, SFX, music.xml, shaders.xml, MC_GET_SHADER_PARAMS, MC_POST_RENDER, overlays, screen-space rendering, world-space rendering, input blocking, black-screen risk, render layers, or feedback effects that are not just anm2 hookup. Also use isaac-state-lifecycle when feedback has enable/disable state, timers, cached sprites, or input-lock release conditions. 中文触发：音效、BGM、音乐、shader、滤镜、全屏特效、渲染、屏幕叠层、输入拦截、黑屏、反馈效果。
+description: Add, review, debug, or write handoff prompts for audiovisual feedback in Binding of Isaac Repentance mods. Use this whenever a task mentions sounds.xml, custom SFX, silent or undecodable audio, OGG/WAV routing, SFXManager, music.xml, MusicManager, shaders.xml, MC_GET_SHADER_PARAMS, MC_POST_RENDER, overlays, screen-space rendering, world-space rendering, input blocking, black-screen risk, render layers, or feedback effects that are not just anm2 hookup. Also use isaac-state-lifecycle when feedback has enable/disable state, timers, cached sprites, or input-lock release conditions. 中文触发：音效、无声、音频解码、OGG、WAV、SFXManager、BGM、音乐、MusicManager、shader、滤镜、全屏特效、渲染、屏幕叠层、输入拦截、黑屏、反馈效果。
 ---
 
 # Isaac Audio Render Feedback
@@ -58,6 +58,9 @@ Before editing or writing a prompt:
   enemy size bands, Boss differences, ANM2 pivot, and in-game checks. A single
   fixed Y offset is not a general solution.
 - Register sounds/shaders in XML and verify the referenced asset path exists.
+- Keep the playback route aligned with the asset role: a short custom sound uses the discovered `sounds.xml`/SFX registration and `SFXManager`; music uses the discovered `music.xml` registration and `MusicManager`. Do not move a one-shot sound into the music system merely because an OGG decodes there.
+- For ordinary Repentance without a project-proven alternate loader, use uncompressed PCM WAV as the high-priority default for custom SFX. Treat OGG or another compressed SFX asset as unverified until the target runtime or an established project example proves that exact `sounds.xml` route; music OGG support is not SFX OGG proof.
+- A successful `pcall(SFXManager.Play, ...)`, a no-throw Lua stub, or a recorded call proves only Lua dispatch. It does not prove that Isaac opened, decoded, or audibly played the file. Require the latest game log and an audible in-game trigger check before reporting playback success.
 
 ## Self-Contained Fallback
 
@@ -75,6 +78,10 @@ third-party mod checkout.
 - Trigger:
 - Lifetime:
 - SFX/music assets:
+- Registration XML, playback manager, and resolved runtime id:
+- Container/codec and target-loader evidence:
+- Latest game-log load/decode result:
+- Audible in-game trigger result:
 - Shader name and params:
 - Render callback:
 - Coordinate space:
@@ -97,3 +104,4 @@ Before saying the feedback is complete, report:
 - Coordinate space and render owner.
 - Input blocking and release condition.
 - Shader/SFX behavior that still needs in-game verification.
+- For audio, which evidence was static, scripted dispatch, game-log loading/decoding, and audible in-game playback.

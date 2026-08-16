@@ -52,7 +52,7 @@ Read the relevant reference before writing the contract:
 - Card/rune/pill generation or use: use `isaac-cards-pockets`.
 - Registered entity, collision, HP, or AI: use `isaac-entities`.
 - Challenge-only gating: use `isaac-challenges`.
-- Custom room, stage, dimension, or vanilla-like room flow: use `isaac-rooms-stages` after deciding independent replica versus proven native reuse.
+- Custom room/stage/door flow: use `isaac-rooms-stages`; a multi-room owned area uses `isaac-room-networks`; a game-level Dimension uses `isaac-dimensions`. Decide independent replica versus proven native reuse first.
 - State storage, keying, reset, or save/reload: use `isaac-state-lifecycle` after the contract defines the states.
 - Active-item charge, slot, held input, or temporary UI: use `isaac-active-item-mechanics` as a shell helper after the mechanic is clear.
 - Costume, Lua sprite, ANM2, sound, shader, or render: use the visual/audio skills as secondary surfaces.

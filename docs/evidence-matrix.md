@@ -1,68 +1,88 @@
 # Reference Evidence Matrix
 
-This is a maintainer audit, not a runtime dependency list. YSD and Reverie are
-evidence sources only. Every shipped skill must default to official Isaac APIs
-and target-project discovery.
+This is a maintainer audit, not a runtime dependency list. The bundled skills
+must work after download without any reference mod on the user's computer.
+Reference mods teach and challenge the rules; official Isaac APIs plus the
+target project's discovered files remain the default authority.
 
-| Skill | Real evidence | Extractable invariant | Status |
+## Evidence Sources And Polarity
+
+| Source | Positive evidence | Counterexample or limit | Use |
 | --- | --- | --- | --- |
-| active-item-mechanics | `ysd/scripts/items/untuned_piano.lua`; Reverie item scripts | Input/charge/UI state must have an explicit owner and cleanup path. | Direct |
-| anm2-visuals | Both mods contain shipped ANM2 assets in `resources*/gfx`. | Asset path and animation names must be read, never guessed. | Direct |
-| audio-render-feedback | Both `content/sounds.xml`, `content/shaders.xml`; YSD renderer files. | Audio/render use declared resources and callback-specific coordinate space. | Direct |
-| callback-contracts | YSD `main.lua`; Reverie `debug/callback_measuring.lua`. | Callback timing, filter, and return value are separate contracts. | Direct |
-| cards-pockets | YSD `scripts/pockets/soul_of_ysd.lua`; Reverie `scripts/pockets/*`. | Pocket ownership and use routes are content-specific. | Direct |
-| challenges | Both `content/challenges.xml`; YSD `scripts/challenges/endless_r.lua`. | Challenge gates need dedicated lifecycle cleanup. | Direct |
-| compat-descriptions | YSD EID assets; Reverie compatibility modules. | Optional integrations must be guarded and never become defaults. | Direct |
-| config-options | Reverie `compatilities/mod_config_menu.lua`. | Optional configuration needs a no-library fallback. | Direct, Reverie only |
-| entities | Both `content/entities2.xml` and matching scripts/assets. | Registered identity and owned runtime markers must agree. | Direct |
-| familiars | YSD familiar ANM2 assets; Reverie item/familiar scripts. | Familiar behavior needs owner proof and per-player counts. | Direct |
-| item-economy | Both `content/itempools.xml` and items XML. | Pool membership, weight, tags, and quality are distinct decisions. | Direct |
-| collectibles | Both extensive `scripts/items/*` trees. | Base passive behavior must be distinct from combined effects. | Direct |
-| item-synergies | Reverie has cross-content item/trinket systems, but no audited exact passive-plus-trinket fixture yet. | Only the general combination contract is supported; do not claim a copied template. | Partial |
-| localization-runtime | Both ship localized content/resource surfaces. | Discover actual languages and optional translation layers. | Direct |
-| mechanic-contracts | Both contain items, challenges, player, and enemy mechanics. | Define trigger, exclusion, success, and cleanup before callback choice. | Direct |
-| mod-architecture | YSD uses a compact scripts tree; Reverie uses a broad modular scripts tree. | Discover the local authority module; do not force either layout. | Direct |
-| mod-context | Both prove layouts differ substantially. | Project discovery precedes specialist assumptions. | Direct |
-| npc-boss-ai | Reverie `scripts/monsters/*` and custom monster ANM2 assets. | Per-instance phase/target state cannot be global. | Direct, Reverie only |
-| players-characters | Both `players.xml` and `scripts/players/*`. | Character state must be player-owned and co-op-safe. | Direct |
-| projectile-combat | YSD projectile assets/scripts; Reverie custom tear assets and item scripts. | Explicit marker/source proof beats type-only ownership guesses. | Direct |
-| reroll-removal-contracts | Both have replacement/spawn-heavy mechanics; `skill-test` GoodGirl repair supplies executable proof. | Observe changes separately from idempotent owned-state reconciliation. | Direct plus test proof |
-| rewards-pickups | Reverie `scripts/pickups/*`; both use item pools/spawn paths. | Candidate selection and safe spawn/replacement are separate. | Direct |
-| rooms-stages | Reverie `scripts/rooms/*` and `shared/room_gen.lua`. | Selection attempt and committed room mutation need separate state. | Direct, Reverie only |
-| state-lifecycle | Both use update/new-room/new-level callbacks. | State needs owner, reset boundary, and serialization decision. | Direct |
-| testing-debugging | Reverie `debug/callback_measuring.lua`; neither mod has a formal tests tree. | Debug code is evidence of instrumentation only; automated tests need independent authority. | Partial |
-| trinkets | Reverie `scripts/trinkets/*`; YSD has no trinket implementation surface. | Golden/count behavior and holder scope need explicit rules. | Direct, Reverie only |
-| unlocks-progression | YSD unlock renderer; both content/progression surfaces. | Completion, grant, availability, and UI notification are separate. | Direct |
-| validators | No reference-mod authority. Official XML/API rules and local validators are authoritative. | Static checks cannot prove gameplay behavior. | Official/test only |
+| `ysd` | Compact item/card/challenge/player code; guarded EID and optional CuerLib translation; ANM2, sound and shader resources. | Compact `main.lua`-centric wiring is not a required architecture; CuerLib remains optional unless the target declares it. | Positive and mixed |
+| `reverie` | Broad modular items, trinkets, entities, rooms, players, EID, MCM, StageAPI and CuerLib-backed localization. | CuerLib is this mod's declared dependency, not a generic default; duplicate `achievement` in `resources/players.xml` is invalid/counterexample evidence. | Positive and mixed |
+| `benighted soul` | Explicit REPENTOGON dependency, characters, achievements, callbacks, XML, shaders, rooms and entities. | REPENTOGON APIs are valid only on an opted-in/version-proven path; duplicate `chargetype` in `content/items.xml` is strict-invalid XML evidence. | Positive and mixed |
+| `samael` | Strong character, completion-mark, unlock, pocket-active, room, entity, EID-synergy and options examples. | Project-specific frameworks and identifiers cannot be copied into generic output. | Positive |
+| `fancy costumes_` | Resource-only exact-path costume overrides with no invented Lua carrier. | Narrow reskin evidence; it does not prove general gameplay or registration contracts. | Positive, narrow |
+| `reimu_keeper_` | Optional EID guard and familiar/character visual surfaces. | `ReplaceSpritesheet`/`LoadGraphics` in familiar update and broad mutable state are hot-path/lifecycle counterexamples. | Mixed |
+| `! nazrin_isaac_` | Small character/resource example. | `Sprite:Load` in render and broad globals are performance/ownership counterexamples. | Mixed |
+| `josuke_` | Character and mechanic integration in a small package. | Repeated `Isaac.GetPlayer(0)` and monolithic globals are co-op/state counterexamples. | Mixed |
+| `elijah_2928427707` | Compact character, familiar, status, grid, card, item and full player-art surface implementation. | Jam-scale project conventions and identifiers are local evidence, not generic defaults. | Positive and mixed |
+| `big_dog_brimstone_3756709057` | Narrow charge-attack sound state, release feedback and optional MCM integration. | Audio-only tweak; its supported attack list and timing are not general gameplay contracts. | Positive, narrow |
+| `!cuerlib` | Real declared library surface used by Reverie and optionally detected by YSD. | It is a library, not a generic project layout, default dependency, or official API replacement. | Dependency-boundary evidence |
+
+## Per-Skill Classification
+
+| Skill | Positive evidence | Counterexample or limit | Extracted invariant | Status |
+| --- | --- | --- | --- | --- |
+| `isaac-active-item-mechanics` | YSD `Untuned Piano`; Reverie and Samael active/pocket-active implementations. | Mechanisms differ too much for a universal behavior template. | Separate use result, charge/slot ownership, UI/input, failure consumption and lifecycle. | Direct |
+| `isaac-anm2-visuals` | ANM2/PNG assets across YSD, Reverie, Benighted Soul, Samael and character packs. | Animation names, crop rectangles, pivots and paths differ by actual file. | Parse the shipped ANM2; never guess animation/layer/path or confuse atlas canvas with visible size. | Direct |
+| `isaac-audio-render-feedback` | YSD/Reverie/Benighted Soul/Samael plus Big Dog charge/release sounds, shaders and render modules. | Manual Sprite render coordinates and extension shaders are context/version sensitive. | Discover resource declarations, world/screen coordinates, owner, render layer and cleanup separately. | Direct |
+| `isaac-callback-contracts` | YSD and Reverie callback registration; Reverie callback instrumentation. | Nazrin/Reimu/Josuke show globals and high-frequency work that must not be copied. | Verify callback, optional filter, parameters, return semantics, timing and registration idempotency independently. | Mixed |
+| `isaac-cards-pockets` | YSD pocket scripts; Reverie pockets; Samael pocket-active work. | A spawnable numeric subtype is not proof of meaningful registered content. | Resolve registered IDs, block only invalid local results, preserve foreign mod content, and own pocket state per player. | Direct |
+| `isaac-challenges` | YSD/Reverie challenge XML and scripts; Benighted Soul challenge/callback surfaces. | Character, seed, rules and unlock semantics are project decisions. | Separate XML registration, run modifiers, completion, reward and restart/continue cleanup. | Direct |
+| `isaac-character-art-surfaces` | Fancy Costumes plus Reimu/Nazrin/Josuke/Elijah/YSD/Reverie/Samael/Benighted character atlases and null costumes. | Reference silhouettes vary; full-alpha equality is valid only for pure recolors. | Preserve atlas/crop/pivot/foot contracts while allowing controlled within-cell original silhouettes. | Mixed |
+| `isaac-collectible-registration` | Items XML, localized names, icons and runtime lookup throughout YSD/Reverie/Benighted/Samael. | Benighted duplicate `chargetype` and any hard-coded post-vanilla global ItemConfig number are counterexamples. | Require a unique stable XML-local `id`; resolve runtime ID by registered name/API and keep it distinct. | Mixed |
+| `isaac-compat-descriptions` | YSD guarded EID/CuerLib; Reverie EID plus optional integrations; Samael/Reimu EID guards. | Optional libraries are not default dependencies and exact APIs vary. | Core mechanics/localization survive without the optional presentation layer. | Direct |
+| `isaac-config-options` | Reverie MCM compatibility and Samael options/DSS surfaces. | A menu library must not own the mod's only copy of state. | Discover config owner/default/persistence first; UI adapters are guarded and idempotent. | Direct |
+| `isaac-curses-run-modifiers` | Reverie curse systems and Benighted callback/run modifiers. | No single curse implementation proves all stacking/continue semantics. | Define scope, bitmask/priority, persistence and cleanup before callback choice. | Partial |
+| `isaac-damage-health-contracts` | Damage/health behavior across YSD, Reverie, Benighted and Samael. | Broad damage callbacks can self-trigger, cancel foreign damage or bind player zero. | Lock source, target, flags, recursion guard, return semantics and per-player ownership. | Direct |
+| `isaac-dimensions` | Reverie/Benighted room and stage machinery provides adjacent lifecycle evidence. | No audited reference supplies a portable, isolated Dimension template. | Treat Dimension identity, entry/exit, descriptor ownership and compatibility as explicit project/API facts. | Partial |
+| `isaac-eid-compat` | YSD, Reverie, Samael and Reimu guard EID. | Load order and APIs differ; EID is absent in valid installations. | Check runtime global/version, resolve this mod's IDs, register once, and preserve no-EID behavior. | Direct |
+| `isaac-entities` | `entities2.xml`, matching ANM2 and entity scripts in YSD/Reverie/Benighted/Samael. | Type/variant names and spawnability alone do not prove a useful entity. | Registration, runtime identity, resource path, owner marker, collision/damage and cleanup must agree. | Direct |
+| `isaac-familiars` | YSD/Reverie/Elijah familiars and Reimu familiar visual logic. | Reimu hot-path graphics reload and player-zero assumptions are counterexamples; Book of Virtues item wisps require their own source/subtype contract. | Use registered variant, owner/player, cache count, per-instance state and lifecycle-safe visuals; route item wisps separately. | Mixed |
+| `isaac-grid-entities` | YSD/Reverie/Samael/Benighted/Elijah grid access, collision and room-obstacle code; CuerLib grid helpers as dependency-bound evidence. | Fixed world offsets, debug rooms, immediate read-after-write and library helpers are not portable legality proof. | Separate grid index from world/map coordinates, validate live room cells, preserve foreign grids, and define destruction/revisit state. | Mixed |
+| `isaac-hud-ui-state` | YSD unlock/UI rendering; Samael completion/UI; Reverie HUD and menus. | HUD coordinates and player ownership differ in co-op and render contexts. | Separate screen-space layout, input, per-player state, pause/menu lifecycle and presentation-only behavior. | Direct |
+| `isaac-item-economy` | Item pools, qualities, tags and unlock surfaces in YSD/Reverie/Benighted/Samael. | Reference values are not universal balance authority. | User decisions win; otherwise give labeled suggestions and audit pool, weight, quality, tags and unlock availability separately. | Direct |
+| `isaac-item-synergies` | Reverie cross-content systems and Samael EID/mechanic synergies. | Similar item names or possession checks do not prove ownership or intended stacking. | Define participants, base behavior, combined delta, ordering, removal and repeated evaluation. | Direct |
+| `isaac-localization-runtime` | YSD XML plus optional CuerLib enhancement; Reverie declared CuerLib translation framework; Samael/Benighted localized surfaces. | CuerLib cannot be assumed for generic users. | Prefer official discovered locale/XML paths; use declared libraries only behind exact capability checks. | Mixed |
+| `isaac-mcm-compat` | Reverie MCM module. | Other refs use different options systems or none; MCM forks/version surfaces differ. | Guard the actual `ModConfigMenu` API and keep the mod's own config state authoritative. | Direct, narrow |
+| `isaac-mechanic-contracts` | Mechanics across all gameplay references. | A similar visual outcome may use different native/effect mechanisms. | Define trigger, owner, exclusions, success/failure, native behavior boundary, persistence and cleanup before code. | Direct |
+| `isaac-mod-architecture` | Compact YSD, modular Reverie/Benighted/Samael and monolithic small character mods. | No layout is universal; globals/one-file code show maintainability risks. | Discover the current authority module and extend its pattern without imposing a reference layout. | Mixed |
+| `isaac-mod-context` | All nine sources differ in roots, bootstraps, dependencies and content surfaces. | A folder inventory is not proof of runtime availability or semantic authority. | Discover real root, RegisterMod, entrypoints, registration, resources, dependencies and tests before implementation. | Direct |
+| `isaac-npc-boss-ai` | Reverie monster tree plus Benighted/Samael custom entities. | Shared globals and type-only targeting are unsafe across multiple instances. | Keep phase, target, cooldown, RNG and cleanup per entity; validate entity/owner existence. | Direct |
+| `isaac-passive-collectibles` | Extensive passive items in YSD/Reverie/Benighted/Samael. | Registration alone does not define cache flags, damage contracts or synergies. | Resolve the registered ID, define base passive delta, cache invalidation, repeated evaluation and removal. | Direct |
+| `isaac-performance-hotpaths` | Reverie instrumentation and modular callbacks provide positive patterns. | Nazrin render-time `Sprite:Load` and Reimu update-time graphics reload are direct counterexamples. | Flag expensive work only inside proven high-frequency handlers; cache immutable resources and measure before claiming improvement. | Mixed |
+| `isaac-players-characters` | Players XML and player modules in YSD/Reverie/Benighted/Samael and character packs. | Josuke player-zero access and broad globals are co-op counterexamples. | Resolve actual player/type, own state per player/twin, separate registration/art/unlocks and test co-op/continue. | Mixed |
+| `isaac-projectile-combat` | YSD projectile assets/scripts; Reverie/Benighted/Samael tears, lasers and entity combat. | Type-only scans can capture foreign projectiles. | Require source/owner marker, exact callback scope, collision/damage contract and recursion/lifecycle cleanup. | Direct |
+| `isaac-repentance-router` | Cross-skill coverage is validated by this matrix and repository audit tests. | Reference mods cannot prove a dispatcher implementation. | Route by requested behavior and discovered capability, naming every shipped specialist without adding dependencies. | Methodology only |
+| `isaac-repentogon-compat` | Benighted Soul explicitly declares and guards REPENTOGON; other refs supply vanilla/optional contrasts. | Latest web docs or Benighted code do not prove the user's installed version. | Require explicit opt-in, runtime global/version proof, exact installed signature and absent/insufficient/sufficient branches. | Direct, dependency-bound |
+| `isaac-reroll-removal-contracts` | Replacement/spawn-heavy item mechanics in YSD/Reverie/Benighted/Samael. | Spawn events alone do not prove final inventory state or ownership. | Observe state changes separately from idempotent reconciliation; preserve foreign content and test reroll/removal/continue. | Direct |
+| `isaac-reskins-resource-overrides` | Fancy Costumes exact-path resource-only overrides; character packs and large mods show costume alternatives. | Invented `_mystuff.png` files and alpha-channel-only validation are counterexamples. | Identify the exact visual surface first, preserve path/atlas contract, and validate alpha/background per rendered frame. | Direct |
+| `isaac-rewards-pickups` | Reverie pickups/rewards; pools and spawn paths across major refs. | Numeric subtype ranges and broad Morph/Spawn can erase foreign mod rewards. | Separate candidate selection, registered content validation, spawn/replacement ownership, deduplication and failure preservation. | Direct |
+| `isaac-rng-determinism` | Seeded item/room/reward behavior throughout YSD/Reverie/Benighted/Samael. | Reference outcomes do not prove seed source or advancement policy. | Discover intended RNG owner, seed and advancement; never mix cosmetic/global randomness into gameplay decisions. | Partial |
+| `isaac-shops-deals-pricing` | YSD/Reverie/Benighted/Samael live pickup prices, discounts, deal costs, purchase callbacks and restock-related behavior. | Pool membership and displayed price do not prove buyer, payment, delivery, or rollback correctness. | Use one buyer-scoped price authority, preserve native payment, make custom transactions atomic, and invalidate stale state on reroll/restock. | Direct |
+| `isaac-room-networks` | Samael Ferryman/extra rooms and Reverie room generation/transition systems. | Debug-room `goto`, negative indices, immediate descriptor reads and door deletion are not a connected network. | Preflight legal slots/doors, commit one mutation at a time, verify descriptors on the correct lifecycle tick, and preserve failure behavior. | Mixed |
+| `isaac-rooms-stages` | Reverie rooms/shared room generation; Samael rooms; Benighted room/challenge surfaces. | StageAPI-specific layouts and debug rooms are not official generic templates. | Separate room data, placement feasibility, stage/room authority, transition commit and cleanup. | Direct |
+| `isaac-stageapi-compat` | Reverie explicitly detects/uses StageAPI. | StageAPI is absent from valid mods and its signatures/tooling vary by installed release. | Require declared dependency or user-approved optional enhancement, runtime/version proof and official/no-op fallback. | Direct, narrow |
+| `isaac-status-effects` | Status application and flags across YSD/Reverie/Benighted/Samael/Elijah/Josuke. | Similar Add/status calls do not prove duration units, immunity, accepted-hit timing, source credit, or whether built-in periodic damage already applies. | Lock applicator, eligible target, carrier, duration, repeat policy, immunity, damage ownership and cleanup separately. | Direct |
+| `isaac-state-lifecycle` | All major refs use start/update/new-room/new-level and persistence boundaries. | Nazrin/Reimu/Josuke broad globals demonstrate cross-player/run leakage risk. | Name owner, key, creation, reset, serialization and reload/continue behavior for every state value. | Mixed |
+| `isaac-testing-debugging` | Reverie callback measuring and all refs provide static fixtures. | None of the refs is universal runtime proof; mocks can accept invalid userdata/table substitutions. | Separate syntax/static/mocked/in-game evidence and make test doubles enforce engine userdata/signatures. | Partial/methodology |
+| `isaac-transformations-forms` | Reverie custom transformation scripts and EID transformation icons, with CuerLib PlayerForms as declared-library evidence. | An EID group or helper does not register a portable engine PlayerForm; contributor and permanence rules remain project decisions. | Separate engine form queries, mod-owned reversible/permanent state, display adapters, and actual character registration. | Direct, Reverie-led |
+| `isaac-trinkets` | Reverie trinket tree and cross-content behavior. | YSD and narrow character packs do not provide trinket authority. | Resolve registered ID, golden/count semantics, holder scope, cache/removal and optional descriptions. | Direct, Reverie-led |
+| `isaac-unlocks-progression` | YSD unlock UI; Samael completion marks/achievements; Benighted/Reverie progression. | Completion, one-time grant, pool availability and notification are not interchangeable. | Persist a stable completion key, grant idempotently, gate availability separately and test continue/co-op/reload. | Direct |
+| `isaac-wisps-virtues` | Benighted/Reverie `wisps.xml` and item-wisp behavior; Samael item-wisp handling; CuerLib active helpers as optional evidence. | Native Virtues creation, manual AddWisp, repeated-use callbacks and variant-only scans can duplicate or capture foreign wisps. | Prove one creation authority, registered source item, owner, subtype, duplicate-use policy, capacity, death and resources. | Direct |
+| `isaac-validators` | Strict parsing and repository tests can run over every reference. | Benighted duplicate `chargetype` and Reverie duplicate `achievement` prove that reference code can be invalid; static success never proves gameplay. | Emit scoped, coded findings; distinguish failure/warning/evidence level and keep runtime risks explicit. | Methodology plus counterexamples |
 
 ## Maintenance Rule
 
-Before adding a new hard rule, attach one of: a code-level YSD/Reverie example,
-an official API contract, or an executable test. Do not upgrade a file inventory,
-a similarly named asset, or an undeclared third-party helper into evidence.
+Before adding a new hard rule, attach at least one of:
 
-## Benighted Soul And Samael Evidence Pass
+1. an official Isaac or third-party maintainer contract for the exact surface;
+2. a positive implementation plus its project/dependency boundary;
+3. a counterexample that demonstrates a reproducible failure mode;
+4. an executable regression test.
 
-These are additional learning/validation sources, never user dependencies.
-
-| Skill family | Benighted Soul evidence | Samael evidence |
-| --- | --- | --- |
-| REPENTOGON compatibility | `main.lua`, `ibs_scripts/ibs_callback.lua`, `ibs_scripts/ibs_achiev.lua`, custom content XML | Use only as a contrast unless runtime proof shows REPENTOGON. |
-| Players/characters | `content/players.xml`, `ibs_scripts/samson_skills/*` | `samaelscripts/chars/samael.lua`, `samael_birthright.lua`, `memento_mori.lua`, `content/players.xml` |
-| Unlocks/progression | `ibs_scripts/ibs_achiev.lua` | `content_manager/unlock_management.lua`, `custom_achievements.lua`, `custom_completion_marks.lua`, `vanilla_completion_marks.lua` |
-| Item synergies and EID | Item/callback modules supply mechanic-side evidence | `eid_samael_synergies.lua` supplies a direct optional-description synergy surface |
-| Entities/projectiles/combat | `content/entities2.xml`, `ibs_scripts/ibs_entity.lua`, callback modules | `fragment/*`, `items/*`, `content/entities2.xml`, dedicated scythe/laser assets |
-| Rooms/stages/rewards | Challenge, pickup, grid, and curse callback modules | `content/rooms/*.stb`, `fragment/ferryman_room.lua`, `extra_room_stuff.lua`, `death_pool.lua` |
-| ANM2/audio/render | `content/sounds.xml`, `content/shaders.xml`, UI/entity ANM2 | `active_item_rendering.lua`, `renderActive.lua`, `content/sounds.xml`, `content/shaders.xml`, UI/entity ANM2 |
-| Optional compatibility/config | `ibs_scripts/ibs_compat.lua` is a compatibility discovery source | `eid_samael_synergies.lua`, `dss/*`, and compatibility helpers are optional-layer examples |
-
-### Interpretation
-
-- `isaac-repentogon-compat` may use Benighted Soul as a strong code example,
-  but must still obtain user opt-in, runtime global proof, and version proof.
-- `isaac-item-synergies`, `isaac-eid-compat`, `isaac-players-characters`, and
-  `isaac-unlocks-progression` now each have a stronger real validation source
-  in Samael.
-- A module name or an asset alone is not a rule source. During a skill revision,
-  read the relevant implementation and record the extracted invariant, not the
-  reference mod's API, paths, IDs, or dependencies.
+Reference paths, IDs, APIs, dependencies, values and layouts must never leak
+into user projects as defaults. A reference mod may validate a principle while
+simultaneously containing code that the validator should reject.

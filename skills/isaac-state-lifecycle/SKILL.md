@@ -47,6 +47,18 @@ Read `references/state-ownership.md`, then choose the reset/save references as n
 - **Pending entitlement**: a reward earned now but settled only in a later target context. Define its owner, target, settlement, expiry/carry-over policy, and reset boundary; use `isaac-rewards-pickups` for reward selection/spawn.
 - **Final review**: read `references/state-review-checklist.md`.
 
+## Clock And Transition Contract
+
+For each timer, cooldown, delayed settlement, or multi-stage mode, record:
+
+- semantic phase and owner;
+- timer unit and clock source;
+- callback that advances it and the exact start/expiry edge;
+- pause, slow-motion, room-transition, and animation-stall behavior;
+- permitted next phases, re-entry policy, and idempotent cleanup.
+
+Do not assume an update or render callback runs at a fixed real-time rate. If the requirement is expressed in seconds but the project only exposes frame/update clocks, the conversion and pause semantics remain `TBD` until proven or approved. A state that has entered must have an exit for success, failure, cancellation, owner invalidation, and every relevant lifecycle boundary.
+
 ## Hard Rules
 
 - Do not store live `Entity`, `Player`, `Sprite`, `Room`, or other userdata in saved data.
@@ -58,6 +70,8 @@ Read `references/state-ownership.md`, then choose the reset/save references as n
 - Do not leave room-only effects in run-level tables without room cleanup.
 - Do not reset persistent run state on every frame or every render callback.
 - Do not mutate gameplay state in pure render callbacks unless the existing repo already uses that exact pattern for a reason.
+- Do not let two callbacks advance the same timer or settle the same phase unless the contract names one authority and the other path is read-only.
+- Do not serialize a transient state merely because it is inconvenient to reconstruct. Save only when the approved lifecycle requires survival across continue/reload, and reconstruct runtime objects from plain saved data.
 - If a state can leak into normal runs from a challenge or into other players, add an explicit gate and cleanup rule.
 - If the user did not specify persistence, keep save/reload behavior as `TBD`. Temporary runtime state may support the current session, but do not add `SaveData` or describe reload loss as intended design until it is approved.
 - A pending reward entitlement must have an owner, target context, settlement condition, and clear/expiry policy. Do not represent it as an unowned global boolean or clear it merely because a target callback fired.
@@ -72,6 +86,8 @@ Read `references/state-ownership.md`, then choose the reset/save references as n
 - State owner:
 - Keying strategy:
 - Create/update/read callbacks:
+- Phase transitions and settlement authority:
+- Timer unit / clock / pause behavior:
 - Reset conditions:
 - Save/reload behavior:
 - Userdata that must not be serialized:
@@ -89,3 +105,8 @@ Before saying the stateful mechanic is complete, report:
 - Whether it is runtime-only or saved.
 - How reload, room transition, floor transition, death, and challenge exit behave.
 - Any manual in-game lifecycle checks still needed.
+
+
+When any active `TBD` remains, the **last section** of the response must be
+`**User decisions required**`. Repeat every unresolved owner, key, reset, and
+persistence decision there; do not end on the lifecycle matrix.

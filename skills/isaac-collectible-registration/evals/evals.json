@@ -5,26 +5,32 @@
       "id": "unknown-active-colored-gfx",
       "prompt": "陌生 Isaac 模组新增主动道具后，道具底座或 Extra HUD 的彩色图像空白。没有项目文件、items.xml、PNG、id 或回调。只写发现项和注册合同，不写 Lua。",
       "expected_output": "要求发现 items.xml/gfxroot/gfx/PNG；明确原生彩色图不能用 MC_POST_RENDER 伪造；将充能和机制转交 active-item skill。",
-      "files": []
+      "files": [
+        "skills/isaac-collectible-registration/SKILL.md"
+      ]
     },
     {
       "id": "passive-lua-works-colored-gfx-blank",
       "prompt": "一个被动道具效果和 cache 都正常，但道具底座显示的彩色图错误。请审查，不给文件。",
       "expected_output": "优先检查 entry kind、gfxroot、gfx 与 PNG；不改 cache 逻辑；静态验证与游戏内显示实测分开。",
-      "files": []
+      "files": [
+        "skills/isaac-collectible-registration/SKILL.md"
+      ]
     },
     {
       "id": "esc-sketch-is-not-gfx",
       "prompt": "自定义道具的 ESC My Stuff 草图图标空白，但彩色道具 PNG 正常。请路由，不给文件。",
       "expected_output": "不把 gfx 当作唯一修复；交给 isaac-anm2-visuals 发现 deathanm2/death portrait 路由。",
-      "files": []
+      "files": [
+        "skills/isaac-collectible-registration/SKILL.md"
+      ]
     },
     {
       "id": "mystuff-is-independent-route",
       "prompt": "道具底座彩色图已经是 32x32，我能不能只做一张同名 _mystuff.png 来修复 ESC 图标？",
       "expected_output": "应说明这不是高优先级默认方案：彩色 gfx 与 ESC My Stuff 草图是不同原生资源链，默认转交 isaac-anm2-visuals 发现 deathanm2 图集、动画和帧映射。若用户明确选择，或项目已有声明的加载/映射路线，可以保留为 override，但必须记录并在游戏内验证。",
       "files": [
-        "docs/skills/isaac-collectible-registration/references/collectible-icon-review.md"
+        "skills/isaac-collectible-registration/references/collectible-icon-review.md"
       ]
     },
     {
@@ -32,7 +38,7 @@
       "prompt": "用户没有给新道具的彩色图，但要求 AI 直接生成并接入。",
       "expected_output": "应建议并生成 32x32 colored collectible PNG，走发现的 gfxroot + gfx；若用户后来提供不同规格或项目已有路线，保留并验证该选择。",
       "files": [
-        "docs/skills/isaac-anm2-visuals/references/official-native-ui-baselines.md"
+        "skills/isaac-anm2-visuals/references/official-native-ui-baselines.md"
       ]
     },
     {
@@ -40,8 +46,8 @@
       "prompt": "陌生模组的自定义道具彩色 gfx 正常，但要补 ESC My Stuff 草图。items.xml 条目没有 id 属性，代码 Agent 只打算给 deathanm2 追加 30 帧。请审查注册要求。",
       "expected_output": "应区分普通 colored gfx 与 native death portrait：对于 ESC/My Stuff/collection/Last Will 原生草图，目标 active/passive/familiar 条目必须先有显式、唯一、稳定的本地 id，或存在已声明的自定义 loader。没有时 death portrait 映射应 blocked/TBD；不能用条目顺序或运行时 ItemConfig ID。",
       "files": [
-        "docs/skills/isaac-collectible-registration/SKILL.md",
-        "docs/skills/isaac-anm2-visuals/references/collectible-death-portraits.md"
+        "skills/isaac-collectible-registration/SKILL.md",
+        "skills/isaac-anm2-visuals/references/collectible-death-portraits.md"
       ]
     },
     {
@@ -49,7 +55,7 @@
       "prompt": "用户只想给一个普通 collectible 补 32x32 的 gfxroot + gfx 彩色图，没有要求 ESC、My Stuff、收藏页或 Last Will。代码 Agent 要强制给所有 items.xml 条目新增本地 id。这样对吗？",
       "expected_output": "应要求该 collectible 注册条目拥有显式、唯一、稳定的本地 id：本 skill 的统一注册规则适用于普通 colored gfx 与 native death portrait。普通 gfx 不因此需要 deathanm2，但不能省略本地 id；已有无 id 项目必须走用户确认的 append-only 迁移。",
       "files": [
-        "docs/skills/isaac-collectible-registration/SKILL.md"
+        "skills/isaac-collectible-registration/SKILL.md"
       ]
     },
     {
@@ -57,8 +63,8 @@
       "prompt": "已有模组现在想补所有 ESC My Stuff 草图，但条目没有显式本地 id。为了方便，代码 Agent 直接按当前 XML 顺序批量写 id=1..N。",
       "expected_output": "应要求先提出可审查的本地-id迁移表并获得用户确认：id 必须唯一、稳定、append-only，已有条目不可因排序重号；随后由 isaac-anm2-visuals 连接 ANM2 frame，并在不同加载顺序下游戏内验证。",
       "files": [
-        "docs/skills/isaac-collectible-registration/SKILL.md",
-        "docs/skills/isaac-anm2-visuals/SKILL.md"
+        "skills/isaac-collectible-registration/SKILL.md",
+        "skills/isaac-anm2-visuals/SKILL.md"
       ]
     },
     {
@@ -66,7 +72,7 @@
       "prompt": "陌生 Isaac 模组新增一个普通被动道具，只要求 32x32 gfxroot + gfx 彩色图，不涉及 ESC、My Stuff、收藏页或 Last Will。items.xml 草稿没有 id。代码 Agent 说普通彩色图不需要本地 id。请审查。",
       "expected_output": "应阻止注册并要求 active/passive/familiar 条目声明显式、唯一、稳定的本地 id；这是一切自定义 collectible 的统一规则，不因未使用 deathanm2 而例外。不得自动从 XML 顺序生成 id。",
       "files": [
-        "docs/skills/isaac-collectible-registration/SKILL.md"
+        "skills/isaac-collectible-registration/SKILL.md"
       ]
     },
     {
@@ -74,8 +80,24 @@
       "prompt": "用户要给新道具登记 id。代码 Agent 从当前日志读到 Isaac.GetItemIdByName 返回 733，于是写入 items.xml id=\"733\"，说这会与 native deathanm2 对齐。",
       "expected_output": "应拒绝把运行时/global ItemConfig 数字当作本地注册 id；要求发现或提出用户确认的本地、唯一、稳定、append-only id 方案，并明确不同模组加载顺序不得改变该 key。",
       "files": [
-        "docs/skills/isaac-collectible-registration/SKILL.md",
-        "docs/skills/isaac-anm2-visuals/references/collectible-death-portraits.md"
+        "skills/isaac-collectible-registration/SKILL.md",
+        "skills/isaac-anm2-visuals/references/collectible-death-portraits.md"
+      ]
+    },
+    {
+      "id": "opaque-black-collectible-background",
+      "prompt": "一个自定义被动道具的 32x32 gfx PNG 在游戏底座上显示物体，但物体背后有完整黑色方块。代码 Agent 只想调整 Lua 或换 png 路径。请审查并给出验收条件。",
+      "expected_output": "应将问题定位为彩色 collectible PNG alpha/扁平化背景合同：先确认 gfxroot+gfx，解码 alpha、检查四角与透明边界，区分连着轮廓的黑描边和不透明矩形底板；禁止用 Lua 补救，并要求正常底座游戏内验证。",
+      "files": [
+        "skills/isaac-collectible-registration/SKILL.md"
+      ]
+    },
+    {
+      "id": "subject-mask-inset-dark-matte",
+      "prompt": "一个 32x32 自定义道具 PNG 有 alpha，四角也透明，但主体后面藏着一块从画布内部开始的深灰和深棕矩形底板；用户已经确认它是生成错误的背景底板，不是有意的全画幅设计。图像 Agent 打算只按 RGB=0 删除黑色。请审查。",
+      "expected_output": "应拒绝“只删纯黑色”方案；要求主体 alpha 蒙版、保留主体内部深色细节、检查深灰/深棕低亮度内嵌矩形，并在浅灰棋盘、白色、房间近似色上复核。既然用户已确认底板是错误背景，应直接判失败，不得重新创建“是否有意”的 TBD 或用户决定。",
+      "files": [
+        "skills/isaac-collectible-registration/SKILL.md"
       ]
     }
   ]

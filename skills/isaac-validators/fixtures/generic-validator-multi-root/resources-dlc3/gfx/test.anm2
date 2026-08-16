@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AnimatedActor>
+  <Animations DefaultAnimation="Idle">
+    <Animation Name="Idle" FrameNum="1" Loop="true">
+      <Events>
+        <Event Name="Ready" Frame="0" />
+      </Events>
+    </Animation>
+  </Animations>
+</AnimatedActor>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<players>
+  <player name="Fixture A" skin="gfx/native-a.png" />
+  <player name="Fixture B" skin="gfx/native-b.png" />
+</players>

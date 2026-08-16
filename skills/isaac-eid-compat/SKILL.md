@@ -44,6 +44,11 @@ other description paths must work without it.
 - Test both branches: EID absent causes no error; EID present receives only the
   expected registrations, once each.
 
+## Bundled Offline Reference
+
+Read `references/eid-api-contract.md` before choosing an EID registration or
+late-load strategy. It records maintainer-documented common calls and their
+guard boundaries, but the installed EID build remains authoritative.
 ## Required Output
 
 ```markdown

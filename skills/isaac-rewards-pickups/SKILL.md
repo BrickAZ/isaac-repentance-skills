@@ -125,3 +125,9 @@ Use [reward-review-checklist.md](references/reward-review-checklist.md).
 For every reward path, cover the valid candidate, invalid/missing candidate,
 repeat attempt, and an untouched third-party or unrelated pickup where that
 boundary exists.
+
+
+When any active `TBD` remains, the **last section** of the response must be
+`**User decisions required**`. Repeat every unresolved reward-source,
+replacement, ownership, and lifecycle decision there; do not end on the test
+matrix.

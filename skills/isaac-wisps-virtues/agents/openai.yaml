@@ -1,0 +1,4 @@
+interface:
+  display_name: "Isaac Wisps and Virtues"
+  short_description: "Design Book of Virtues and wisp contracts"
+  default_prompt: "Design or review an Isaac Book of Virtues wisp with verified item mapping, use semantics, owner, count, death, and resources."

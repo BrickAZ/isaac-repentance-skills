@@ -6,7 +6,8 @@
       "prompt": "模组有本地配置值，想加 MCM 开关，但用户没有声明 MCM 前置。",
       "expected_output": "应先发现配置 owner 和可用 MCM API；MCM 缺失时保持已批准默认值和核心功能，不能把 MCM 作为唯一配置来源。",
       "files": [
-        "docs/skills/isaac-mcm-compat/SKILL.md"
+        "skills/isaac-mcm-compat/SKILL.md",
+        "skills/isaac-mcm-compat/references/mcm-api-contract.md"
       ]
     },
     {
@@ -14,7 +15,26 @@
       "prompt": "MCM 可能晚加载，注册逻辑每帧都会被调用。",
       "expected_output": "应限制为直到成功的一次幂等注册，不能重复添加控件；同时测试无 MCM、已存在 MCM、重复调用和设置持久化。",
       "files": [
-        "docs/skills/isaac-mcm-compat/SKILL.md"
+        "skills/isaac-mcm-compat/SKILL.md",
+        "skills/isaac-mcm-compat/references/mcm-api-contract.md"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Agent 准备 require 一个猜测的 MCM 路径，以确保设置菜单一定加载。",
+      "expected_output": "拒绝猜测路径和强制加载；按维护者文档检查 ModConfigMenu global，缺失时保留本模配置默认与核心功能。",
+      "files": [
+        "skills/isaac-mcm-compat/SKILL.md",
+        "skills/isaac-mcm-compat/references/mcm-api-contract.md"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "MCM 控件显示值与 SaveData 配置 owner 不一致，哪个应为真值？",
+      "expected_output": "本模已发现的配置 owner 是真值；MCM 只读写并校验该状态，不能成为唯一存档或默认来源。",
+      "files": [
+        "skills/isaac-mcm-compat/SKILL.md",
+        "skills/isaac-mcm-compat/references/mcm-api-contract.md"
       ]
     }
   ]

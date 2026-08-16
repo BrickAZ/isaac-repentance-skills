@@ -1,0 +1,4 @@
+interface:
+  display_name: "Isaac Transformations and Forms"
+  short_description: "Design Isaac transformation and form contracts"
+  default_prompt: "Design or review an Isaac transformation with explicit contributors, threshold, activation, reversibility, effects, visuals, ownership, and persistence."

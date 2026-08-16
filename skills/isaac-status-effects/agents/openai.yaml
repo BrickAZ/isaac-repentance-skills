@@ -1,0 +1,4 @@
+interface:
+  display_name: "Isaac Status Effects"
+  short_description: "Design safe Isaac status and debuff contracts"
+  default_prompt: "Design or review an Isaac status effect with explicit owner, duration, stacking, immunity, and cleanup."

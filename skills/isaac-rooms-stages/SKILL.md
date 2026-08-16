@@ -1,6 +1,6 @@
 ---
 name: isaac-rooms-stages
-description: Design, implement, review, or write handoff prompts for custom rooms, floors, stage transitions, room selection, doors, grids, and room-scoped rules in Binding of Isaac Repentance mods. Use this when a task mentions room XML, RoomConfig, MC_POST_NEW_ROOM, MC_POST_NEW_LEVEL, special room, floor rule, stage, door, transition, room replacement, room layout, or StageAPI. 中文触发：房间、房间 XML、特殊房、楼层、Stage、门、转场、房间替换、房间布局、房间规则、StageAPI。
+description: Design, implement, review, or write handoff prompts for custom rooms, floors, stage transitions, room selection, doors, room topology, and room-scoped rules in Binding of Isaac Repentance mods. Use this when a task mentions room XML, RoomConfig, MC_POST_NEW_ROOM, MC_POST_NEW_LEVEL, special room, floor rule, stage, door, transition, room replacement, room layout, or StageAPI. Use isaac-grid-entities when the central behavior is GridEntity placement, collision, destruction, or persistence. 中文触发：房间、房间 XML、特殊房、楼层、Stage、门、转场、房间替换、房间布局、房间拓扑、房间规则、StageAPI。
 ---
 
 # Isaac Rooms And Stages
@@ -19,12 +19,14 @@ Read `../isaac-mod-context/references/tbd-disclosure.md` whenever an unresolved 
 
 Use this skill for world and level structure. A challenge-only room restriction
 belongs to `isaac-challenges`; a single entity behavior belongs to
-`isaac-entities` or `isaac-npc-boss-ai`.
+`isaac-entities` or `isaac-npc-boss-ai`. A GridEntity mutation routes to
+`isaac-grid-entities`; a multi-room owned area routes to `isaac-room-networks`;
+a game-level Dimension routes to `isaac-dimensions`.
 
 ## First Move
 
 Use `isaac-mod-context` to discover actual room XML, room loaders, level
-callbacks, room identifiers, grid/door conventions, and dependency facts. Read
+callbacks, room identifiers, map/door conventions, and dependency facts. Read
 `references/room-stage-contract.md` and `references/room-topology-door-validation.md` before implementing selection or
 replacement behavior.
 
@@ -39,7 +41,8 @@ replacement behavior.
   flags, cleanup, and save boundaries.
 - **Topology and doors**: prove actual room-map identity, available neighboring slots, and each candidate door/portal position before choosing an official API or mutation.
 - **Room content**: route NPC behavior to `isaac-npc-boss-ai`, rewards to
-  `isaac-rewards-pickups`, and custom entities to `isaac-entities`.
+  `isaac-rewards-pickups`, custom entities to `isaac-entities`, and native grid
+  placement/destruction/persistence to `isaac-grid-entities`.
 
 ## Hard Rules
 

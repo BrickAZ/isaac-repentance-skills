@@ -42,8 +42,14 @@ Classify the design into one or more routes:
 - **Use boundary and charge policy**: conditional use, failed use, zero-charge active, charge refund, or slot-specific charge. Read `references/use-callback-charge.md`.
 - **Held input or option selection**: long press, two-button combo, directional input, menu selection, or keyboard/controller interception. Read `references/input-selection.md`.
 - **Temporary UI or render feedback**: charge meter, choice panel, screen overlay, text prompt, highlight, or custom render while the item is active. Read `references/ui-render-active.md`.
+- **Multi-stage continuation**: armed/waiting/selection/success/failure/cancelled phases, delayed settlement, or a use that remains active across callbacks. Define the transition table below and use `isaac-state-lifecycle` for storage and cleanup.
 - **Room/floor/run state**: once per room, once per floor, reset on new room, reset on new level, persistent unlock/knowledge state, or rollback. Read `references/room-floor-state.md` and use `isaac-state-lifecycle` for ownership, keying, reset, or SaveData details.
+- **Area or Dimension entry**: an active item opens a multi-room owned area or crosses a game-level Dimension. Use `isaac-room-networks` or `isaac-dimensions`; define capability preflight, visible failed-use UX, and the user-approved no-capability policy before `MC_USE_ITEM` decides charge consumption.
 - **Card/pill/pocket interaction**: active item triggers a card/pill-like effect, reads pocket slots, consumes pocket items, or reacts to `MC_USE_CARD` / `MC_USE_PILL`. Read `references/card-pill-active.md` and use `isaac-cards-pockets` for custom card/rune/pill registration, generation, or blank-card issues.
+- **Book of Virtues / item wisp**: this skill owns use success, charge, slot,
+  and repeated invocation; use `isaac-wisps-virtues` for item-to-wisp mapping,
+  native versus manual creation authority, owner, count/capacity, death, and
+  `wisps.xml`/resource behavior.
 
 If the active item also changes stats, intercepts damage, spawns registered entities, uses anm2 visuals, plays sound/shader feedback, or stores state beyond one callback, use the relevant sibling skill for that part.
 
@@ -54,9 +60,26 @@ If the active item also changes stats, intercepts damage, spawns registered enti
 - State which active slot matters. Do not assume pocket active, primary slot, or all slots.
 - State lifetime: one frame, timed, until room clear, until new room, until new level, or persistent.
 - For input-based mechanics, specify whether input is checked in `MC_INPUT_ACTION`, `MC_POST_PLAYER_UPDATE`, `MC_POST_RENDER`, or a helper already used by the repo.
+- Bind input to the player/controller that owns the active state. Specify press, hold, release, repeat, and cancellation semantics; never let one global input read advance every player's copy.
+- State the timing basis for every duration: game/update frames, room frames, animation events, or another discovered clock. Do not assume a callback runs 60 times per second, and define pause/slow-motion behavior.
 - For render-based mechanics, specify screen-space versus world-space and hand off SFX/shader/render details to `isaac-audio-render-feedback` when needed.
 - For new item metadata, do not invent missing quality, pools, text, or art. Keep `TBD` fields explicit.
+- Do not make an active item silently unusable because an unproven room-network or Dimension allocation route fails. State the visible failure behavior and keep fallback/blocked policy as a user decision.
 - For debugging an active item that does not trigger or consumes charge incorrectly, use `isaac-testing-debugging` before guessing a fix.
+
+## Continuation State Machine Contract
+
+For an active item that continues after `MC_USE_ITEM`, write a transition table before code. Semantic names may differ, but every non-terminal phase must name:
+
+- owner player and active slot;
+- entry trigger and allowed source phase;
+- update/input callback and clock;
+- one-shot or re-entry policy;
+- charge commitment/refund boundary;
+- gameplay mutation and separate UI/animation/SFX action;
+- exit to success, failure, cancellation, or cleanup.
+
+Cover interruption by item loss or slot replacement, owner death/removal, room/level transition, pause, continue/reload, and co-op join/leave when relevant. Cleanup must be idempotent, and failure before the committed success boundary must follow the declared no-consume/refund policy rather than silently leaving the item active.
 
 ## Self-Contained Fallback
 
@@ -76,7 +99,10 @@ When writing a prompt for another Codex agent, include:
 - Use trigger:
 - Failed-use charge policy:
 - Continuing callbacks after use:
+- Continuation phases and transition table:
+- Timer unit / clock / pause behavior:
 - Input route:
+- Input owner and press/hold/release semantics:
 - UI/render route:
 - Room/floor/reset route:
 - Card/pill/pocket interaction:

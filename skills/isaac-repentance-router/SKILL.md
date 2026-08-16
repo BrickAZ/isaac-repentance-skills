@@ -45,8 +45,9 @@ architecture. Route those as primary or immediate companions now.
 Treat project-specific facts as unknown until discovery: callback names, paths,
 IDs, resource formats, entity variants, existing modules, tests, and optional
 libraries. Put a skill under **Conditional** only if its semantic surface is not
-stated, such as ANM2 versus another visual carrier, EID/MCM/StageAPI/REPENTOGON,
-or undeclared entity/audio/description work.
+stated, such as ANM2 versus another visual carrier, `isaac-eid-compat`,
+`isaac-mcm-compat`, `isaac-stageapi-compat`, `isaac-repentogon-compat`, or
+undeclared entity/audio/description work.
 
 ## Routing Rules
 
@@ -71,26 +72,45 @@ or undeclared entity/audio/description work.
 | Ambiguous gameplay contract | `isaac-mechanic-contracts` |
 | Callback signature/registration/return | `isaac-callback-contracts` |
 | Damage, healing, i-frames, lethal/re-entry | `isaac-damage-health-contracts` |
+| Poison/burn/slow/freeze/fear/charm/custom timed status | `isaac-status-effects` |
+| Collectible XML/local id/colored icon registration | `isaac-collectible-registration` |
 | Passive held ownership/count/cache/loss | `isaac-passive-collectibles` |
 | Active-item use/charge/input/slot | `isaac-active-item-mechanics` |
 | Pools, quality, weights, tags, availability | `isaac-item-economy` |
+| Shop/deal price, buyer, payment, delivery, restock | `isaac-shops-deals-pricing` |
+| Two-or-more-input content combination | `isaac-item-synergies` |
+| Named/thresholded transformation or player form | `isaac-transformations-forms` |
 | Cards, runes, pills, blank pocket content | `isaac-cards-pockets` |
 | Trinket behavior | `isaac-trinkets` |
 | Player/familiar projectile combat | `isaac-projectile-combat` |
 | Entity/effect lifecycle | `isaac-entities` |
 | Familiar behavior | `isaac-familiars` |
+| Book of Virtues/item-wisp behavior | `isaac-wisps-virtues` |
 | NPC/Boss AI | `isaac-npc-boss-ai` |
 | Custom player/tainted character | `isaac-players-characters` |
+| Existing vanilla reskin/resource-only exact-path override | `isaac-reskins-resource-overrides` |
+| Custom-player art or sprite-surface generation | `isaac-character-art-surfaces` |
 | HUD/prompts/world-following marker/UI state | `isaac-hud-ui-state` |
 | ANM2 load/animation/assets | `isaac-anm2-visuals` |
 | Sound/shader/overlay/input blocking | `isaac-audio-render-feedback` |
 | Reward/pickup Spawn/Morph/selection | `isaac-rewards-pickups` |
 | Challenge rules | `isaac-challenges` |
+| Curse/run modifier lifecycle | `isaac-curses-run-modifiers` |
 | Unlock/progress/achievement | `isaac-unlocks-progression` |
-| Rooms/stages/doors/grids | `isaac-rooms-stages` |
+| Reroll/removal/reacquisition reconciliation | `isaac-reroll-removal-contracts` |
+| Seeded randomness/draw ownership/replay policy | `isaac-rng-determinism` |
+| GridEntity placement/collision/destruction/persistence | `isaac-grid-entities` |
+| Rooms/stages/doors/topology | `isaac-rooms-stages` |
+| Multiple owned rooms as one area/network | `isaac-room-networks` |
+| Game-level Dimension identity/entry/return | `isaac-dimensions` |
 | Optional descriptions/dependency integration | `isaac-compat-descriptions` |
+| Exact optional EID API integration | `isaac-eid-compat` |
+| Exact optional MCM API integration | `isaac-mcm-compat` |
+| Exact optional StageAPI integration | `isaac-stageapi-compat` |
+| Exact optional REPENTOGON integration | `isaac-repentogon-compat` |
 | Runtime translation | `isaac-localization-runtime` |
 | Mod config/options | `isaac-config-options` |
+| Runtime state ownership/reset/save/reload | `isaac-state-lifecycle` |
 | Stutter/per-frame scan/repeated Spawn/cache | `isaac-performance-hotpaths` |
 | Module ownership/refactor | `isaac-mod-architecture` |
 | Static checks | `isaac-validators` |
@@ -101,8 +121,27 @@ or undeclared entity/audio/description work.
 - Held passive that cancels damage and shows a head marker: primary
   `isaac-passive-collectibles`; companions damage-health, callback, state, HUD;
   project context is preflight; testing/validators go in verification.
+- New collectible whose XML/local id and colored icon are missing: primary
+  `isaac-collectible-registration`; add passive or active behavior, economy,
+  localization, and ANM2 only for separately stated surfaces.
+- Optional third-party API request: use the exact EID, MCM, StageAPI, or
+  REPENTOGON specialist as primary; compatibility/descriptions remains a
+  companion only for shared text, dependency-gate, or synchronization work.
 - Projectile with damage rewriting: primary projectile-combat; add damage-health
   only for cancellation/replacement/health semantics.
+- Projectile that applies poison without replacing damage: primary
+  `isaac-status-effects`; projectile-combat proves the carrier/source and
+  damage-health joins only for additional or recursive damage.
+- Shop item price bug: primary `isaac-shops-deals-pricing`; economy is a
+  companion only for pool/weight/quality, rewards only for pickup replacement.
+- Active item with a Book of Virtues wisp: primary depends on the stated goal;
+  active-item mechanics owns use/charge, while `isaac-wisps-virtues` owns the
+  item-wisp mapping, duplicate-use, owner, count, death, and resources.
+- Room obstacle at a grid cell: primary `isaac-grid-entities`; rooms-stages is a
+  companion only for room selection/topology, and entities replaces the grid
+  route when HP/AI/custom callback behavior is required.
+- Collect-N-items named form: primary `isaac-transformations-forms`; synergies
+  remains primary only for a combined effect without form/threshold lifecycle.
 - Blank card: primary cards-pockets; context is preflight; testing-debugging is
   immediate because the user asked for diagnosis; validators are verification;
   ANM2/descriptions/compatibility are conditional.

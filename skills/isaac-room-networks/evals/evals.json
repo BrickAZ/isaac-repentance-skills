@@ -1,0 +1,29 @@
+{
+  "skill_name": "isaac-room-networks",
+  "evals": [
+    {
+      "id": "gallery-network-unknown-project",
+      "prompt": "陌生 Isaac mod 要用主动道具进入一个由六个自定义陈列室组成的区域，玩家可沿门逐页浏览并返回原房。没有文件树，也没说明使用哪个维度或失败时怎么办。只输出实现合同。",
+      "expected_output": "Routes project discovery and room-network contract; keeps dimension, allocation route, entry fallback, active charge policy, and return details as TBD — user decision required; does not invent StageAPI, room ids, or door APIs.",
+      "files": [
+        "skills/isaac-room-networks/SKILL.md"
+      ]
+    },
+    {
+      "id": "debug-room-not-network-proof",
+      "prompt": "我在 goto 调试房里能反复重进同一房，能否据此证明我的四房区域和门链已经可用？",
+      "expected_output": "Rejects debug-room reload as network-topology proof and requires normal-floor node/edge and return verification.",
+      "files": [
+        "skills/isaac-room-networks/SKILL.md"
+      ]
+    },
+    {
+      "id": "network-consumes-dimension-context",
+      "prompt": "我要先注册一个独立维度，再在里面放一个八房挑战区域。该由哪个 skill 负责什么？",
+      "expected_output": "Uses isaac-dimensions for game-level dimension context and isaac-room-networks for the eight-room graph; neither skill takes the other's ownership.",
+      "files": [
+        "skills/isaac-room-networks/SKILL.md"
+      ]
+    }
+  ]
+}

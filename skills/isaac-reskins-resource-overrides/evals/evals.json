@@ -1,0 +1,70 @@
+{
+  "skill_name": "isaac-reskins-resource-overrides",
+  "evals": [
+    {
+      "id": "resource-only-no-lua",
+      "prompt": "陌生 Repentance 模组只有 metadata.xml、resources/players.xml 和贴图，没有 main.lua。用户只要替换原版角色外观。",
+      "expected_output": "识别为可能有效的纯资源精确路径覆盖，不创建 RegisterMod；发现资源根、目标原生相对路径、覆盖范围和加载顺序冲突。",
+      "files": [
+        "skills/isaac-reskins-resource-overrides/SKILL.md"
+      ]
+    },
+    {
+      "id": "single-reskin-full-table-risk",
+      "prompt": "只改原版 Isaac 的外观，Agent 准备复制整份官方 players.xml 和 costumes2.xml，再替换其中一行。",
+      "expected_output": "拒绝把整表覆盖当默认单角色方案；比较精确资源替换、运行时换图和 Null Costume，说明全表覆盖会扩大与其他模组的加载顺序冲突面。",
+      "files": [
+        "skills/isaac-reskins-resource-overrides/SKILL.md"
+      ]
+    },
+    {
+      "id": "runtime-reskin-per-player-lifecycle",
+      "prompt": "代码用一个全局 bool，在 MC_POST_PLAYER_RENDER 中对 Isaac.GetPlayer(0) 每帧 Sprite:Load，以保证换皮不丢。",
+      "expected_output": "拒绝全局 owner 和每帧加载；按实际玩家保存状态，在初始化或已发现的 player-type/skin dirty 边沿加载，验证合作、重生、继续和动画状态不被重置。",
+      "files": [
+        "skills/isaac-reskins-resource-overrides/SKILL.md"
+      ]
+    },
+    {
+      "id": "versioned-resource-roots",
+      "prompt": "resources/ 与 resources-dlc3/ 中存在相同相对路径的玩家素材。没有提供目标游戏版本或加载日志。",
+      "expected_output": "把两份路径、目标版本和优先关系列为发现项/TBD，不擅自删除或合并；分别验证实际目标版本加载了哪一份。",
+      "files": [
+        "skills/isaac-reskins-resource-overrides/SKILL.md"
+      ]
+    },
+    {
+      "id": "null-costume-conflict-policy",
+      "prompt": "头发经常被帽子挡住。Agent 要把 priority 设为最大并每房间重加，用户没说明遮挡策略。",
+      "expected_output": "把服装遮挡、变身、飞行、普通/里角色兼容列为用户决定；不默认最大 priority 或重加循环，按已决定层级选择并验证 Add/Remove 生命周期。",
+      "files": [
+        "skills/isaac-reskins-resource-overrides/SKILL.md"
+      ]
+    },
+    {
+      "id": "optional-other-mod-namespace",
+      "prompt": "资源包包含另一个模组命名空间下的可选贴图，但 metadata 没声明前置。",
+      "expected_output": "将其视为可选兼容覆盖，不推断硬依赖；记录目标模组存在/不存在和加载顺序矩阵，并保证核心换皮不依赖该资源。",
+      "files": [
+        "skills/isaac-reskins-resource-overrides/SKILL.md"
+      ]
+    },
+    {
+      "id": "vanilla-key-source-first-no-lua",
+      "prompt": "陌生 Repentance 项目想做一个只替换原版钥匙外观的纯资源模组。用户没有提供原版资源树、目标文件路径、图片尺寸或图集信息。Agent 记得某教程里的钥匙路径，准备直接创建 main.lua 并按记忆写入贴图。",
+      "expected_output": "将未知路径、文件名、扩展名、尺寸和消费者标为 TBD — user decision required，先从目标版本的原版资源发现完整替换键与技术合同；确认全局替换意图后维持纯资源路线，不创建 main.lua/RegisterMod，不把教程记忆当项目事实，并保留加载顺序实机验证。",
+      "files": [
+        "skills/isaac-reskins-resource-overrides/SKILL.md"
+      ]
+    },
+    {
+      "id": "exact-path-wrong-atlas-layout",
+      "prompt": "一个替换模组的目录、文件名和扩展名都与原版一致，但作者把原版 spritesheet 整体放大、重新排列格子，再把完成图缩放塞回画布。静态检查只验证文件存在和整张 PNG 尺寸。",
+      "expected_output": "判定现有验证不足：精确路径只是必要条件，还必须读取 ANM2/XML 消费者并核对像素密度、格子、裁切矩形、索引和帧顺序；禁止整体缩放或重排，逐目标格验证，并把实际加载与视觉结果留给实机检查。",
+      "files": [
+        "skills/isaac-reskins-resource-overrides/SKILL.md",
+        "skills/isaac-reskins-resource-overrides/references/reskin-route-contract.md"
+      ]
+    }
+  ]
+}

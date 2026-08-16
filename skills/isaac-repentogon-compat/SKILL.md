@@ -62,6 +62,11 @@ project explicitly opts in and the actual runtime proves support.
 - Test three branches: absent, present-but-insufficient, and present-sufficient.
   Also test repeated registration and the actual in-game engine behavior.
 
+## Bundled Offline Reference
+
+Read `references/repentogon-contract.md` before choosing a version gate or
+extension-only surface. It records official capability/version caveats, while
+the installed REPENTOGON build and its bundled docs remain authoritative.
 ## Required Output
 
 ```markdown

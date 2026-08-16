@@ -1,0 +1,29 @@
+{
+  "skill_name": "isaac-dimensions",
+  "evals": [
+    {
+      "id": "custom-dimension-without-api-proof",
+      "prompt": "陌生 Isaac mod 想注册一个完全独立的维度，进去后有专属房间和返回门，但没有项目文件、依赖声明或 API 信息。写实现提示词。",
+      "expected_output": "Requires project/API discovery and keeps the registration route, dependency choice, fallback, and lifecycle policy as TBD — user decision required; does not invent a Dimension id, StageAPI, or REPENTOGON call.",
+      "files": [
+        "skills/isaac-dimensions/SKILL.md"
+      ]
+    },
+    {
+      "id": "room-chain-is-not-dimension",
+      "prompt": "我只想让五个自定义房间相连成一个隐藏区域，需要新 Dimension 吗？",
+      "expected_output": "Routes to isaac-room-networks as primary and explicitly says a multi-room area alone is not proof that a game-level Dimension is required.",
+      "files": [
+        "skills/isaac-dimensions/SKILL.md"
+      ]
+    },
+    {
+      "id": "dimension-network-handoff",
+      "prompt": "项目已经证明可以进入一个自定义维度。我要在里面生成十个相连房间，并确保死亡和 reload 后不会回错地方。怎么拆分职责？",
+      "expected_output": "Dimensions owns context/entry/return/isolation; room-networks owns the ten-room graph; state-lifecycle owns persistence/reset; requires cross-boundary tests without duplicating ownership.",
+      "files": [
+        "skills/isaac-dimensions/SKILL.md"
+      ]
+    }
+  ]
+}

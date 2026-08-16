@@ -41,6 +41,11 @@ or official API behavior.
 - Test no-StageAPI behavior separately from the installed-StageAPI branch;
   test repeated registration and room transition cleanup.
 
+## Bundled Offline Reference
+
+Read `references/stageapi-contract.md` before selecting a StageAPI load,
+registration, or fallback strategy. It records maintainer-documented scope and
+tooling boundaries, while installed StageAPI code/docs remain authoritative.
 ## Required Output
 
 ```markdown

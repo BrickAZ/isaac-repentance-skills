@@ -51,12 +51,32 @@ Before generating, commissioning, replacing, or naming an art asset, output this
 | Animation need | Required, not required, or `TBD`; a world appearance may need animation while a UI icon usually does not. |
 | Not for | Name the adjacent surfaces this asset must not silently replace. |
 
+### PNG Alpha And Preview-Matte Gate
+
+A PNG preview can show black, white, or checkerboard pixels even when the file is transparent. Inspect the decoded alpha channel before accepting a rendered-preview conclusion.
+
+- For the normal colored collectible `gfxroot + gfx` surface, route to `isaac-collectible-registration`: default to an RGBA cut-out icon; an opaque rectangular black backing is a failed collectible-art contract unless the user explicitly asks for a full-frame black object.
+- A dark silhouette outline is not the same as a black background. The outline may follow the art; the transparent border outside it must remain alpha-zero.
+- Do not turn an image-generation preview canvas, concept-art background, or JPEG matte into final game pixels. Preserve alpha in the delivered PNG and verify its intended native surface separately.
+
+### Per-Frame Alpha Review
+
+A spritesheet is not one visual unit for acceptance. Read the actual ANM2 and build a crop manifest containing the spritesheet index/path, every unique `X/Y/Width/Height` crop, layer, and animation that uses it. Review each crop/frame separately.
+
+- Never infer a uniform grid from PNG size, and never approve an atlas merely because its canvas has alpha or its outer corners are transparent.
+- For each discovered crop, inspect the final composite on light-grey checkerboard, solid white, and a representative room-like background.
+- Use an explicit subject alpha mask for generated cut-out art. Keep dark pixels within the subject; reject detached or plate-like low-luminance regions outside it. A one-pixel outline is allowed only while it remains attached to the intended silhouette.
+- Record crop/frame failures with their ANM2 animation and layer. A background defect in one crop is a defect of that frame even when adjacent frames are clean.
+- If the project does not supply a reliable image-analysis route, list each unique crop as a manual visual-verification item. Do not substitute whole-atlas inspection.
 A weapon is a theme, not a resource route:
 
 - **Weapon appearance** means a world/combat or player-body visual. Its carrier remains `TBD` until the project proves costume, familiar, Lua Sprite, or registered-entity ownership. It is not a HUD, EID, colored-collectible, or ESC icon by default.
 - **Weapon icon** means a UI/native-surface asset. HUD, EID, colored collectible art, ESC My Stuff, and other menus are separate surfaces; if the user does not name one, keep the display surface `TBD` rather than defaulting to `32x32` or a world appearance.
 - If one design needs both an animated weapon appearance and an icon, create two resource-purpose cards. They may share art direction or be derived from one source illustration, but they need separate export sizes and discovered loading/mapping routes.
 - If any card field is `TBD`, do project discovery before generating pixels or proposing a file path.
+
+For a playable-character art request, use isaac-character-art-surfaces first to identify the native surface, reference sheet, and export dimensions. This skill then owns the discovered ANM2, costume, atlas, and layer hookup; do not mistake any one player-skin crop for the full atlas; actual player ANM2 files may mix 32x32, 64x64, offset, overlapping, and blank crops.
+For original full custom-player skins, preserve the ANM2 coordinate contract rather than forcing source-alpha equality: crop rectangles, crop order, pivots, feet, direction, layers, and animation names remain stable while the character silhouette may expand inside its approved crop. Source-alpha equality is reserved for pure recolors. When hair, hats, horns, glasses, cloaks, or clothing need independent ordering, discover a project-proven `type="none"` Null Costume, its ANM2 layer/priority, and Lua lifecycle before using `AddNullCostume` or `TryRemoveNullCostume`.
 
 
 
@@ -73,6 +93,21 @@ Then identify the visual route:
 
 If the request is actually about `content/entities2.xml`, entity type/variant/subtype, collision radius, grid collision, NPCs, tears, lasers, knives, or effects with entity registration, use `isaac-entities` for behavior and registration. If it is a custom familiar, use `isaac-familiars` for count, owner, and behavior plus `isaac-entities` for registration. Keep this skill only for the `.anm2`, spritesheet, animation-name, and visual-carrier checks.
 
+## ANM2 Event And Asset-Lifetime Contract
+
+Treat animation events as a cross-file API:
+
+- Read the actual target ANM2 and collect every `Event Name` used by the relevant animation.
+- Cross-check each Lua `IsEventTriggered` or `WasEventTriggered` string against that target. If the Sprite-to-ANM2 binding is proven and the event is absent, the implementation fails; do not guess a frame as a silent substitute.
+- If static analysis cannot bind the Sprite to a local ANM2, report an unresolved-event warning and require carrier discovery. It is not a hard failure merely because a vanilla or optional asset may own the event.
+- Prefer a proven ANM2 event for exact visual/mechanical timing. A frame-number fallback needs an explicit contract and separate verification.
+
+Asset loading is a lifecycle operation:
+
+- Load an ANM2 or replace/load spritesheets at initialization, entity creation, or a proven dirty edge.
+- Do not call `Sprite:Load`, `ReplaceSpritesheet`, or `LoadGraphics` every update or render to keep a visual alive.
+- A reload may reset animation, frame, overlay, playback, events, or layer state. Preserve or explicitly restore every required field and test the transition.
+
 ## Self-Contained Fallback
 
 Prefer the current mod's closest asset. If it has no matching asset, use the
@@ -88,6 +123,8 @@ is required.
 - Native `deathanm2` ID rule: when the target entry declares a stable local `<active|passive|familiar id="N">` in `items.xml`, use that declared local id as the ANM2 frame key. If it lacks that required declared local id, do not infer a key from document order, `Isaac.GetItemIdByName`, a debug log, or a runtime/global ItemConfig number such as `733`; block registration and propose a user-approved append-only migration. A declared custom loader may add a mapping key but cannot substitute for the local id. Read the actual ANM2 to preserve any frame-0 or reserved-frame convention.
 - For a native collectible death portrait, do not use `MC_POST_RENDER` or a manual HUD sprite as a substitute. Discover the `deathanm2` root, source ANM2/spritesheet, required declared-local-id-to-frame mapping, or an explicitly blocked/migration state, and the exact native surface before editing.
 - For generated `.anm2`, keep the first version simple: one spritesheet, one layer, clear pivot, explicit width/height, and one or two animation names.
+- For player hair or another head decoration, treat each ANM2 crop as coordinate capacity rather than a target visible size. Read `isaac-character-art-surfaces` and preserve its measured head reference, decoration bounding-box limit, face-protected mask, and direction/frame consistency gate.
+- Do not infer correct scale from pixels touching crop edges, a high minimum visible-pixel count, or a clean `64x64` export. Require front/back/left/right overlays at native `1x` plus a `4x` nearest-neighbor pixel view; native `1x` is the proportion authority.
 - For a manual Lua `Sprite`, keep world anchor and screen render position separate:
   calculate the owner-relative world anchor, then pass
   `Isaac.WorldToScreen(worldAnchor)` to `Sprite:Render`. Never pass

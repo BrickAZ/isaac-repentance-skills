@@ -39,6 +39,10 @@ detection and reconciliation contracts, not the item's normal mechanic.
   This skill adds only the change boundary.
 - **A combination becoming invalid**: use `isaac-item-synergies` for the
   eligibility and result contract, then use this skill for change detection.
+- **A named form becoming active/inactive**: use
+  `isaac-transformations-forms` for contributors, threshold, activation, and
+  reversible/permanent policy; use this skill only for inventory-change
+  observation and idempotent reconciliation.
 - **Runtime owner, resets, and persistence**: use `isaac-state-lifecycle`.
 - **Actual callback/filter/return semantics**: use `isaac-callback-contracts`.
 - **Replacement reward or pickup policy**: use `isaac-rewards-pickups`; do not

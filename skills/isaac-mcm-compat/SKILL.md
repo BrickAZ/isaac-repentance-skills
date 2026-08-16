@@ -41,6 +41,11 @@ behavior; MCM only edits exposed settings when it is actually available.
 - Test absent MCM, present MCM, repeated registration, saved/default value
   handling, and behavior after a setting changes.
 
+## Bundled Offline Reference
+
+Read `references/mcm-api-contract.md` before choosing an MCM registration
+strategy. It records maintainer-documented global/initialization boundaries,
+but the installed MCM implementation remains authoritative.
 ## Required Output
 
 ```markdown

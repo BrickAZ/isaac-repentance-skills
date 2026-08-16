@@ -28,6 +28,10 @@ outcome, source attribution, re-entry, invulnerability, lethal behavior, and
 health-side effects. It does not select callback signatures/returns, design an
 item's pools or quality, or own projectile collision. Route those to
 `isaac-callback-contracts`, `isaac-item-economy`, and `isaac-projectile-combat`.
+Route poison, burn, slow, freeze, fear, charm, or custom timed debuff
+eligibility/duration/stacking/removal to `isaac-status-effects`. Keep this skill
+as a companion only when the status cancels, replaces, adds, or recursively
+causes damage or changes health.
 
 Default to official Isaac APIs. An undeclared library is optional only after
 project and runtime/API discovery. Its absence needs an official fallback or a

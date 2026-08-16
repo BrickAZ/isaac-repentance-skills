@@ -1,0 +1,4 @@
+interface:
+  display_name: "Isaac Grid Entities"
+  short_description: "Design safe Isaac grid and obstacle lifecycle"
+  default_prompt: "Design or review an Isaac grid entity change with legal placement, collision, persistence, ownership, and room lifecycle."

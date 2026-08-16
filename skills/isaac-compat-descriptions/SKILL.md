@@ -23,6 +23,20 @@ Read `../isaac-mod-context/references/design-authority.md` before deciding wordi
 
 The goal is to prevent two common mistakes: loading optional dependencies as if they always exist, and updating one text surface while leaving XML, EID, wiki, or translations inconsistent.
 
+## Boundary With Dedicated API Skills
+
+This skill owns dependency classification, guards, text synchronization, and
+cross-surface descriptions. When the task requires concrete calls, callbacks,
+registration fields, version gates, or lifecycle for one optional API, add its
+dedicated specialist and let that specialist own the exact integration:
+
+- `isaac-eid-compat` for EID API calls and description registration.
+- `isaac-mcm-compat` for Mod Config Menu controls and registration.
+- `isaac-stageapi-compat` for StageAPI rooms, stages, doors, and callbacks.
+- `isaac-repentogon-compat` for REPENTOGON callbacks, XML, globals, and versions.
+
+Do not use this broader skill as a substitute for those exact API contracts.
+
 ## Dependency Order
 
 Use these choices in order:
@@ -91,3 +105,8 @@ Before saying the work is complete, report:
 - Which languages were updated.
 - For a static XML route, which templates and active targets were synchronized, the checker result, and the restart boundary.
 - Any compatibility behavior that still needs in-game verification.
+
+
+When any active `TBD` remains, the **last section** of the response must be
+`**User decisions required**`. Repeat every unresolved decision there, even if
+it appeared in a table above; do not end on a validation matrix.

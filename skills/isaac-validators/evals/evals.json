@@ -5,39 +5,113 @@
       "id": 1,
       "prompt": "我刚让代码 Codex 加了一个新道具和 anm2 特效，你帮我确认有没有 XML、贴图路径、语言文件这种静态错误。",
       "expected_output": "Runs or requests the validator, reports static pass/fail/warnings separately from in-game checks, and does not claim runtime verification.",
-      "files": []
+      "files": [
+        "skills/isaac-validators/SKILL.md"
+      ]
     },
     {
       "id": 2,
       "prompt": "卡牌又变成空白的了，但我不想先猜代码，你先给我一个检查流程。",
       "expected_output": "Uses deterministic checks for pocket XML, HUD/pickup art, ids, descriptions, and asset paths before changing behavior code.",
-      "files": []
+      "files": [
+        "skills/isaac-validators/SKILL.md"
+      ]
     },
     {
       "id": 3,
       "prompt": "以后每次做完以撒 mod 改动都要有一个静态检查命令，你把这个写进交付要求。",
       "expected_output": "Adds the validator command to the final verification checklist and explains what it can and cannot prove.",
-      "files": []
+      "files": [
+        "skills/isaac-validators/SKILL.md"
+      ]
     },
     {
       "id": 4,
       "prompt": "以后当前 mod 自己生成的实体、卡牌、掉落物都不能变成空白或无意义对象；但其他 mod 的自定义实体必须保持兼容。请给出验证与实现边界。",
       "expected_output": "要求只验证当前 mod owned spawn/morph targets，检查 entities2.xml 到 ANM2/spritesheet/default animation 的链条以及 pocketitems 的 id/pickup/hud；失败时跳过本 mod 的生成或保留原对象，禁止全局删除未知实体或用裸自定义 variant 兜底。",
       "files": [
-        "docs/skills/isaac-validators/references/owned-spawn-safety.md"
+        "skills/isaac-validators/references/owned-spawn-safety.md"
       ]
     },
     {
       "id": 5,
       "prompt": "校验已经通过，但奖励实体在游戏里没有行为；能不能把静态通过当作修复完成？",
       "expected_output": "明确拒绝把静态通过当作运行时验证；指出 validator 只证明 XML/路径/注册形状，并路由 testing-debugging 与 entities 去检查回调、事件触发和游戏内复现。",
-      "files": []
+      "files": [
+        "skills/isaac-validators/SKILL.md"
+      ]
     },
     {
       "id": 6,
       "prompt": "我的 mod 把回调拆在 scripts/items 和 scripts/entities，mod 对象叫 MyMod，不是 Neverbirth。怎么做静态检查？",
       "expected_output": "使用 validate-isaac-mod.ps1，显式传入目标根目录和 MyMod；说明通用 runner 会递归扫描 Lua 模块中的直接回调注册，项目专用规则应由当前项目自己的覆盖层另加。",
-      "files": []
+      "files": [
+        "skills/isaac-validators/SKILL.md"
+      ]
+    },
+    {
+      "id": "optional-collectible-alpha-profile",
+      "prompt": "陌生 Isaac 模组的道具路径都存在，但彩色道具图在游戏里出现黑底。请只写能运行的静态检查范围、命令、结果解释和剩余游戏内风险。",
+      "expected_output": "应建议通用验证器和可选 -CheckPngTransparency；说明它检查 alpha 缺失和疑似均匀不透明背景仅为 warning，不能替代 pedestal 游戏内验证，也不能把每个全幅黑色设计判为绝对错误。",
+      "files": [
+        "skills/isaac-validators/SKILL.md"
+      ]
+    },
+    {
+      "id": "low-luminance-inset-matte-warning",
+      "prompt": "道具 PNG 有 alpha 且四角透明，但中央有深灰深棕混合的矩形衬底。静态 validator 应该检查什么，哪些结论仍需人工确认？",
+      "expected_output": "应使用 -CheckPngTransparency 警告大型高密度低亮度区域，说明它是候选 matte 而非绝对错误；必须由主体 mask、三背景与底座/逐帧游戏内检查确认。",
+      "files": [
+        "skills/isaac-validators/SKILL.md"
+      ]
+    },
+    {
+      "id": "character-decoration-reject-fill-the-crop-validator",
+      "prompt": "有人想给角色头发 validator 新增两条硬失败：每个 64x64 crop 的左右边缘都必须有像素；可见像素少于固定高阈值就失败。这样能防止素材画得太小吗？",
+      "expected_output": "必须拒绝这两条规则，因为它们会强迫素材铺满裁切格。通用 validator 只能保守检查已发现的最大包围盒、锚点漂移、帧间突变、脸部保护区、alpha 杂边和跨格；视觉比例与头套判断必须留给 1x 叠加评审，静态通过不得称为美术通过。 这是抽象规则审查，结论不依赖实际项目文件；不得额外制造 crop 路径、alpha 阈值或“是否取消错误规则”的用户决定。",
+      "files": [
+        "skills/isaac-validators/SKILL.md"
+      ]
+    },
+    {
+      "files": [
+        "skills/isaac-validators/SKILL.md"
+      ],
+      "prompt": "校验一个只有 resources/players.xml 和 resources-dlc3/gfx 的纯资源模组。没有 main.lua 和 content。静态校验应该怎样解释？",
+      "expected_output": "不得因缺少 Lua/RegisterMod/content 判失败；应发现所有 resources、resources-* 根并解析其 XML/资源引用。players.xml 等精确路径全局覆盖应给兼容/加载顺序警告，但不能把纯资源架构本身称为损坏。",
+      "id": "resource-only-and-multiple-roots"
+    },
+    {
+      "files": [
+        "skills/isaac-validators/SKILL.md"
+      ],
+      "prompt": "静态扫描发现一个 render/update callback 同时调用 Sprite:Load、ReplaceSpritesheet、LoadGraphics，并多次使用 Isaac.GetPlayer(0)。没有实机日志。如何报告？",
+      "expected_output": "应分别给高频资源重载和合作模式 owner 假设的静态警告，要求检查初始化/dirty gate 与逐玩家归属；不能直接声称运行时一定卡顿或实机已失败。",
+      "id": "hotpath-asset-and-player-zero-warnings"
+    },
+    {
+      "files": [
+        "skills/isaac-validators/SKILL.md"
+      ],
+      "prompt": "Lua 引用 IsEventTriggered(\"FlashEnd\")，本模扫描到的 ANM2 都没有该事件，但静态工具无法确定 Sprite 是否加载原版 ANM2。应判失败吗？",
+      "expected_output": "只应给未解析事件引用警告并要求发现实际 Sprite/ANM2 绑定；只有确认目标 ANM2 属本模且缺少该事件时，跨文件合同才可判实现失败。",
+      "id": "anm2-event-reference-warning-boundary"
+    },
+    {
+      "id": "native-table-official-resource-fallback",
+      "prompt": "纯资源模组覆盖完整 players.xml/costumes2.xml，其中数百个素材路径没有随模组打包，因为它们来自游戏本体。静态工具应该逐条报缺失吗？",
+      "expected_output": "不应制造数百条确定性缺失结论；应对资源根直属原生表按文件汇总“本模内未解析、可能依赖官方资源”，同时保留目标游戏版本、加载顺序和实机表面验证。自定义 content XML 的未解析资源仍逐项报告。",
+      "files": [
+        "skills/isaac-validators/SKILL.md"
+      ]
+    },
+    {
+      "id": "costume-id-qualified-by-type",
+      "prompt": "costumes2.xml 同时有 id=1,type=none 和 id=1,type=passive，另有第二个 id=1,type=passive。重复检查应怎么判？",
+      "expected_output": "前两项是不同复合身份，不应互相报重；第二个相同 id+type 的 passive 条目应报重复。必要时继续用 variant/subtype/skinColor 等已发现判别属性限定。",
+      "files": [
+        "skills/isaac-validators/SKILL.md"
+      ]
     }
   ]
 }

@@ -4,29 +4,58 @@
     {
       "id": 1,
       "prompt": "这是一个新的以撒 mod，main.lua 里有 RegisterMod，scripts/items 里有道具逻辑。先帮我加一个被动道具。",
-      "expected_output": "先输出项目上下文：mod 对象、bootstrap、scripts/items、实际 content XML 和语言文件；不直接假设对象名或把逻辑写回 main.lua。"
+      "expected_output": "先输出项目上下文：mod 对象、bootstrap、scripts/items、实际 content XML 和语言文件；不直接假设对象名或把逻辑写回 main.lua。",
+      "files": [
+        "skills/isaac-mod-context/SKILL.md"
+      ]
     },
     {
       "id": 2,
       "prompt": "另一个 mod 只有 items.xml，没有中文或英文分文件。我想补一个道具池。",
-      "expected_output": "记录实际只有的 XML 文件，不要求创建不存在的语言文件；把语言策略标为未知或交由用户/项目约定决定。"
+      "expected_output": "记录实际只有的 XML 文件，不要求创建不存在的语言文件；把语言策略标为未知或交由用户/项目约定决定。",
+      "files": [
+        "skills/isaac-mod-context/SKILL.md"
+      ]
     },
     {
       "id": 3,
       "prompt": "项目有 main.lua、src 和 modules，分别都像会注册回调。我该用哪个？",
-      "expected_output": "不猜唯一 owner；记录多个候选，路由到 architecture/callback contract，并要求按请求内容定位真正行为 owner。"
+      "expected_output": "不猜唯一 owner；记录多个候选，路由到 architecture/callback contract，并要求按请求内容定位真正行为 owner。",
+      "files": [
+        "skills/isaac-mod-context/SKILL.md"
+      ]
     },
     {
       "id": "native-surface-discovery",
       "prompt": "陌生 Isaac 模组说“道具底座正常，但 ESC 草图空白”。没有文件树。只输出项目发现合同。",
       "expected_output": "分别列出彩色 collectible 链与 ESC death portrait 链；不从一个正常面推断另一个；路径和注册字段保持 TBD。",
-      "files": []
+      "files": [
+        "skills/isaac-mod-context/SKILL.md"
+      ]
     },
     {
       "id": "active-tbd-disclosure",
       "prompt": "陌生 Isaac mod 要新增一个主动道具，但用户没有说明道具名、机制、充能、池子、品质或资源。只输出项目发现与下一步。",
       "expected_output": "Discovers only project facts, labels every decision that affects the next step as TBD — user decision required, does not choose values or assets, and ends with a concise User decisions required list.",
-      "files": []
+      "files": [
+        "skills/isaac-mod-context/SKILL.md"
+      ]
+    },
+    {
+      "files": [
+        "skills/isaac-mod-context/SKILL.md"
+      ],
+      "prompt": "陌生 Isaac 模组只有 metadata.xml、resources/players.xml 和 resources/gfx，没有 main.lua、content/ 或 RegisterMod。请只输出项目发现和类型判断。",
+      "expected_output": "应将它识别为可能有效的纯资源/精确路径覆盖模组，而不是缺少 Lua 的损坏代码模组；发现所有 resources、resources-* 根、被覆盖的原生相对路径与冲突范围，不擅自创建 main.lua、RegisterMod 或 content。",
+      "id": "resource-only-project-is-valid"
+    },
+    {
+      "files": [
+        "skills/isaac-mod-context/SKILL.md"
+      ],
+      "prompt": "一个陌生模组同时有 resources/ 与 resources-dlc3/，相同相对路径各有一份素材。只做发现，不判断谁是重复垃圾。",
+      "expected_output": "应把每个资源根、相同相对路径、版本/加载条件和实际目标版本列为发现项；不能默认只扫描 resources，也不能在没有项目或游戏版本证据时把 resources-dlc3 删除或称为重复文件。",
+      "id": "multiple-resource-roots"
     }
   ]
 }

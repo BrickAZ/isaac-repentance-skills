@@ -50,6 +50,7 @@ Before moving code:
 - Preserve existing public names and mod naming quirks unless the user explicitly asks to rename them.
 - Keep callback ownership obvious. A future agent should be able to find who registers a callback and why.
 - Keep tests close to behavior changes.
+- Do not import an opaque tutorial template, custom callback bus, global helper table, or third-party library merely because an example uses it. Adopt it only when the current project already owns that abstraction or the user explicitly approves a dependency; otherwise express the same contract with discovered project modules and official Isaac APIs.
 
 ## Monolithic Lua Scope Budget
 

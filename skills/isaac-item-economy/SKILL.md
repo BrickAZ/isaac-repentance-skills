@@ -19,6 +19,10 @@ Read `../isaac-mod-context/references/tbd-disclosure.md` whenever an unresolved 
 
 Use this skill when an item needs to enter the run economy, not merely exist in `items.xml`.
 
+This skill does not own a live shop pickup's price, purchaser, payment,
+delivery, discount, or restock transaction. Route those runtime semantics to
+`isaac-shops-deals-pricing`; a shop/deal pool entry remains item economy.
+
 Read `../isaac-mod-context/references/design-authority.md` alongside this skill's economy-specific approval rules. The shared rule governs all design authority; this skill adds the pool and XML review surface.
 
 The goal is to make pool placement, weight, quality, tags, depletion, and availability explicit while preserving the user's authority over balance decisions. A registered item with the wrong pool or weight can warp the run even when its Lua behavior is perfect.
@@ -53,6 +57,9 @@ Read the relevant reference:
 - Keep tags coherent with actual mechanics and item category. Do not use tags as decorative metadata.
 - If an unlock or challenge gate changes availability, write the gate separately from default pool placement.
 - If the task chooses or replaces a concrete runtime reward/pickup, route that path to `isaac-rewards-pickups`; item economy does not authorize an unapproved reward subtype or quantity.
+- If the task calculates or changes a live shop/deal price, buyer, payment,
+  discount, free purchase, or restock behavior, route it to
+  `isaac-shops-deals-pricing`; pool placement and runtime purchase are separate.
 
 ## Required Output
 

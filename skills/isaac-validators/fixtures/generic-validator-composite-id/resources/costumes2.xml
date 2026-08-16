@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<costumes>
+  <costume id="1" type="none" anm2path="none.anm2" />
+  <costume id="1" type="passive" anm2path="passive-a.anm2" />
+  <costume id="1" type="passive" anm2path="passive-b.anm2" />
+</costumes>
