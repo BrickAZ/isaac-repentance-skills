@@ -2,50 +2,151 @@
 
 [English](README.md) | 简体中文
 
-一套面向 Codex 的《以撒的结合：忏悔》模组开发 skills。它不提供一个
-“万能模板”，而是把容易出错的决策拆开：先发现项目事实，再选择机制、回调、
-资源、状态和验证路径。
+一套专门用于《以撒的结合：忏悔》模组开发的 Codex Skills。它帮助 AI 先读取
+真实项目，再处理机制、回调、实体、资源、状态、兼容与验证，减少“代码看似合理，
+但 API、坐标、资源链或生命周期其实写错了”的情况。
 
-这是一个 Codex plugin 源仓库。插件清单位于
-`.codex-plugin/plugin.json`，通用 skills 位于 `skills/`。
+本仓库不是模组本体，也不是要求所有项目套用同一份模板。安装后，你仍然可以像
+平常一样描述需求；Codex 会根据任务选择合适的 Skill，并以目标模组和官方 Isaac
+API 为准。
+
+## 它能帮你做什么
+
+- **先发现再实现**：寻找真实入口、模块、XML、资源路径、注册方式和测试命令，不凭空编造项目事实。
+- **拆分高风险机制**：分别处理道具、卡牌、饰品、角色、使魔、实体、Boss、房间、维度、解锁、伤害和随机数等合同。
+- **分清视觉表面**：区分彩色道具图、ESC My Stuff、Pickup、卡面、HUD、角色皮肤、挂饰、肖像和 ANM2，而不是拿一张 PNG 到处复用。
+- **约束回调和状态**：明确 callback 过滤器、返回值、所有者、多人隔离、SaveData 和房间/楼层/重开清理。
+- **默认兼容其他模组**：只处理当前模组拥有的实体、替换和状态，不全局删除未知内容。
+- **诚实报告证据**：静态检查、隔离测试、模拟运行和游戏内验证分开报告，不把“测试桩没报错”写成“实机已经通过”。
 
 ## 适用范围
 
-本插件只服务于《以撒的结合：忏悔》辅助模组开发，不是通用编程工具，
-也不适用于其他游戏、引擎或应用开发。
+本仓库只适用于《以撒的结合：忏悔》模组开发，不是通用编程 Skill，也不适用于
+其他游戏、引擎或应用开发。
 
-## 核心原则
+这些 Skills 是自包含的。使用者不需要下载 YSD、东方、Samael、愚昧、
+neverbrith 或其他参考模组。参考模组只用于构建和验证规则，不是运行前置。
 
-- 先读取目标模组，再写实现。
-- 默认使用官方 Isaac API 和目标模组已有代码。
-- CuerLib、EID、MCM、StageAPI 等均不是默认前置。
-- 用户未决定的数值、池子、权重、美术和机制细节保持 `TBD`，并在每次涉及它们的答复中标为“需要用户决定”。
-- 不编造路径、实体 Variant、ANM2 动画名、回调注册位置或第三方 API。
-- 静态校验、隔离行为测试和实际游戏验证分别报告，不能混为“已验证”。
-- 原生 UI 表面彼此独立：彩色道具图、ESC My Stuff、卡面、HUD、角色选择、合作菜单、成就和 Boss 肖像必须分别发现并验证。
-- 用户未提供美术时，官方尺寸仅是可覆盖的源帧建议；生成资源仍必须接入已发现的 XML、ANM2、图集与映射，不能假设 loose PNG 会自动加载。
+默认实现顺序是：
 
-## 本版强化
+1. 目标模组已经确认的代码与资源；
+2. 官方 Isaac API；
+3. 项目明确声明或用户明确要求的第三方库。
 
-- 为原生视觉补充可覆盖的官方资源基线，以及彩色道具图、ESC My Stuff、卡面、HUD 与世界 Pickup 的明确分流。
-- 强化世界、视觉/渲染、回调偏移与屏幕坐标边界：逻辑标记默认只做一次 `owner.Position + 世界偏移 -> Isaac.WorldToScreen`；其他偏移仅由已发现的项目适配器消费且每项只应用一次，转换失败时不得用世界坐标继续绘制。
-- 强化空白/无意义实体防护：只校验、替换或清理当前模组明确拥有的 Spawn/Morph 路径，不干扰其他模组。
-- 为 EID、MCM、StageAPI 与 REPENTOGON 补齐缺失依赖和重复注册等 eval，保持官方 API fallback。
-- 全量复核 48 个 skill 的结构、评测、引用与插件清单；静态校验通过。实际游戏验证仍由具体模组与运行环境完成。
+CuerLib、EID、MCM、StageAPI、REPENTOGON 等均不被默认视为必需前置。
 
-## 本版新增能力
+## 安装
 
-- **全局 TBD 提醒**：48 个 skill 都会把影响当前工作的未知项标为“需要用户决定”，说明影响，并在答复末尾汇总未决事项。
-- **五个独立运行合同**：新增状态效果、商店/交易定价、GridEntity、Book of Virtues 魂火和套装变身，分别处理来源、计时、付款、网格坐标、魂火映射与形态激活，避免继续塞进伤害、经济、房间或普通使魔 skill。
-- **实体引擎类型边界**：`isaac-entities` 与 `isaac-testing-debugging` 防止把 Lua table 当作 `Vector` 等引擎值传入 API，并要求测试桩验证真实调用边界。
-- **房间拓扑与门位验证**：`isaac-rooms-stages` 与测试 skill 区分调试房、真实地图连通、合法门槽与本地坐标；无候选时不得静默消耗状态或删除无关门。
-- **原生机制隔离**：`isaac-mechanic-contracts` 防止借用原版机制后清理原版拥有的房间、维度或实体，并要求同局隔离验证。
-- **奖励、文本与注册一致性**：补齐奖励确认/延迟结算、静态 XML 多语言、运行期本地 ID 解析、可选依赖延迟出现，以及道具注册的稳定本地 ID 约束。
-- **彩色道具透明通道合同**：彩色 `gfx` 必须用主体 alpha 蒙版而非“非色键像素全不透明”；在浅灰棋盘、白色、房间近似色复核，并逐 ANM2 裁切帧验收。`isaac-validators -CheckPngTransparency` 会警告缺失 alpha、统一外底或疑似内嵌深色底板，仍要求原生游戏表面验收。
-- **角色美术表面分流**：严格区分游戏内 skin、头发/头饰挂饰、肖像、名称、角色选择、合作与死亡界面素材；图集裁切是坐标容量，不是视觉占满目标，普通头发以原版头部和原生 1× 叠加比例为准。
-- **原版换皮与资源覆盖合同**：识别无 Lua 的纯资源模组，发现 `resources/` 与版本化资源根，区分精确路径覆盖、运行时换图和 Null Costume，并把加载顺序与遮挡策略保留为显式兼容决策。
-- **音效与音乐证据合同**：区分 `sounds.xml`/`SFXManager` 和 `music.xml`/`MusicManager`；普通短音效优先采用 PCM WAV，除非目标项目已证明其他加载路线可用。`pcall` 或测试桩无报错只证明 Lua 调用成功，最终仍需最新游戏日志与实机可听结果。
-## Skill Map
+当前由仓库直接验证的方式是安装 `skills/` 下的各个 Skill 目录。仓库同时包含
+`.codex-plugin/plugin.json`，但在没有可验证的一键安装入口时，本说明不假设
+GitHub URL 或插件商店按钮能够自动完成安装。
+
+### 全局安装
+
+全局安装后，这些 Skills 可供本机的 Codex 项目使用。
+
+```powershell
+git clone https://github.com/BrickAZ/isaac-repentance-skills.git
+cd isaac-repentance-skills
+$target = Join-Path $HOME ".codex\skills"
+New-Item -ItemType Directory -Force $target | Out-Null
+Copy-Item -Recurse -Force ".\skills\isaac-*" $target
+```
+
+macOS 或 Linux：
+
+```bash
+git clone https://github.com/BrickAZ/isaac-repentance-skills.git
+cd isaac-repentance-skills
+mkdir -p ~/.codex/skills
+cp -R skills/isaac-* ~/.codex/skills/
+```
+
+如目标位置已有同名 Skill，上述命令会更新其文件。重要的本地自定义内容应先备份。
+安装或更新后，重新打开一个 Codex 任务，让 Codex 重新发现 Skills。
+
+### 仅安装到一个项目
+
+也可以把 `skills/` 下需要的 Skill 目录复制到目标模组的：
+
+```text
+<mod-root>/.codex/skills/
+```
+
+这种方式只影响该项目，适合隔离测试或不希望全局安装的使用者。不要只复制
+`SKILL.md`；Skill 目录内的 `references/`、`scripts/`、`evals/` 和其他配套文件
+也属于合同的一部分。
+
+### 检查安装是否完整
+
+从仓库根目录运行：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File tests/test-installed-skill-parity.ps1
+```
+
+这个检查比较仓库版本与默认全局安装目录。它证明文件一致，不证明某个具体模组已经
+通过游戏内测试。
+
+## 快速使用
+
+多数情况下不需要背 Skill 名称。打开目标模组项目，直接描述需求即可：
+
+```text
+给这个《以撒的结合：忏悔》模组新增一个被动道具：持有时伤害 +1。
+先发现项目入口、道具注册方式和现有属性实现；不要假设第三方前置。
+品质、池子和解锁方式没有决定的部分保持 TBD，并提醒我决定。
+```
+
+需要严格限定过程时，可以显式指定 Skills：
+
+```text
+使用 isaac-mod-context、isaac-collectible-registration、
+isaac-passive-collectibles 和 isaac-callback-contracts。
+先输出发现项，再实现并分别报告静态检查与尚未完成的实机验证。
+```
+
+只想审查、不允许修改文件时，应把边界直接写进提示词：
+
+```text
+这是只读审查。不要修改文件。
+检查这个世界跟随 Sprite 是否混用了世界坐标、屏幕坐标、PositionOffset
+和 callback RenderOffset；未知项目事实保持 TBD。
+```
+
+当一个未知项会阻止正确实现时，Skills 会将它标为：
+
+```text
+TBD — 需要用户决定
+```
+
+并说明它影响什么。Skill 不应擅自替用户决定平衡数值、池子、权重、解锁条件、
+美术方向或机制设计。
+
+## 工作方式
+
+一次任务通常只需要一个主 Skill 和少量辅助 Skill：
+
+1. `isaac-repentance-router` 判断需求属于哪个领域；
+2. `isaac-mod-context` 发现目标模组的真实结构；
+3. 领域 Skill 定义机制、资源、状态和兼容边界；
+4. `isaac-testing-debugging` 与 `isaac-validators` 区分能自动证明和仍需实机确认的内容。
+
+Skills 提供的是决策合同，不是固定代码模板。目标项目已经存在的正确模式和用户明确
+给出的设计，始终优先于通用建议。
+
+## 能力概览
+
+| 领域 | 覆盖内容 |
+| --- | --- |
+| 项目与可靠实现 | 项目发现、架构、机制合同、callback、状态、性能、测试和静态校验 |
+| 实体与战斗 | 注册实体、使魔、魂火、NPC/Boss、弹幕、异常状态和自定义角色 |
+| 世界与空间 | 房间、楼层、GridEntity、多房间区域和独立 Dimension |
+| 道具与进度 | 主动/被动、注册、卡牌、饰品、经济、商店、联动、奖励、挑战和解锁 |
+| 运行规则 | 伤害、生命、诅咒、重掷、移除、随机数和形态变身 |
+| 资源与兼容 | ANM2、角色美术、换皮覆盖、音效、HUD、多语言及可选第三方 API |
+
+## 完整 Skill Map
 
 ### 项目发现与可靠实现
 
@@ -53,7 +154,7 @@
 | --- | --- |
 | `isaac-mod-context` | 发现真实入口、资源、XML、依赖和验证命令。 |
 | `isaac-mod-architecture` | 划分模块边界、接入点并避免重复注册。 |
-| `isaac-repentance-router` | 为陌生需求选择一个主 skill，并控制辅助 skill 的数量。 |
+| `isaac-repentance-router` | 为陌生需求选择一个主 Skill，并控制辅助 Skill 的数量。 |
 | `isaac-mechanic-contracts` | 先定义机制的输入、结果与边界，再选择实现。 |
 | `isaac-callback-contracts` | 选择 callback、过滤器、注册时机和返回值。 |
 | `isaac-state-lifecycle` | 管理运行期状态、SaveData 以及房间、重开和死亡清理。 |
@@ -72,6 +173,7 @@
 | `isaac-projectile-combat` | 管理弹幕归属、伤害、命中和清理。 |
 | `isaac-status-effects` | 管理异常状态的目标资格、来源、持续、叠加/刷新、免疫、周期伤害与清理。 |
 | `isaac-players-characters` | 开发自定义角色和 Tainted 变体。 |
+
 ### 世界与空间
 
 | Skill | 作用 |
@@ -123,28 +225,63 @@
 | `isaac-mcm-compat` | 处理可选 Mod Config Menu 配置界面与重复注册。 |
 | `isaac-stageapi-compat` | 处理可选 StageAPI 房间、楼层与版本兼容。 |
 | `isaac-repentogon-compat` | 处理可选 REPENTOGON API、版本门控和官方 fallback。 |
+
+## 核心约束
+
+- 不编造路径、ID、Variant、SubType、ANM2 动画名、callback 注册位置或第三方 API。
+- 不把参考模组的架构、依赖或本地工具当作新项目的默认答案。
+- 不用固定运行时 ID 代替 XML 本地 ID 和运行时名称解析。
+- 不把 Lua table 当作 `Vector`、`RNG` 或其他 Isaac 引擎对象传给 API。
+- 不把世界坐标、视觉偏移、callback 偏移和屏幕坐标混在同一次渲染计算中。
+- 不因为一个表面正常，就推断另一个表面的资源链也正常。
+- 不清理其他模组可能拥有的卡牌、Pickup、实体、房间、门或状态。
+- 用户已经给出的数值和设计优先；只有用户未决定时才提出建议。
+
 ## 验证与证据边界
 
-仓库级检查会验证 48 个 skill 的 frontmatter、内部引用、TBD 合同、路由
-覆盖、eval schema、离线第三方 API 参考和证据矩阵。Windows 下脚本会主动为
-`quick_validate.py` 设置 UTF-8，避免系统 GBK 把合法中文误判为编码错误。
+仓库级检查会验证 48 个 Skill 的 frontmatter、内部引用、TBD 合同、路由覆盖、
+eval schema、离线第三方 API 参考、证据矩阵和已安装文件一致性。
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File tests/test-skill-repository.ps1
 ```
 
-`evals.json` 中的 `files` 是仓库内真实上下文，`fixture_files` 是题目中的
-虚构项目文件；完整约定见 `docs/eval-schema.md`。静态审计、盲测回答、模拟
-运行和游戏内验证是四种不同证据，前一层通过不得冒充后一层通过。
-## 不做什么
+在 Windows 下，校验脚本会为 `quick_validate.py` 启用 UTF-8，避免系统 GBK 将
+合法中文误判为编码错误。
 
-这套 skills 不替用户决定平衡数值、视觉风格或机制设计，也不承诺未经运行的
-代码已经通过实际游戏验证。项目事实与用户决定始终优先于通用模式。
+证据分为四层：
+
+1. **静态审计**：文件、XML、路径、注册、引用和代码结构；
+2. **隔离行为测试**：在测试桩中验证机制分支、类型边界和状态变化；
+3. **模拟或受控运行**：验证更接近引擎调用的行为；
+4. **游戏内验证**：真实加载、视觉、声音、碰撞、多人和兼容性。
+
+前一层通过不能冒充后一层通过。某项检查未运行时，Skill 应明确写出“未验证”，
+而不是用推测补全结果。
 
 ## 仓库结构
 
 ```text
 .codex-plugin/plugin.json  Codex plugin 清单
-skills/                    48 个通用 Isaac skills
-AGENTS.md                  给维护本仓库的 AI 的边界说明
+skills/                    48 个通用 Isaac Skills
+docs/                      eval schema 与证据矩阵
+tests/                     仓库审计和安装一致性检查
+AGENTS.md                  维护本仓库时必须遵守的 AI 边界
+README.md                  英文说明
+README.zh-CN.md            中文说明
 ```
+
+## 反馈问题
+
+当某个 Skill 在真实开发中给出错误方案时，请尽量提供：
+
+- 原始需求；
+- Codex 实际给出的方案；
+- 目标模组中相关文件或最小复现；
+- 最新游戏日志；
+- 已完成的静态、脚本和游戏内验证；
+- 你认为正确的行为边界。
+
+这类反馈比单纯增加更多规则更有价值，因为它能区分 Skill 缺口、项目事实缺失、
+测试桩失真和执行 Agent 没有遵守现有合同。可以通过
+[GitHub Issues](https://github.com/BrickAZ/isaac-repentance-skills/issues) 提交。
