@@ -46,18 +46,27 @@ as a collision, damage, AI, HP, or targeting entity. Route such behavior through
 
 ## Coordinate Contract
 
-State the coordinate domain for each position:
+Read `../isaac-anm2-visuals/references/lua-sprite-effects.md` for the canonical
+manual-Sprite coordinate contract. Before coding, label every input as world,
+visual/render, callback offset, or screen space.
 
-- Use world positions for entity logic and world placement.
-- Manual `Sprite:Render` requires screen coordinates. Convert an anchored world
-  point with `Isaac.WorldToScreen(worldPosition)` before rendering.
-- Build a head anchor from the live owner position plus discovered offset rules.
-  A fixed Y offset is a provisional parameter, not a universal anchor.
-- Validate players and NPCs separately when size, flying/position offset, Boss
-  scale, or ANM2 pivot differs.
+- Use `owner.Position + declaredWorldOffset` as the default logical anchor for
+  head prompts, charge bars, and gameplay markers, then call
+  `Isaac.WorldToScreen` exactly once.
+- Do not blindly add `PositionOffset`, `SpriteOffset`, `GetFlyingOffset()`, or
+  callback `RenderOffset`. If the requirement is to match the rendered body,
+  use a discovered project adapter and prove each offset is applied once.
+- A fixed Y offset is provisional and owner-category-specific, not universal.
+  Validate players and NPCs separately when size, Boss scale, or pivot differs.
+- If conversion fails, do not render the raw world position. Define allowed
+  render modes and suppress duplicate reflection/refraction passes unless the
+  design explicitly asks for them.
 
-Code inspection alone does not prove placement. Test relevant owner classes and
-record unresolved offsets as `TBD`.
+Code inspection alone does not prove placement. A coordinate behavior test must
+use a non-identity camera transform and independent nonzero visual/callback
+offsets; an identity `WorldToScreen` with zero offsets cannot catch double
+application. Keep real camera, riding/flying, co-op, and pass behavior as
+in-game evidence. Record unresolved policies as `TBD`.
 
 ## State, Render, and Cleanup
 

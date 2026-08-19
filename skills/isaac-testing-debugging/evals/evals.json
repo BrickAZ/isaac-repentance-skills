@@ -99,6 +99,15 @@
         "skills/isaac-testing-debugging/references/verification-layers.md",
         "skills/isaac-audio-render-feedback/references/sfx-music.md"
       ]
+    },
+    {
+      "id": "identity-worldtoscreen-zero-offset-false-positive",
+      "prompt": "世界跟随 Sprite 的测试通过：WorldToScreen(position) 原样返回，player.PositionOffset 和 callback renderOffset 都是 Vector(0,0)，只断言 Sprite:Render 被调用。实机却偏移。怎样修测试？",
+      "expected_output": "判定测试夹具把世界/屏幕/视觉/callback 域折叠成同一域，不能证明坐标。改用非恒等相机转换，给各 offset 独立非零 sentinel，断言传给 WorldToScreen 的世界值和最终 Render 屏幕值、每项 exact-once；转换失败时断言不画，覆盖允许/排除 renderMode，实机验证另列。",
+      "files": [
+        "skills/isaac-testing-debugging/SKILL.md",
+        "skills/isaac-testing-debugging/references/verification-layers.md"
+      ]
     }
   ]
 }

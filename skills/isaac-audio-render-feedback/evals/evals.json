@@ -53,6 +53,15 @@
         "skills/isaac-audio-render-feedback/references/sfx-music.md",
         "skills/isaac-testing-debugging/SKILL.md"
       ]
+    },
+    {
+      "id": "chargebar-coordinate-domain-and-render-pass",
+      "prompt": "玩家蓄力条在 MC_POST_PLAYER_RENDER 中手动画。当前代码把 PositionOffset 当世界坐标、WorldToScreen 后又加 RenderOffset，转换失败则拿世界坐标继续 Render，也没有过滤水面反射。请写反馈层修复合同。",
+      "expected_output": "要求坐标账本、logical marker 与 body-visual adapter 二选一、每项偏移 exact-once；默认逻辑蓄力条不自动混入 PositionOffset/renderOffset。转换失败不绘制，指定允许/排除 render pass，测试使用非恒等相机和独立非零 offset，并将最终位置与骑乘/动画/反射留作实机证明。",
+      "files": [
+        "skills/isaac-audio-render-feedback/SKILL.md",
+        "skills/isaac-audio-render-feedback/references/render-overlay.md"
+      ]
     }
   ]
 }

@@ -79,7 +79,7 @@
     {
       "id": 8,
       "prompt": "审查红点代码：effect.sprite:Render(player.Position + Vector(0, -42))。它在玩家和 Boss 头上都用同一偏移，镜头移动时位置离谱。",
-      "expected_output": "应该指出手动 Sprite 收到了世界坐标；要求把 live world anchor 转成 Isaac.WorldToScreen 后再 Render，并拒绝一个固定 Y 值覆盖玩家飞行/PositionOffset、普通敌人与 Boss 尺寸差异；列出相机移动和不同 owner 的游戏内验证。",
+      "expected_output": "应该指出手动 Sprite 收到了世界坐标；要求先建立坐标账本并选择锚点政策，再把 live world anchor 只转换一次。不能凭名称把 PositionOffset、飞行偏移或 callback RenderOffset 都加进世界公式；若需贴合身体必须沿用已发现 adapter 并证明每项只应用一次。还要列出转换失败不绘制、render pass 过滤、非恒等相机测试与不同 owner 的游戏内验证。",
       "files": [
         "skills/isaac-anm2-visuals/references/lua-sprite-effects.md"
       ]
@@ -206,6 +206,15 @@
       "prompt": "为了让换皮一直生效，代码在 MC_POST_PLAYER_RENDER 中每帧 Sprite:Load，并在 MC_FAMILIAR_UPDATE 中每帧 ReplaceSpritesheet 后 LoadGraphics。画面目前能显示。",
       "expected_output": "必须拒绝把资源加载当成每帧保活；应在初始化、实体创建、玩家类型/皮肤变化或明确 dirty 边沿加载与刷新，render/update 只更新状态和绘制。还要验证重载不会重置动画帧、事件、图层或共享状态。",
       "id": "asset-reload-in-update-render"
+    },
+    {
+      "id": "manual-sprite-double-offset-contract",
+      "prompt": "审查一个玩家蓄力条：worldAnchor = player.Position + player.PositionOffset + Vector(0,-40)，screen = Isaac.WorldToScreen(worldAnchor)，然后 screen = screen + renderOffset，再 Sprite:Render(screen)。转换失败时函数返回 worldAnchor。测试把 WorldToScreen 写成原样返回，两个 offset 都是 Vector(0,0)。只写诊断与回归合同。",
+      "expected_output": "必须识别世界、视觉/渲染、callback offset 和屏幕坐标被混合；默认逻辑锚点使用 player.Position+世界设计偏移并只 WorldToScreen 一次，不自动叠加 PositionOffset/renderOffset。若项目要求贴合实际身体，必须发现 adapter 并逐项 exact-once。转换失败必须不绘制，不能返回世界坐标；定义 reflection/refraction pass；测试用非恒等转换与独立非零 sentinel，并保留实机验证。",
+      "files": [
+        "skills/isaac-anm2-visuals/SKILL.md",
+        "skills/isaac-anm2-visuals/references/lua-sprite-effects.md"
+      ]
     }
   ]
 }

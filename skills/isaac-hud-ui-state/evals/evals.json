@@ -16,6 +16,15 @@
       "files": [
         "skills/isaac-hud-ui-state/SKILL.md"
       ]
+    },
+    {
+      "id": "world-following-chargebar-offset-domains",
+      "prompt": "玩家头顶蓄力条在骑乘或动画偏移时跑远。代码把 player.Position、PositionOffset、WorldToScreen 结果和 MC_POST_PLAYER_RENDER 的 RenderOffset 全部相加；项目未知。请给 UI 坐标与生命周期审查合同，不写代码。",
+      "expected_output": "建立坐标账本并选择 logical owner 或 proven body-visual adapter；默认蓄力条只用 Position+世界偏移后转换一次，不盲加视觉/回调偏移。要求 exact-once、转换失败不画、render mode 过滤、每玩家状态，以及非恒等相机和非零 offset 的脚本测试与实机 riding/flying/co-op 验证。",
+      "files": [
+        "skills/isaac-hud-ui-state/SKILL.md",
+        "skills/isaac-hud-ui-state/references/ui-state-review.md"
+      ]
     }
   ]
 }

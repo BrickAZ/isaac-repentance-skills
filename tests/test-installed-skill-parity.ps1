@@ -5,6 +5,27 @@ param(
 
 $ErrorActionPreference = "Stop"
 $failures = New-Object System.Collections.Generic.List[string]
+$textExtensions = @(
+    ".anm2", ".cfg", ".json", ".lua", ".md", ".ps1", ".py",
+    ".toml", ".txt", ".xml", ".yaml", ".yml"
+)
+
+function Test-SameContent([string]$Source, [string]$Installed) {
+    $sourceHash = (Get-FileHash -LiteralPath $Source -Algorithm SHA256).Hash
+    $installedHash = (Get-FileHash -LiteralPath $Installed -Algorithm SHA256).Hash
+    if ($sourceHash -eq $installedHash) {
+        return $true
+    }
+
+    $extension = [IO.Path]::GetExtension($Source).ToLowerInvariant()
+    if ($textExtensions -notcontains $extension) {
+        return $false
+    }
+
+    $sourceText = [IO.File]::ReadAllText($Source).Replace("`r`n", "`n").Replace("`r", "`n").TrimEnd("`n")
+    $installedText = [IO.File]::ReadAllText($Installed).Replace("`r`n", "`n").Replace("`r", "`n").TrimEnd("`n")
+    return $sourceText -ceq $installedText
+}
 
 foreach ($sourceDirectory in Get-ChildItem -LiteralPath $SourceSkillRoot -Directory | Sort-Object Name) {
     $installedDirectory = Join-Path $InstalledSkillRoot $sourceDirectory.Name
@@ -22,9 +43,7 @@ foreach ($sourceDirectory in Get-ChildItem -LiteralPath $SourceSkillRoot -Direct
             $failures.Add("Installed file is missing: $($sourceDirectory.Name)/$relative") | Out-Null
             continue
         }
-        $sourceHash = (Get-FileHash -LiteralPath $file.FullName -Algorithm SHA256).Hash
-        $installedHash = (Get-FileHash -LiteralPath $installedFile -Algorithm SHA256).Hash
-        if ($sourceHash -ne $installedHash) {
+        if (-not (Test-SameContent -Source $file.FullName -Installed $installedFile)) {
             $failures.Add("Installed file differs: $($sourceDirectory.Name)/$relative") | Out-Null
         }
     }
