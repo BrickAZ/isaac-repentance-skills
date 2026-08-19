@@ -57,10 +57,34 @@ Read `references/verification-layers.md` before planning verification. Read `ref
 - Do not conclude that Lua behavior tests are unavailable merely because `lua` is absent from `PATH`. Complete runner discovery first; do not install a runtime, alter global `PATH`, or change machine configuration unless the user explicitly asks.
 - Separate “runner found but test failed”, “test was not run”, and “no compatible runner was found after discovery”.
 - Do not treat a test stub that only records an engine call as proof that its argument types are valid. For a tested engine boundary, the stub must reject plain Lua-table lookalikes and exercise the exact changed path.
+- Do not accept an identity `WorldToScreen` stub plus all-zero `PositionOffset`
+  and callback `RenderOffset` as proof of render-coordinate correctness. Such a
+  fixture collapses distinct domains and lets duplicated or missing offsets pass.
 - Do not treat `pcall`, a no-throw SFX stub, or a recorded `SFXManager:Play` invocation as proof that Isaac opened, decoded, or audibly played an audio asset.
 - Do not state the runtime representation of a constructor from a test fixture alone. Record whether the current test uses a function, callable object, or another adapter, then verify the real construction route from project/official/runtime evidence.
 - Do not let a room/door test declare every coordinate legal. Model discovered room topology separately from local position legality, and include a no-candidate case that proves no owned mutation or success consumption occurs.
 - Do not treat a console/debug/goto room as proof that normal map adjacency, neighboring-room creation, or door transitions work. Require a separate normal-floor in-game check.
+
+## Render Coordinate Boundary Tests
+
+For a manually rendered world-following sprite, scripted tests must keep the
+domains observably different:
+
+1. Use a non-identity `WorldToScreen`, such as adding a known camera delta, and
+   assert the exact world argument passed into it.
+2. Give owner `PositionOffset`, `SpriteOffset`/flying offset, and callback
+   `RenderOffset` distinct nonzero sentinel values. Assert the selected anchor
+   policy consumes each intended value exactly once and ignores the others.
+3. Exercise the real changed callback path, not only a detached helper. Assert
+   the final `Sprite:Render` position and explicit clamp arguments when used.
+4. Make missing/failed conversion observable and assert no owned `Render` call
+   occurs; a raw world-coordinate fallback is a failure.
+5. Invoke allowed and excluded render modes to prove one-pass versus
+   reflection/refraction behavior.
+6. Keep camera movement, riding/flying animation offsets, co-op ownership, and
+   native-scale placement as separate in-game proof.
+
+These tests prove arithmetic and routing, not final visual quality.
 
 ## Audio Decode And Playback Proof
 
@@ -145,6 +169,10 @@ When changing a large, monolithic Lua entry file, include a check that parses or
 - Wrong, duplicated, blank, or lost reward: `isaac-rewards-pickups`, then check candidate validation, owner, repeat boundary, spawn/Morph fallback, and third-party preservation.
 - Item does not trigger: item id lookup, callback registration, item ownership, active slot, charge/use return.
 - Callback fires incorrectly or not at all: `isaac-callback-contracts`, registration line, handler existence, filter, callback-specific return policy, and a behavior test that invokes the registered handler.
+- World-following sprite drifts or jumps: `isaac-anm2-visuals` plus
+  `isaac-hud-ui-state`; audit world/visual/callback/screen domains, exact-once
+  offset ownership, conversion failure, render modes, and the non-identity
+  coordinate test before changing art or ANM2 pivots.
 - Visual missing or a colored collectible with a black rectangular backing: first name the exact surface, then use `isaac-anm2-visuals` for that surface's asset path, animation name, load owner, and render/update path. For a native colored collectible, use `isaac-collectible-registration` to decode its PNG alpha and inspect it on a normal pedestal. Do not use a working adjacent surface as proof.
 - Entity not behaving: `isaac-entities`, callback route, type/variant/subtype, `GetData()`, spawn/remove logic.
 - Blank/meaningless entity or pickup: prove the spawn owner first, then check current-project registration, id/variant/subtype, ANM2/spritesheet/HUD chain, and invalid-target fallback. Do not test by globally deleting unknown entities.

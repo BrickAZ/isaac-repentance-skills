@@ -1,6 +1,6 @@
 ---
 name: isaac-callback-contracts
-description: Select, register, review, debug, or write handoff prompts for Binding of Isaac Repentance Lua callbacks. Use this whenever a mechanic is understood but Codex may choose the wrong callback, callback timing, registration filter, handler signature, return value, cache refresh, damage source filter, priority, duplicate registration, or callback test. Use isaac-mod-context first in an unfamiliar project. 中文触发：回调、callback、回调不触发、挂回调、注册、参数过滤、返回值、true false nil、缓存刷新、MC_EVALUATE_CACHE、MC_ENTITY_TAKE_DMG、MC_USE_ITEM、MC_GET_CARD、时机错误、重复注册。
+description: Select, register, review, debug, or write handoff prompts for Binding of Isaac Repentance Lua callbacks. Use this whenever a mechanic is understood but Codex may choose the wrong callback, callback timing, registration filter, handler signature, return value, cache refresh, damage source filter, render offset/pass, priority, duplicate registration, or callback test. Use isaac-mod-context first in an unfamiliar project. 中文触发：回调、callback、回调不触发、挂回调、注册、参数过滤、返回值、true false nil、缓存刷新、渲染偏移、RenderOffset、RenderMode、MC_EVALUATE_CACHE、MC_ENTITY_TAKE_DMG、MC_USE_ITEM、MC_GET_CARD、时机错误、重复注册。
 ---
 
 # Isaac Callback Contracts
@@ -46,13 +46,21 @@ Read the relevant reference:
 - **Cards and generation**: `MC_USE_CARD`, `MC_USE_PILL`, `MC_GET_CARD`, and ownership gates. Use `isaac-cards-pockets`.
 - **Rewards and pickups**: room-clear drops, spawn/replacement events, owned Morph paths, and reward repeat boundaries. Use `isaac-rewards-pickups` for candidate and fallback policy.
 - **Entities**: fire/update/collision/kill/spawn callbacks, type/variant/subtype filters. Use `isaac-entities`; use `isaac-projectile-combat` when the entity is a player/familiar-owned tear, laser, knife, bomb, or attack projectile.
-- **Lifecycle**: new room, new level, game start, update, render, input. Use `isaac-state-lifecycle` for state ownership and reset.
+- **Lifecycle**: new room, new level, game start, update, and input. Use `isaac-state-lifecycle` for state ownership and reset.
+- **Render**: global/player/entity render callbacks, callback `RenderOffset`, render mode/pass, and presentation-only ownership. Use `isaac-hud-ui-state` plus the canonical manual-Sprite contract in `isaac-anm2-visuals`.
 
 ## Hard Rules
 
 - A callback registration must name an existing handler and have one clear owner.
 - Do not use `MC_POST_RENDER` to mutate core gameplay state unless the current repo has a documented reason.
 - Do not use broad callbacks without an item/entity/card/challenge filter when a narrow filter exists.
+- A render callback argument name does not prove its coordinate domain. Record
+  whether callback `RenderOffset` is ignored or consumed by a discovered
+  adapter, and prove it is applied exactly once rather than after a complete
+  `WorldToScreen` conversion.
+- Record allowed render modes/passes. Presentation that should appear once must
+  reject reflection/refraction or duplicate passes unless mirroring is an
+  explicit requirement.
 - Do not infer a callback's return behavior from another callback. Record the exact return policy beside the handler or in the handoff.
 - When a state changes outside cache evaluation, specify the `AddCacheFlags` / `EvaluateItems` refresh path.
 - A pre-spawn or generation callback must gate only replacements owned by the current mechanic; do not globally affect unknown third-party content.
@@ -70,6 +78,7 @@ Read the relevant reference:
 - Registration filter:
 - Handler and signature:
 - Input fields used:
+- Coordinate/offset ownership and render-pass policy, if applicable:
 - Return policy for this callback:
 - Cache refresh path, if any:
 - State/owner dependency:

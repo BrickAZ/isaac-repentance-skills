@@ -125,14 +125,22 @@ is required.
 - For generated `.anm2`, keep the first version simple: one spritesheet, one layer, clear pivot, explicit width/height, and one or two animation names.
 - For player hair or another head decoration, treat each ANM2 crop as coordinate capacity rather than a target visible size. Read `isaac-character-art-surfaces` and preserve its measured head reference, decoration bounding-box limit, face-protected mask, and direction/frame consistency gate.
 - Do not infer correct scale from pixels touching crop edges, a high minimum visible-pixel count, or a clean `64x64` export. Require front/back/left/right overlays at native `1x` plus a `4x` nearest-neighbor pixel view; native `1x` is the proportion authority.
-- For a manual Lua `Sprite`, keep world anchor and screen render position separate:
-  calculate the owner-relative world anchor, then pass
-  `Isaac.WorldToScreen(worldAnchor)` to `Sprite:Render`. Never pass
-  `entity.Position` or another world coordinate directly to manual `Render`.
+- For a manual Lua `Sprite`, follow `references/lua-sprite-effects.md` and keep
+  a coordinate ledger. The default logical marker route is
+  `owner.Position + declaredWorldOffset`, exactly one `Isaac.WorldToScreen`,
+  then `Sprite:Render`; never pass a world coordinate directly to `Render`.
+- Do not infer that `PositionOffset`, `SpriteOffset`, `GetFlyingOffset()`, or a
+  callback `RenderOffset` belongs in that world formula. Use visual/render
+  offsets only through a discovered project adapter, name their owner, and
+  prove every contribution is applied exactly once.
+- If world-to-screen conversion is missing or fails, skip the owned draw and
+  report it; never fall back to the raw world anchor. Define which render modes
+  are allowed, and suppress reflection/refraction duplicates unless the design
+  explicitly requires them.
 - Do not use one fixed vertical `Vector` as a universal “head” anchor. Resolve
-  player offsets, flying behavior, entity size, Boss/normal-enemy differences,
-  and ANM2 pivot from the actual owner and project convention; verify each
-  supported category in game.
+  entity size, Boss/normal-enemy differences, and ANM2 pivot from the actual
+  owner and project convention. If body bobbing/flying must be matched, use the
+  proven visual-offset adapter instead of mixing those values into world space.
 - If writing a code prompt, include exact files to read, expected asset paths, expected animation names, and the route checklist.
 - After file changes, use `isaac-validators` for static path checks when possible, then list in-game render checks separately.
 - When an `.anm2` belongs to a registered custom entity, treat its XML registration, ANM2, spritesheet, and default animation as one spawn-safety contract. A broken contract must suppress only the current project's owned spawn, never prompt a global unknown-entity cleanup.

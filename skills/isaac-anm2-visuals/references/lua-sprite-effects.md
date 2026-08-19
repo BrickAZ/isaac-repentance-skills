@@ -26,21 +26,40 @@ runtime pattern and lifetime rules below; no third-party asset is required.
 ## Coordinate And Anchor Contract
 
 Manual `Sprite:Render` is screen-space even when the visual is anchored in the
-room. Keep these values separate:
+room. Before writing arithmetic, make a coordinate ledger and assign every
+input to one domain:
 
-- `worldAnchor`: recompute from the live owner during render. For an owner
-  entity, begin with its position and applicable visual position offset.
-- `headOffset`: a discovered, owner-category-specific offset. Do not use one
-  fixed value for players, normal enemies, and Bosses; account for player
-  flying/position offsets and enemy size or an explicit tested size band.
-- `screenPosition`: `Isaac.WorldToScreen(worldAnchor)`, passed to
-  `Sprite:Render`.
+| Value | Default domain | Rule |
+| --- | --- | --- |
+| `owner.Position` | world | Default logical owner anchor. |
+| A discovered `headOffset` / design offset | world only when defined in room units | Add before `WorldToScreen`. |
+| `PositionOffset`, `SpriteOffset`, `GetFlyingOffset()` | visual/render | Do not add to a world anchor by name or intuition. Use only through a project-proven body-visual adapter. |
+| callback `RenderOffset` | callback/render | It is not automatically required and is not a second camera transform. Apply only when the selected callback/project adapter owns it. |
+| `screenPosition` | screen | The only position passed to manual `Sprite:Render`. |
+
+Choose one anchor policy and record it:
+
+1. **Logical owner anchor (default for charge bars, head prompts, and gameplay
+   markers):** `owner.Position + worldOffset`, then exactly one
+   `Isaac.WorldToScreen`. Do not mix `PositionOffset`, `SpriteOffset`, flying
+   offsets, or callback `RenderOffset` into this route merely because they are
+   available.
+2. **Match the rendered body:** use only a discovered current-project helper or
+   a documented callback adapter that deliberately maps visual offsets,
+   scrolling, shaking, reflection, and callback `RenderOffset`. State which
+   layer owns each offset and prove that each is applied exactly once.
 
 Do not cache `screenPosition`: the camera can move. Do not use the ANM2 pivot
-or a `SpriteOffset` as a substitute for choosing the correct owner anchor.
-If the effect needs engine-managed world tracking, evaluate the registered
-`ENTITY_EFFECT` route with `isaac-entities`; then separately verify entity
-`PositionOffset` and `SpriteOffset`.
+or a `SpriteOffset` as a substitute for choosing the correct owner anchor. If
+`WorldToScreen` is unavailable or fails, skip this owned render and report the
+failure; never pass the raw world anchor to `Sprite:Render` as a fallback.
+
+For player/entity render callbacks, define the render-pass policy. A HUD-like
+bar or head prompt normally renders once in the intended main pass and filters
+water reflection/refraction or other duplicate passes unless mirroring is an
+explicit requirement. If the effect needs engine-managed world tracking,
+evaluate the registered `ENTITY_EFFECT` route with `isaac-entities`; then
+separately verify entity `PositionOffset` and `SpriteOffset`.
 
 ## Basic Runtime Pattern
 
@@ -60,10 +79,10 @@ In update/render logic, after confirming the owner still exists:
 effect.sprite:Update()
 
 -- Resolve headOffset from the discovered owner category and tested visual
--- convention. It is not one global fixed Vector.
-local worldAnchor = owner.Position + owner.PositionOffset + headOffset
+-- convention. It is a world-space design offset, not PositionOffset.
+local worldAnchor = owner.Position + headOffset
 local screenPosition = Isaac.WorldToScreen(worldAnchor)
-effect.sprite:Render(screenPosition)
+effect.sprite:Render(screenPosition, Vector.Zero, Vector.Zero)
 
 effect.timer = effect.timer - 1
 ```
@@ -101,6 +120,16 @@ Read the `.anm2` before coding. If the file only has `Idle`, do not call `Play("
 - Expired sprites are removed.
 - Manual `Sprite:Render` receives `Isaac.WorldToScreen(worldAnchor)`, never a
   raw entity world position.
+- The coordinate ledger names the domain and owner of `PositionOffset`,
+  `SpriteOffset`, flying offset, callback `RenderOffset`, and camera conversion;
+  each selected contribution is applied exactly once.
+- A failed or missing world-to-screen conversion suppresses the owned draw
+  instead of falling back to world coordinates.
+- Render modes/passes are filtered so a one-pass marker is not duplicated in
+  reflection/refraction unless the design explicitly requires it.
 - Head/above-owner placement is checked for the intended player state,
   ordinary enemy, large Boss, camera movement, and co-op owner separation.
 - Tests assert `Load`, `Play`, `Render`, and expiration behavior when practical.
+  Coordinate tests use a non-identity `WorldToScreen` transform plus distinct
+  nonzero `PositionOffset` and callback `RenderOffset` values; an identity
+  transform with all-zero offsets cannot prove the coordinate contract.

@@ -36,6 +36,15 @@
       "files": [
         "skills/isaac-callback-contracts/SKILL.md"
       ]
+    },
+    {
+      "id": "player-render-offset-pass-contract",
+      "prompt": "MC_POST_PLAYER_RENDER 给了 player、renderOffset 和 renderMode。Agent 看到参数就把 renderOffset 加到 WorldToScreen(player.Position) 后，并在水面反射/折射通道都画同一个蓄力条。请审核 callback 合同。",
+      "expected_output": "不能从参数名推断必须相加；要记录 RenderOffset 由谁消费、选择逻辑锚点或项目 adapter、证明 exact-once。定义允许的 renderMode，默认一次性 HUD-like 玩家提示应过滤反射/折射，且 gameplay 不在 render 结算。",
+      "files": [
+        "skills/isaac-callback-contracts/SKILL.md",
+        "skills/isaac-callback-contracts/references/callback-choice-and-filters.md"
+      ]
     }
   ]
 }

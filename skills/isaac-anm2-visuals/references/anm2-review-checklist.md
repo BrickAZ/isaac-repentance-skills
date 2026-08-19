@@ -32,9 +32,13 @@ Use this before final handoff.
 - Body-vs-effect decision is explicit: costume only when the visual is part of Isaac's body animation.
 - Costume: `content/costumes2.xml` and `Isaac.GetCostumeIdByPath` agree.
 - Lua effect: sprite is created once, updated, rendered, and removed.
-- Manual Lua effect: world anchor is converted with `Isaac.WorldToScreen`
-  before `Sprite:Render`; its anchor offset is validated for the intended
-  owner category rather than copied as one universal fixed Y value.
+- Manual Lua effect: a coordinate ledger separates world, visual/render,
+  callback-offset, and screen values. The chosen policy converts the world
+  anchor exactly once, applies every selected offset exactly once, and never
+  falls back to raw world coordinates when conversion fails.
+- Above-owner Lua effect: its anchor offset is validated for the intended owner
+  category rather than copied as one universal fixed Y value; render-pass
+  filtering prevents unintended reflection/refraction duplicates.
 - UI/HUD: render coordinates are screen-space and hide conditions exist.
 - EID: icon shortcut, size, frame, and fallback are registered.
 - Vanilla reuse: spritesheet index and `LoadGraphics()` are correct.
@@ -46,3 +50,5 @@ Use this before final handoff.
 - Mention anything that still requires in-game visual verification.
 - For above-owner visuals, verify camera movement, co-op, flying players when
   supported, ordinary enemies, and large Bosses.
+- Scripted coordinate tests use a non-identity camera transform and independent
+  nonzero visual/callback offsets; all-zero identity stubs are insufficient.

@@ -49,14 +49,20 @@ Before editing or writing a prompt:
 - Do not mutate core gameplay state in render callbacks unless there is no better callback and the repo already uses that pattern.
 - Do not block input without a clear release condition.
 - Do not assume shader safety. If a shader can black-screen or obscure gameplay, state fallback and verification.
-- Keep screen-space and world-space coordinates distinct.
-- For manual `Sprite:Render`, a world-space anchor is not a render coordinate:
-  calculate the live owner-relative anchor, convert it with
-  `Isaac.WorldToScreen`, then render. If an `ENTITY_EFFECT` owns world
-  tracking, verify its `PositionOffset` and `SpriteOffset` separately.
-- Require an anchor plan for above-owner visuals: player visual/flying offsets,
-  enemy size bands, Boss differences, ANM2 pivot, and in-game checks. A single
-  fixed Y offset is not a general solution.
+- Keep world, visual/render, callback-offset, and screen coordinates distinct.
+  Follow `references/render-overlay.md` and the canonical manual-Sprite contract
+  in `isaac-anm2-visuals`.
+- For manual `Sprite:Render`, the default logical marker route is live owner
+  world position plus a declared world offset, exactly one
+  `Isaac.WorldToScreen`, then render. Do not automatically mix
+  `PositionOffset`, flying offset, or callback `RenderOffset` into that formula.
+- If a project-proven adapter matches the rendered body, record which layer owns
+  each visual/callback offset and prove exact-once application. Failed
+  conversion suppresses the owned draw; it never falls back to world space.
+- Require an anchor and render-pass plan for above-owner visuals: enemy size
+  bands, Boss differences, ANM2 pivot, intended body-follow behavior, allowed
+  render modes, and in-game checks. A single fixed Y offset is not a general
+  solution, and reflection/refraction is not automatically desired.
 - Register sounds/shaders in XML and verify the referenced asset path exists.
 - Keep the playback route aligned with the asset role: a short custom sound uses the discovered `sounds.xml`/SFX registration and `SFXManager`; music uses the discovered `music.xml` registration and `MusicManager`. Do not move a one-shot sound into the music system merely because an OGG decodes there.
 - For ordinary Repentance without a project-proven alternate loader, use uncompressed PCM WAV as the high-priority default for custom SFX. Treat OGG or another compressed SFX asset as unverified until the target runtime or an established project example proves that exact `sounds.xml` route; music OGG support is not SFX OGG proof.
@@ -86,7 +92,10 @@ third-party mod checkout.
 - Render callback:
 - Coordinate space:
 - World anchor owner and offset policy:
+- Visual/callback offset owner and exact-once policy:
 - World-to-screen or entity-follow route:
+- Allowed/excluded render modes:
+- Conversion-failure behavior:
 - Input interception:
 - Related anm2 assets:
 - Fallback if optional/unsafe:

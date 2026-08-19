@@ -1,148 +1,325 @@
 # Isaac Repentance Skills
 
-一套面向 Codex 的《以撒的结合：忏悔》模组开发 skills。它不提供一个
-“万能模板”，而是把容易出错的决策拆开：先发现项目事实，再选择机制、回调、
-资源、状态和验证路径。
+English | [简体中文](README.zh-CN.md)
 
-这是一个 Codex plugin 源仓库。插件清单位于
-`.codex-plugin/plugin.json`，通用 skills 位于 `skills/`。
+A Codex skill suite built specifically for *The Binding of Isaac: Repentance*
+mod development. It helps AI inspect the real project before handling mechanics,
+callbacks, entities, assets, state, compatibility, and validation, reducing the
+chance of code that looks plausible but uses the wrong API, coordinate space,
+resource pipeline, or lifecycle.
 
-## 适用范围
+This repository is not an Isaac mod and does not force every project into one
+template. After installation, describe your task normally. Codex can select the
+relevant skills while treating the target mod and the official Isaac API as the
+primary sources of truth.
 
-本插件只服务于《以撒的结合：忏悔》辅助模组开发，不是通用编程工具，
-也不适用于其他游戏、引擎或应用开发。
+> [!IMPORTANT]
+> **English-language validation status**
+>
+> This skill suite was created alongside a Chinese-first Isaac mod project. It
+> has **not** been validated as a completely English-only development workflow
+> from project discovery through implementation, debugging, and handoff.
+>
+> The verified scope is narrower: mod content implemented with guidance from
+> these skills has run correctly when *The Binding of Isaac: Repentance* is set
+> to English. That demonstrates English in-game runtime and localization
+> compatibility for the tested content; it does not prove 100% equivalence for
+> every English prompt, generated description, diagnostic exchange, project
+> convention, or optional third-party integration.
 
-## 核心原则
+## What It Helps With
 
-- 先读取目标模组，再写实现。
-- 默认使用官方 Isaac API 和目标模组已有代码。
-- CuerLib、EID、MCM、StageAPI 等均不是默认前置。
-- 用户未决定的数值、池子、权重、美术和机制细节保持 `TBD`，并在每次涉及它们的答复中标为“需要用户决定”。
-- 不编造路径、实体 Variant、ANM2 动画名、回调注册位置或第三方 API。
-- 静态校验、隔离行为测试和实际游戏验证分别报告，不能混为“已验证”。
-- 原生 UI 表面彼此独立：彩色道具图、ESC My Stuff、卡面、HUD、角色选择、合作菜单、成就和 Boss 肖像必须分别发现并验证。
-- 用户未提供美术时，官方尺寸仅是可覆盖的源帧建议；生成资源仍必须接入已发现的 XML、ANM2、图集与映射，不能假设 loose PNG 会自动加载。
+- **Discover before implementing:** locate real entrypoints, modules, XML, resource paths, registration patterns, and test commands instead of inventing project facts.
+- **Separate high-risk mechanics:** use focused contracts for collectibles, cards, trinkets, characters, familiars, entities, bosses, rooms, dimensions, unlocks, damage, and RNG.
+- **Keep visual surfaces distinct:** separate colored item art, ESC My Stuff icons, Pickups, card fronts, HUD elements, player skins, accessories, portraits, and ANM2 pipelines instead of reusing one PNG everywhere.
+- **Constrain callbacks and state:** define callback filters, return semantics, ownership, co-op isolation, SaveData, and cleanup across rooms, floors, deaths, and restarts.
+- **Preserve compatibility by default:** mutate only entities, replacements, and state owned by the current mod rather than globally deleting unknown third-party content.
+- **Report evidence honestly:** keep static inspection, isolated tests, simulated runtime behavior, and in-game verification separate. A silent test double is not proof that the game works.
 
-## 本版强化
+## Scope
 
-- 为原生视觉补充可覆盖的官方资源基线，以及彩色道具图、ESC My Stuff、卡面、HUD 与世界 Pickup 的明确分流。
-- 强化世界坐标与屏幕坐标边界：手动 Sprite:Render 必须经过 Isaac.WorldToScreen，并按 owner 偏移与尺寸策略验证。
-- 强化空白/无意义实体防护：只校验、替换或清理当前模组明确拥有的 Spawn/Morph 路径，不干扰其他模组。
-- 为 EID、MCM、StageAPI 与 REPENTOGON 补齐缺失依赖和重复注册等 eval，保持官方 API fallback。
-- 全量复核 48 个 skill 的结构、评测、引用与插件清单；静态校验通过。实际游戏验证仍由具体模组与运行环境完成。
+This repository is only for *The Binding of Isaac: Repentance* mod development.
+It is not a general programming toolkit and does not apply to other games,
+engines, or application development.
 
-## 本版新增能力
+The skills are self-contained. Users do not need YSD, Reverie, Samael, Reimu,
+neverbrith, or any other reference mod. Reference mods were used to build and
+validate guidance; they are not runtime dependencies.
 
-- **全局 TBD 提醒**：48 个 skill 都会把影响当前工作的未知项标为“需要用户决定”，说明影响，并在答复末尾汇总未决事项。
-- **五个独立运行合同**：新增状态效果、商店/交易定价、GridEntity、Book of Virtues 魂火和套装变身，分别处理来源、计时、付款、网格坐标、魂火映射与形态激活，避免继续塞进伤害、经济、房间或普通使魔 skill。
-- **实体引擎类型边界**：`isaac-entities` 与 `isaac-testing-debugging` 防止把 Lua table 当作 `Vector` 等引擎值传入 API，并要求测试桩验证真实调用边界。
-- **房间拓扑与门位验证**：`isaac-rooms-stages` 与测试 skill 区分调试房、真实地图连通、合法门槽与本地坐标；无候选时不得静默消耗状态或删除无关门。
-- **原生机制隔离**：`isaac-mechanic-contracts` 防止借用原版机制后清理原版拥有的房间、维度或实体，并要求同局隔离验证。
-- **奖励、文本与注册一致性**：补齐奖励确认/延迟结算、静态 XML 多语言、运行期本地 ID 解析、可选依赖延迟出现，以及道具注册的稳定本地 ID 约束。
-- **彩色道具透明通道合同**：彩色 `gfx` 必须用主体 alpha 蒙版而非“非色键像素全不透明”；在浅灰棋盘、白色、房间近似色复核，并逐 ANM2 裁切帧验收。`isaac-validators -CheckPngTransparency` 会警告缺失 alpha、统一外底或疑似内嵌深色底板，仍要求原生游戏表面验收。
-- **角色美术表面分流**：严格区分游戏内 skin、头发/头饰挂饰、肖像、名称、角色选择、合作与死亡界面素材；图集裁切是坐标容量，不是视觉占满目标，普通头发以原版头部和原生 1× 叠加比例为准。
-- **原版换皮与资源覆盖合同**：识别无 Lua 的纯资源模组，发现 `resources/` 与版本化资源根，区分精确路径覆盖、运行时换图和 Null Costume，并把加载顺序与遮挡策略保留为显式兼容决策。
-- **音效与音乐证据合同**：区分 `sounds.xml`/`SFXManager` 和 `music.xml`/`MusicManager`；普通短音效优先采用 PCM WAV，除非目标项目已证明其他加载路线可用。`pcall` 或测试桩无报错只证明 Lua 调用成功，最终仍需最新游戏日志与实机可听结果。
-## Skill Map
+The default authority order is:
 
-### 项目发现与可靠实现
+1. confirmed code and resources in the target mod;
+2. the official Isaac API;
+3. third-party libraries explicitly declared by the project or requested by the user.
 
-| Skill | 作用 |
+CuerLib, EID, MCM, StageAPI, REPENTOGON, and similar libraries are never assumed
+dependencies.
+
+## Installation
+
+The installation method directly verified by this repository is to install the
+individual skill directories under `skills/`. The repository also includes
+`.codex-plugin/plugin.json`, but this guide does not claim that a GitHub URL or
+plugin-store button can perform one-click installation without a verified public
+installation route.
+
+### Global Installation
+
+Global installation makes the skills available to Codex projects on the current
+machine.
+
+Windows PowerShell:
+
+```powershell
+git clone https://github.com/BrickAZ/isaac-repentance-skills.git
+cd isaac-repentance-skills
+$target = Join-Path $HOME ".codex\skills"
+New-Item -ItemType Directory -Force $target | Out-Null
+Copy-Item -Recurse -Force ".\skills\isaac-*" $target
+```
+
+macOS or Linux:
+
+```bash
+git clone https://github.com/BrickAZ/isaac-repentance-skills.git
+cd isaac-repentance-skills
+mkdir -p ~/.codex/skills
+cp -R skills/isaac-* ~/.codex/skills/
+```
+
+If matching skill directories already exist, these commands update their files.
+Back up any important local customizations first. After installing or updating,
+open a new Codex task so the skills can be discovered again.
+
+### Project-Local Installation
+
+You can instead copy the required directories from `skills/` into the target
+mod's project-local skill directory:
+
+```text
+<mod-root>/.codex/skills/
+```
+
+This limits the installation to that project and is useful for isolated testing.
+Do not copy only `SKILL.md`; the accompanying `references/`, `scripts/`, `evals/`,
+and other files are part of the skill contract.
+
+### Verify an Installation
+
+From the repository root, run:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File tests/test-installed-skill-parity.ps1
+```
+
+This compares the repository with the default global skill directory. It proves
+file parity, not that a particular Isaac mod has passed in-game testing.
+
+## Quick Start
+
+You usually do not need to memorize skill names. Open the target mod project and
+describe the feature normally:
+
+```text
+Add a passive collectible to this Binding of Isaac: Repentance mod that grants
++1 damage while held. Discover the real project entrypoint, collectible
+registration pattern, and existing stat implementation first. Do not assume any
+third-party dependency. Keep quality, pools, and unlock conditions as TBD and
+ask me to decide them.
+```
+
+For stricter routing, name the skills explicitly:
+
+```text
+Use isaac-mod-context, isaac-collectible-registration,
+isaac-passive-collectibles, and isaac-callback-contracts. Report discovered
+project facts before implementing, then separate static checks from remaining
+in-game validation.
+```
+
+When the task is review-only, state the edit boundary directly:
+
+```text
+This is a read-only review. Do not modify files.
+Check whether this world-following Sprite mixes world coordinates, screen
+coordinates, PositionOffset, and callback RenderOffset. Keep unknown project
+facts as TBD.
+```
+
+When an unresolved fact blocks a reliable implementation, the skills identify it
+as:
+
+```text
+TBD — user decision required
+```
+
+They should also explain what the decision affects. Skills must not silently
+choose balance values, pools, weights, unlock conditions, art direction, or
+mechanic design on the user's behalf.
+
+## How It Works
+
+A task normally needs one primary skill and only a few supporting skills:
+
+1. `isaac-repentance-router` identifies the primary domain;
+2. `isaac-mod-context` discovers the target mod's real structure;
+3. domain skills define mechanic, resource, state, and compatibility boundaries;
+4. `isaac-testing-debugging` and `isaac-validators` separate what can be proven automatically from what still requires in-game verification.
+
+These skills provide decision contracts, not fixed code templates. Correct
+patterns already present in the target project and explicit user decisions always
+take priority over general guidance.
+
+## Capability Overview
+
+| Area | Coverage |
 | --- | --- |
-| `isaac-mod-context` | 发现真实入口、资源、XML、依赖和验证命令。 |
-| `isaac-mod-architecture` | 划分模块边界、接入点并避免重复注册。 |
-| `isaac-repentance-router` | 为陌生需求选择一个主 skill，并控制辅助 skill 的数量。 |
-| `isaac-mechanic-contracts` | 先定义机制的输入、结果与边界，再选择实现。 |
-| `isaac-callback-contracts` | 选择 callback、过滤器、注册时机和返回值。 |
-| `isaac-state-lifecycle` | 管理运行期状态、SaveData 以及房间、重开和死亡清理。 |
-| `isaac-performance-hotpaths` | 审核逐帧扫描、重复 Spawn 和其他性能热点。 |
-| `isaac-testing-debugging` | 分层复现、调试和验证问题，并分开验证各原生 UI 表面。 |
-| `isaac-validators` | 检查 XML、资源引用、重复 ID、常见回调和本模拥有的实体生成链。 |
+| Project and reliable implementation | Project discovery, architecture, mechanic contracts, callbacks, state, performance, testing, and static validation |
+| Entities and combat | Registered entities, familiars, wisps, NPCs/bosses, projectiles, status effects, and custom characters |
+| World and space | Rooms, stages, GridEntity logic, multi-room regions, and engine-level Dimensions |
+| Items and progression | Active/passive items, registration, cards, trinkets, economy, shops, synergies, rewards, challenges, and unlocks |
+| Run rules | Damage, health, curses, rerolls, removal, RNG, and transformations/forms |
+| Assets and compatibility | ANM2, character art, reskins, audio, HUD, localization, and optional third-party APIs |
 
-### 实体与战斗
+## Complete Skill Map
 
-| Skill | 作用 |
+### Project Discovery and Reliable Implementation
+
+| Skill | Purpose |
 | --- | --- |
-| `isaac-entities` | 处理注册实体、碰撞、生命周期和视觉载体。 |
-| `isaac-familiars` | 处理跟随物生成、所有权、多玩家和重生。 |
-| `isaac-wisps-virtues` | 处理 Book of Virtues、`wisps.xml`、魂火来源、重复使用、容量、死亡和资源映射。 |
-| `isaac-npc-boss-ai` | 设计 NPC/Boss 状态机和攻击节奏。 |
-| `isaac-projectile-combat` | 管理弹幕归属、伤害、命中和清理。 |
-| `isaac-status-effects` | 管理异常状态的目标资格、来源、持续、叠加/刷新、免疫、周期伤害与清理。 |
-| `isaac-players-characters` | 开发自定义角色和 Tainted 变体。 |
-### 世界与空间
+| `isaac-mod-context` | Discovers real entrypoints, resources, XML, dependencies, and validation commands. |
+| `isaac-mod-architecture` | Defines module boundaries and integration points while preventing duplicate registration. |
+| `isaac-repentance-router` | Selects one primary skill for an unfamiliar request and limits supporting skills. |
+| `isaac-mechanic-contracts` | Defines a mechanic's inputs, outcomes, and boundaries before choosing an implementation. |
+| `isaac-callback-contracts` | Selects callbacks, filters, registration timing, and return-value semantics. |
+| `isaac-state-lifecycle` | Manages runtime state, SaveData, and cleanup across rooms, restarts, and deaths. |
+| `isaac-performance-hotpaths` | Reviews per-frame scans, repeated Spawn calls, and other performance hot paths. |
+| `isaac-testing-debugging` | Reproduces, debugs, and validates issues in layers, including separate checks for native UI surfaces. |
+| `isaac-validators` | Checks XML, resource references, duplicate IDs, callback mistakes, and entity-generation chains owned by the current mod. |
 
-| Skill | 作用 |
+### Entities and Combat
+
+| Skill | Purpose |
 | --- | --- |
-| `isaac-rooms-stages` | 处理单房、楼层、门、房间拓扑和切层。 |
-| `isaac-grid-entities` | 处理 GridEntity 的格子索引、合法位置、碰撞、破坏、归属和房间重访。 |
-| `isaac-room-networks` | 处理多个自定义房间组成的独立区域、入口、路线、返回与局部失败。 |
-| `isaac-dimensions` | 处理游戏层面的独立 Dimension、跨维度进入/返回、隔离与生命周期。 |
+| `isaac-entities` | Handles registered entities, collision, lifecycle, and visual carriers. |
+| `isaac-familiars` | Handles familiar spawning, ownership, multiplayer behavior, and respawning. |
+| `isaac-wisps-virtues` | Handles Book of Virtues, `wisps.xml`, wisp sources, repeated use, capacity, death, and resource mappings. |
+| `isaac-npc-boss-ai` | Designs NPC/Boss state machines and attack pacing. |
+| `isaac-projectile-combat` | Manages projectile ownership, damage, hits, and cleanup. |
+| `isaac-status-effects` | Manages target eligibility, sources, duration, stacking/refresh, immunity, periodic damage, and cleanup. |
+| `isaac-players-characters` | Develops custom characters and Tainted variants. |
 
-### 道具、掉落与进度
+### World and Space
 
-| Skill | 作用 |
+| Skill | Purpose |
 | --- | --- |
-| `isaac-active-item-mechanics` | 为主动道具提供充能、输入、UI 等机制分流壳。 |
-| `isaac-passive-collectibles` | 管理被动道具持有、Cache、失去、重掷和重新获得。 |
-| `isaac-collectible-registration` | 处理主动/被动道具 XML，并分开彩色图与原生 ESC My Stuff 图标链。 |
-| `isaac-cards-pockets` | 处理卡牌、符文、药丸和口袋物品，分开卡面、Pickup、HUD/EID，并防止空白实体。 |
-| `isaac-trinkets` | 处理饰品注册、持有判断、叠加及其独立视觉表面。 |
-| `isaac-item-economy` | 审核品质、池子、权重、tags 和解锁后的经济影响。 |
-| `isaac-shops-deals-pricing` | 处理商店/交易的运行时价格、购买者、付款、交付、补货和重掷重算。 |
-| `isaac-item-synergies` | 定义多道具、饰品和角色联动的归属、叠加与失效边界。 |
-| `isaac-transformations-forms` | 处理原版 PlayerForm 查询、自定义套装变身、贡献计数、激活、可逆性和展示分流。 |
-| `isaac-reroll-removal-contracts` | 管理重掷、移除、替换后的幂等 reconciliation。 |
-| `isaac-rng-determinism` | 管理随机源、抽取边界、种子范围和多人可复现性。 |
-| `isaac-rewards-pickups` | 处理奖励选择、已拥有目标的 Spawn/Morph、世界 Pickup 资源链和失败保留原物。 |
-| `isaac-challenges` | 处理挑战 XML、起始物品和运行规则。 |
-| `isaac-unlocks-progression` | 处理永久解锁、成就、存档、可用性 gate 和独立展示表面。 |
+| `isaac-rooms-stages` | Handles individual rooms, floors, doors, room topology, and stage transitions. |
+| `isaac-grid-entities` | Handles GridEntity indices, legal positions, collision, destruction, ownership, and room revisits. |
+| `isaac-room-networks` | Handles independent multi-room regions, including entry, routing, return paths, and local failure. |
+| `isaac-dimensions` | Handles engine-level Dimensions, cross-dimension entry/return, isolation, and lifecycle. |
 
-### 伤害、诅咒与运行规则
+### Items, Rewards, and Progression
 
-| Skill | 作用 |
+| Skill | Purpose |
 | --- | --- |
-| `isaac-damage-health-contracts` | 处理伤害语义、无敌帧、来源归属、递归与致命/复活边界。 |
-| `isaac-curses-run-modifiers` | 管理已有诅咒位的运行期增加、抑制、重算和清理。 |
+| `isaac-active-item-mechanics` | Provides a routing shell for active-item charge, input, UI, and related mechanisms. |
+| `isaac-passive-collectibles` | Manages passive collectible ownership, Cache evaluation, loss, rerolls, and reacquisition. |
+| `isaac-collectible-registration` | Handles active/passive collectible XML and separates colored art from the ESC My Stuff icon pipeline. |
+| `isaac-cards-pockets` | Handles cards, runes, pills, and pocket items while separating card fronts, Pickups, and HUD/EID surfaces. |
+| `isaac-trinkets` | Handles trinket registration, ownership checks, stacking, and independent visual surfaces. |
+| `isaac-item-economy` | Reviews quality, pools, weights, tags, and post-unlock economic impact. |
+| `isaac-shops-deals-pricing` | Handles runtime prices, purchasers, payment, delivery, restocking, and reroll recalculation. |
+| `isaac-item-synergies` | Defines ownership, stacking, and invalidation boundaries for item, trinket, and character synergies. |
+| `isaac-transformations-forms` | Handles vanilla PlayerForm queries, custom transformations, contribution counts, activation, reversibility, and display routing. |
+| `isaac-reroll-removal-contracts` | Manages idempotent reconciliation after rerolls, removal, and replacement. |
+| `isaac-rng-determinism` | Manages random sources, draw boundaries, seed scope, and multiplayer reproducibility. |
+| `isaac-rewards-pickups` | Handles reward selection, owned-target Spawn/Morph paths, world Pickup resource chains, and preserving the original on failure. |
+| `isaac-challenges` | Handles challenge XML, starting items, and run rules. |
+| `isaac-unlocks-progression` | Handles permanent unlocks, achievements, saves, availability gates, and independent display surfaces. |
 
-### 资源、文本与可选集成
+### Damage, Curses, and Run Rules
 
-| Skill | 作用 |
+| Skill | Purpose |
 | --- | --- |
-| `isaac-character-art-surfaces` | 拆分角色各类美术表面，并约束原版参考编辑、头发/头饰比例、1× 叠加预览、服装遮挡矩阵和头套式失败。 |
-| `isaac-reskins-resource-overrides` | 处理原版角色换皮、纯资源模组、精确路径覆盖、多资源根、运行时换图与加载顺序冲突。 |
-| `isaac-anm2-visuals` | 处理 ANM2、Sprite、坐标系、视觉载体和可覆盖的原生 UI 资源基线。 |
-| `isaac-audio-render-feedback` | 处理 SFX/音乐注册与格式、播放器职责、解码证据、shader、render 和输入拦截。 |
-| `isaac-hud-ui-state` | 管理 HUD/UI 显示、世界坐标转屏幕坐标和短效状态清理。 |
-| `isaac-localization-runtime` | 处理运行期多语言和依赖分流。 |
-| `isaac-compat-descriptions` | 处理 EID/百科描述与可选依赖兼容。 |
-| `isaac-config-options` | 处理配置、SaveData 和可选 MCM 接入。 |
-| `isaac-eid-compat` | 处理可选 EID 描述、图标与语言注册。 |
-| `isaac-mcm-compat` | 处理可选 Mod Config Menu 配置界面与重复注册。 |
-| `isaac-stageapi-compat` | 处理可选 StageAPI 房间、楼层与版本兼容。 |
-| `isaac-repentogon-compat` | 处理可选 REPENTOGON API、版本门控和官方 fallback。 |
-## 验证与证据边界
+| `isaac-damage-health-contracts` | Handles damage semantics, invulnerability frames, source ownership, recursion, and lethal/revival boundaries. |
+| `isaac-curses-run-modifiers` | Manages runtime addition, suppression, recalculation, and cleanup for existing curse bits. |
 
-仓库级检查会验证 48 个 skill 的 frontmatter、内部引用、TBD 合同、路由
-覆盖、eval schema、离线第三方 API 参考和证据矩阵。Windows 下脚本会主动为
-`quick_validate.py` 设置 UTF-8，避免系统 GBK 把合法中文误判为编码错误。
+### Assets, Text, and Optional Integrations
+
+| Skill | Purpose |
+| --- | --- |
+| `isaac-character-art-surfaces` | Separates character art surfaces and constrains vanilla-reference editing, accessory scale, 1x previews, costume occlusion, and helmet-like failures. |
+| `isaac-reskins-resource-overrides` | Handles vanilla reskins, resource-only mods, exact-path overrides, multiple resource roots, runtime replacement, and load-order conflicts. |
+| `isaac-anm2-visuals` | Handles ANM2, Sprite usage, coordinate spaces, visual carriers, and overridable native UI resource baselines. |
+| `isaac-audio-render-feedback` | Handles SFX/music registration and formats, manager responsibilities, decoding evidence, shaders, rendering, and input interception. |
+| `isaac-hud-ui-state` | Manages HUD/UI display, world-to-screen conversion, and short-lived state cleanup. |
+| `isaac-localization-runtime` | Handles runtime localization and dependency routing. |
+| `isaac-compat-descriptions` | Handles EID/encyclopedia descriptions and optional-dependency compatibility. |
+| `isaac-config-options` | Handles configuration, SaveData, and optional MCM integration. |
+| `isaac-eid-compat` | Handles optional EID descriptions, icons, and language registration. |
+| `isaac-mcm-compat` | Handles optional Mod Config Menu integration and duplicate registration. |
+| `isaac-stageapi-compat` | Handles optional StageAPI rooms, stages, and version compatibility. |
+| `isaac-repentogon-compat` | Handles optional REPENTOGON APIs, version gates, and official-API fallbacks. |
+
+## Core Constraints
+
+- Do not invent paths, IDs, Variants, SubTypes, ANM2 animation names, callback registration locations, or third-party APIs.
+- Do not treat a reference mod's architecture, dependencies, or local tools as defaults for a new project.
+- Do not substitute fixed runtime IDs for XML-local IDs and runtime name resolution.
+- Do not pass Lua tables to APIs that require `Vector`, `RNG`, or other Isaac engine values.
+- Do not mix world coordinates, visual offsets, callback offsets, and screen coordinates in one render calculation.
+- Do not use one working visual surface as proof that another surface's resource pipeline is correct.
+- Do not clean up cards, Pickups, entities, rooms, doors, or state that may belong to another mod.
+- Explicit user values and design choices take priority; provide recommendations only where the user has not decided.
+
+## Validation and Evidence Boundaries
+
+Repository checks validate frontmatter, internal references, TBD contracts, router
+coverage, eval schemas, offline third-party API references, evidence matrices, and
+installed-file parity for all 48 skills.
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File tests/test-skill-repository.ps1
 ```
 
-`evals.json` 中的 `files` 是仓库内真实上下文，`fixture_files` 是题目中的
-虚构项目文件；完整约定见 `docs/eval-schema.md`。静态审计、盲测回答、模拟
-运行和游戏内验证是四种不同证据，前一层通过不得冒充后一层通过。
-## 不做什么
+On Windows, the validation script enables UTF-8 for `quick_validate.py` so the
+system GBK code page does not misclassify valid Chinese text as an encoding error.
 
-这套 skills 不替用户决定平衡数值、视觉风格或机制设计，也不承诺未经运行的
-代码已经通过实际游戏验证。项目事实与用户决定始终优先于通用模式。
+Evidence is separated into four layers:
 
-## 仓库结构
+1. **Static audit:** files, XML, paths, registration, references, and code structure;
+2. **Isolated behavior test:** mechanic branches, engine-type boundaries, and state changes under test doubles;
+3. **Simulated or controlled runtime:** behavior closer to engine calls;
+4. **In-game verification:** real loading, visuals, audio, collision, multiplayer behavior, and compatibility.
+
+Passing an earlier layer never proves a later one. If a check was not run, the
+result must remain explicitly unverified rather than being filled in by inference.
+
+## Repository Structure
 
 ```text
-.codex-plugin/plugin.json  Codex plugin 清单
-skills/                    48 个通用 Isaac skills
-AGENTS.md                  给维护本仓库的 AI 的边界说明
+.codex-plugin/plugin.json  Codex plugin manifest
+skills/                    48 general Isaac skills
+docs/                      Eval schema and evidence matrix
+tests/                     Repository audit and installation-parity checks
+AGENTS.md                  AI maintenance boundaries for this repository
+README.md                  English documentation
+README.zh-CN.md            Simplified Chinese documentation
 ```
+
+## Reporting Problems
+
+When a skill gives misleading guidance during real development, include as much
+of the following as possible:
+
+- the original request;
+- the response Codex actually produced;
+- relevant target-mod files or a minimal reproduction;
+- the latest game log;
+- completed static, scripted, and in-game checks;
+- the behavior boundary you believe is correct.
+
+This evidence helps distinguish a skill gap from missing project facts, an
+unrealistic test double, or an implementation agent that did not follow an
+existing contract. Report problems through
+[GitHub Issues](https://github.com/BrickAZ/isaac-repentance-skills/issues).

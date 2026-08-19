@@ -11,7 +11,8 @@ Choose callbacks by the event in the Mechanic Contract, not by the content's nam
 | Decide generated card content | `MC_GET_CARD` | owned generation gate, no normal-run leakage |
 | Track a created/updated entity | matching entity lifecycle callback | type/variant/subtype and owner key |
 | Reset room/floor/run state | room/level/game lifecycle callback | reset owner and continued-run policy |
-| Draw feedback | `MC_POST_RENDER` | presentation-only state; no core mutation by default |
+| Draw screen feedback | `MC_POST_RENDER` | presentation-only state; screen coordinates and pass ownership |
+| Draw player/entity-attached feedback | matching player/entity render callback | owner filter, coordinate adapter, callback `RenderOffset` ownership, render mode/pass |
 
 ## Filtering Rule
 
@@ -26,3 +27,20 @@ Write down whether the mechanic needs to act before an event, at the event, afte
 Do not treat callback count as elapsed real time without runtime evidence. Update, player-update, render, animation-event, and room-frame clocks can pause, repeat, or diverge; route duration semantics to `isaac-state-lifecycle`.
 
 For `MC_EVALUATE_CACHE`, keep the handler idempotent: inspect the delivered cache flag, derive the contribution from current ownership/count/state, and request only affected flags when a cache-relevant transition becomes dirty. Do not call `EvaluateItems` every frame or accumulate the same bonus on every cache pass.
+
+## Render Callback Rule
+
+The callback signature tells you what arguments are delivered, not how to mix
+them. For manual world-following sprites, write a coordinate ledger and select
+one adapter:
+
+- Default logical marker: owner world position plus declared world offset,
+  exactly one `Isaac.WorldToScreen`, no implicit `PositionOffset` or callback
+  `RenderOffset`.
+- Rendered-body match: a discovered project helper deliberately owns visual
+  offsets, camera behavior, callback offset, and pass corrections. Apply each
+  contribution once and test the helper contract.
+
+If conversion fails, skip the owned draw rather than render a world coordinate.
+State which render modes are accepted; do not let a one-pass marker draw again
+in reflection/refraction merely because the callback fired there.
