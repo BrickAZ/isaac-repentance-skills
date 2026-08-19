@@ -26,7 +26,7 @@
 ## 本版强化
 
 - 为原生视觉补充可覆盖的官方资源基线，以及彩色道具图、ESC My Stuff、卡面、HUD 与世界 Pickup 的明确分流。
-- 强化世界坐标与屏幕坐标边界：手动 Sprite:Render 必须经过 Isaac.WorldToScreen，并按 owner 偏移与尺寸策略验证。
+- 强化世界、视觉/渲染、回调偏移与屏幕坐标边界：逻辑标记默认只做一次 `owner.Position + 世界偏移 -> Isaac.WorldToScreen`；其他偏移仅由已发现的项目适配器消费且每项只应用一次，转换失败时不得用世界坐标继续绘制。
 - 强化空白/无意义实体防护：只校验、替换或清理当前模组明确拥有的 Spawn/Morph 路径，不干扰其他模组。
 - 为 EID、MCM、StageAPI 与 REPENTOGON 补齐缺失依赖和重复注册等 eval，保持官方 API fallback。
 - 全量复核 48 个 skill 的结构、评测、引用与插件清单；静态校验通过。实际游戏验证仍由具体模组与运行环境完成。
