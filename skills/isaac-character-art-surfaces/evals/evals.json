@@ -64,6 +64,33 @@
       "prompt": "自定义角色的头发会被部分道具服装遮挡。Agent 建议把 Null Costume priority 统一设成 999，并在每个房间重新 AddNullCostume。用户没有决定头发应盖住哪些帽子、变身和飞行层。请审查。",
       "expected_output": "必须先输出普通/里角色、皮肤色、头/身体、飞行、变身和典型道具服装的兼容矩阵，把遮挡与优先级策略标为 TBD — user decision required；不得默认 999 或每房间重加。应按已决定的层级选择基础 skin、独立 Null Costume 或专用 ANM2，并验证 Add/Remove 生命周期。",
       "id": "costume-compatibility-and-priority-is-policy"
+    },
+    {
+      "id": "generated-size-is-candidate-not-native-asset",
+      "prompt": "任务要求在官方 512x512 玩家图集上制作原创完整皮肤。内置图像生成器返回了一张 1254x1254 PNG，视觉方向不错，Agent 准备整体缩小到 512x512 并称为 directly usable。请审查交付状态和后续路线。",
+      "expected_output": "必须分别报告 requested canvas=512x512、actual generated canvas=1254x1254 和 final native canvas=尚未产生；把输出标记为 generation-candidate，禁止直接接入、禁止整体缩放进原生 atlas、禁止称为 directly usable。应回到真实 edit target 和 crop manifest，在原生坐标合同中完成 native conformance 后再做静态与 1x 验收。",
+      "files": [
+        "skills/isaac-character-art-surfaces/SKILL.md",
+        "skills/isaac-character-art-surfaces/references/art-delivery-lifecycle.md"
+      ]
+    },
+    {
+      "id": "full-skin-identity-cannot-collapse-to-hair-only",
+      "prompt": "用户批准的原创完整皮肤要求银发、宽肩红外套和黑色内搭。最终图集没有跨格，pivot 与脚底也正确，但身体 Alpha 完全等于原版，只在内部换成红黑色，只有头发改变外轮廓。可以判原创完整皮肤完成吗？",
+      "expected_output": "技术 crop 合同可以暂时通过，但视觉模式一致性失败：用户批准的外套和宽肩身份没有分布到身体轮廓。不得以全 Alpha 相等作为完整皮肤优点，也不得普遍强迫所有角色改变身体；应按本任务身份账本在获批身体 owning mask 内重建设计，再重新完成 1x、游戏内和用户审批。",
+      "files": [
+        "skills/isaac-character-art-surfaces/SKILL.md",
+        "skills/isaac-character-art-surfaces/references/source-fact-and-mode-validation.md"
+      ]
+    },
+    {
+      "id": "surface-and-art-mode-are-separate-axes",
+      "prompt": "Agent 把 independent-ui-surface 与 pure-recolor、original-full-skin、separate-decoration 当成四个互斥的同级美术模式，并想把 192x64 姓名图按玩家皮肤的 binary Alpha 规则检查。请审查。",
+      "expected_output": "必须拆成两个轴：surface/consumer 决定姓名图、肖像、玩家皮肤等用途，art mode 决定纯换色、原创皮肤、独立装饰或独立构图；Alpha policy 由实际原版 surface 测量与项目合同决定，不能把玩家图集规则套到姓名 UI。",
+      "files": [
+        "skills/isaac-character-art-surfaces/SKILL.md",
+        "skills/isaac-character-art-surfaces/references/source-fact-and-mode-validation.md"
+      ]
     }
   ]
 }

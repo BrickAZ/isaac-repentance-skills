@@ -17,6 +17,8 @@ This bundled note is an offline routing aid, not proof of the API installed on a
 5. EID documents `EID_POST_LOAD` for mods that load before EID. Use it only when the installed build exposes that callback; otherwise use a discovered, bounded registration point.
 6. Registration must be idempotent. A late-load retry may continue only until the first confirmed success.
 7. EID absence must not disable mechanics, XML localization, or another description path.
+8. EID's own source may override globals such as `RegisterMod` for library-internal bookkeeping. That is not a public registration recipe for content mods; use the documented EID object instead.
+9. Workshop/package metadata and active code can report different versions. Use the running object plus installed source/docs for exact capability, and report disagreement rather than choosing the higher number.
 
 ## Version-sensitive Surface
 

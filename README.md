@@ -249,6 +249,7 @@ take priority over general guidance.
 | Skill | Purpose |
 | --- | --- |
 | `isaac-character-art-surfaces` | Separates character art surfaces and constrains vanilla-reference editing, accessory scale, 1x previews, costume occlusion, and helmet-like failures. |
+| `isaac-visual-style-translation` | Translates one source identity across player, item, familiar, enemy/Boss, portrait, and UI art while keeping native-1x cohesion distinct from technical validity. |
 | `isaac-reskins-resource-overrides` | Handles vanilla reskins, resource-only mods, exact-path overrides, multiple resource roots, runtime replacement, and load-order conflicts. |
 | `isaac-anm2-visuals` | Handles ANM2, Sprite usage, coordinate spaces, visual carriers, and overridable native UI resource baselines. |
 | `isaac-audio-render-feedback` | Handles SFX/music registration and formats, manager responsibilities, decoding evidence, shaders, rendering, and input interception. |
@@ -276,7 +277,7 @@ take priority over general guidance.
 
 Repository checks validate frontmatter, internal references, TBD contracts, router
 coverage, eval schemas, offline third-party API references, evidence matrices, and
-installed-file parity for all 48 skills.
+installed-file parity for all 49 skills.
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File tests/test-skill-repository.ps1
@@ -299,7 +300,7 @@ result must remain explicitly unverified rather than being filled in by inferenc
 
 ```text
 .codex-plugin/plugin.json  Codex plugin manifest
-skills/                    48 general Isaac skills
+skills/                    49 general Isaac skills
 docs/                      Eval schema and evidence matrix
 tests/                     Repository audit and installation-parity checks
 AGENTS.md                  AI maintenance boundaries for this repository

@@ -112,6 +112,24 @@
       "files": [
         "skills/isaac-validators/SKILL.md"
       ]
+    },
+    {
+      "id": "near-native-content-xml-filename",
+      "prompt": "模组有 content/costymes2.xml，XML 严格解析通过，里面的路径也都存在，但 costume 在游戏里完全没注册。静态检查应该怎么判？",
+      "expected_output": "应给 XML_FILENAME 警告，指出 costymes2.xml 与原生 costumes2.xml 近似并要求确认精确文件名；语法通过不等于游戏会识别注册文件。它是有针对性的警告而非任意自定义 XML 的硬失败，修名后仍需游戏内验证。",
+      "files": [
+        "skills/isaac-validators/SKILL.md",
+        "skills/isaac-validators/references/static-checks.md"
+      ]
+    },
+    {
+      "id": "character-art-mode-validator-contradiction",
+      "prompt": "角色合同选择 original-full-skin，并要求新外套和肩部轮廓；验证配置却要求 source Alpha 全图相等、身体不得新增或删除 Alpha。另一个姓名 UI 的原版基线含半透明边缘，但配置统一要求所有 PNG 都是 binary Alpha。应如何处理？",
+      "expected_output": "必须在生成前判定验证配置与消费者合同矛盾并阻断，而不是让素材永远无法通过。original-full-skin 只能在 approved owning masks 内允许受控 Alpha 变化；纯换色才要求全图 source Alpha 相等。姓名 UI 的 Alpha policy 必须来自其自身原版 PNG 测量，不能套用玩家图集规则。",
+      "files": [
+        "skills/isaac-validators/SKILL.md",
+        "skills/isaac-character-art-surfaces/references/source-fact-and-mode-validation.md"
+      ]
     }
   ]
 }

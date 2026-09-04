@@ -1,0 +1,46 @@
+{
+  "skill_name": "isaac-visual-style-translation",
+  "evals": [
+    {
+      "id": "compress-source-identity-across-surfaces",
+      "prompt": "把一个外部作品角色转译成《以撒：忏悔》的玩家皮肤、独立头饰、32x32 道具图标、Boss 换皮和角色选择肖像。原设有十几种服装细节，但用户只要求原生 1x 下仍能认出角色。请写美术生产合同，不写代码。",
+      "expected_output": "先建立来源证据与身份特征账本，把特征分为必须保留、按表面保留和可删除，并按轮廓、色彩、材质、局部标记排序；再为每个原生表面重新编码，禁止把一张大师图缩放到所有用途。技术画布、路径、裁切、Pivot 与动画事实仍由项目发现和对应技术 Skill 提供，未知项保持 TBD。",
+      "files": [
+        "skills/isaac-visual-style-translation/SKILL.md"
+      ]
+    },
+    {
+      "id": "visual-cohesion-can-fail-after-static-pass",
+      "prompt": "一套角色、道具图标和 Boss 换皮已经通过 PNG 尺寸、RGBA、ANM2 裁切、路径和帧覆盖检查，但玩家使用蓝发红围巾，图标只画黑色鹿角，Boss 又改成金色重甲，原生 1x 下看不出它们属于同一主题。Agent 准备宣布美术完成。请审查。",
+      "expected_output": "必须把技术合同通过与跨表面视觉通过分开；建立共享身份锚点和表面差异矩阵，要求每个表面保留足够但不必相同的身份信号，并在原生 1x 情景预览中复核。当前应判视觉验收失败，不能因静态检查全部通过而宣布完成。",
+      "files": [
+        "skills/isaac-visual-style-translation/SKILL.md"
+      ]
+    },
+    {
+      "id": "selective-outline-not-black-backing",
+      "prompt": "来源角色穿黑色长外套。绘图 Agent 为了让轮廓清楚，在每个 Sprite 后面加了一块深色矩形；清理 Agent 又建议删除所有近黑像素来去底。请给出修正与验收合同。",
+      "expected_output": "拒绝矩形或与主体无关的深色衬底，也拒绝按颜色删除合法黑衣和描边；用主体 alpha mask、贴附外轮廓的选择性深色线、内部结构色和多背景合成检查。用户或项目已确认是误生成底板时直接判导出失败，不再询问是否有意。",
+      "files": [
+        "skills/isaac-visual-style-translation/SKILL.md"
+      ]
+    },
+    {
+      "id": "source-style-is-identity-not-runtime-dependency",
+      "prompt": "用户喜欢某个第三方 Isaac 换皮模组的观感，希望新项目学它的优点。目标项目没有安装那个模组，也没有任何第三方前置。请说明如何借鉴。",
+      "expected_output": "把参考模组只当维护期的正反例证据，提取可自包含的形状、色彩、材质、原生尺寸与跨表面规律；不得要求目标用户安装、提供或运行参考模组，不得继承其路径、ID、代码或可疑资源尺寸。最终方案默认官方 Repentance 模板加目标项目发现。",
+      "files": [
+        "skills/isaac-visual-style-translation/SKILL.md"
+      ]
+    },
+    {
+      "id": "preview-background-cannot-prove-outline",
+      "prompt": "角色姓名 PNG 只提供了黑底放大预览。Agent 看到边缘很深，准备在生成提示词中写死一像素深棕描边、二值 Alpha 和禁止抗锯齿，但还没有解码原版 PNG。请审查提示词事实来源。",
+      "expected_output": "必须停止把预览解释写成像素事实；先解码原版 PNG，测量可见 RGB/RGBA、Alpha 直方图、包围盒、留白与深色像素归属，并区分主体像素、透明 RGB 和查看器背景。每条约束应标为用户决定、观测事实、消费者合同或建议；未经验证的描边和工具保证不得进入硬提示词。",
+      "files": [
+        "skills/isaac-visual-style-translation/SKILL.md",
+        "skills/isaac-visual-style-translation/references/source-pixel-fact-gate.md"
+      ]
+    }
+  ]
+}

@@ -61,6 +61,14 @@ A PNG preview can show black, white, or checkerboard pixels even when the file i
 
 ### Per-Frame Alpha Review
 
+Use the deterministic builder when available:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File <skill-directory>/scripts/build-anm2-crop-manifest.ps1 -Path <actor.anm2> -Json
+```
+
+The manifest proves technical crop/layer/frame facts only. It does not decide the character design, Alpha policy, identity, proportion, or whether the PNG looks correct at native `1x`.
+
 A spritesheet is not one visual unit for acceptance. Read the actual ANM2 and build a crop manifest containing the spritesheet index/path, every unique `X/Y/Width/Height` crop, layer, and animation that uses it. Review each crop/frame separately.
 
 - Never infer a uniform grid from PNG size, and never approve an atlas merely because its canvas has alpha or its outer corners are transparent.
@@ -68,6 +76,7 @@ A spritesheet is not one visual unit for acceptance. Read the actual ANM2 and bu
 - Use an explicit subject alpha mask for generated cut-out art. Keep dark pixels within the subject; reject detached or plate-like low-luminance regions outside it. A one-pixel outline is allowed only while it remains attached to the intended silhouette.
 - Record crop/frame failures with their ANM2 animation and layer. A background defect in one crop is a defect of that frame even when adjacent frames are clean.
 - If the project does not supply a reliable image-analysis route, list each unique crop as a manual visual-verification item. Do not substitute whole-atlas inspection.
+
 A weapon is a theme, not a resource route:
 
 - **Weapon appearance** means a world/combat or player-body visual. Its carrier remains `TBD` until the project proves costume, familiar, Lua Sprite, or registered-entity ownership. It is not a HUD, EID, colored-collectible, or ESC icon by default.
@@ -108,6 +117,17 @@ Asset loading is a lifecycle operation:
 - Do not call `Sprite:Load`, `ReplaceSpritesheet`, or `LoadGraphics` every update or render to keep a visual alive.
 - A reload may reset animation, frame, overlay, playback, events, or layer state. Preserve or explicitly restore every required field and test the transition.
 
+## Optional External Editor Workflow
+
+A graphical ANM2 editor, including ANM2ed, is an optional authoring tool rather
+than a runtime or download dependency. Do not require it, execute a bundled
+binary, or assume its save/export proves engine compatibility. When the user or
+project chooses an external editor, read
+`references/external-editor-workflow.md`: preserve a recoverable source,
+reparse the saved ANM2 as XML, re-resolve every PNG, crop, pivot, layer, event,
+and animation referenced by Lua/XML, then keep actual Isaac rendering as a
+separate verification layer.
+
 ## Self-Contained Fallback
 
 Prefer the current mod's closest asset. If it has no matching asset, use the
@@ -142,7 +162,7 @@ is required.
   owner and project convention. If body bobbing/flying must be matched, use the
   proven visual-offset adapter instead of mixing those values into world space.
 - If writing a code prompt, include exact files to read, expected asset paths, expected animation names, and the route checklist.
-- After file changes, use `isaac-validators` for static path checks when possible, then list in-game render checks separately.
+- After file changes, use `isaac-validators` for static path checks when possible, then list in-game render checks separately. An editor preview or successful export is static authoring evidence, not in-game proof.
 - When an `.anm2` belongs to a registered custom entity, treat its XML registration, ANM2, spritesheet, and default animation as one spawn-safety contract. A broken contract must suppress only the current project's owned spawn, never prompt a global unknown-entity cleanup.
 
 ## Current Project Examples
@@ -163,4 +183,5 @@ Before saying the visual work is complete, report:
 - Every XML or Lua file that references the `.anm2`.
 - The animation names used.
 - Whether the asset is loaded by XML, `Isaac.GetCostumeIdByPath`, EID, or manual `Sprite:Load`.
+- Whether an external editor was used, what post-save reparse/path/crop/event checks passed, and what still needs in-game verification.
 - Any rendering behavior that still needs in-game verification.

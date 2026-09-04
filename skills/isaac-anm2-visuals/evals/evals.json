@@ -215,6 +215,15 @@
         "skills/isaac-anm2-visuals/SKILL.md",
         "skills/isaac-anm2-visuals/references/lua-sprite-effects.md"
       ]
+    },
+    {
+      "id": "external-editor-round-trip-is-not-engine-proof",
+      "prompt": "我用 ANM2ed 打开并保存了一个角色 costume，编辑器预览和导出 PNG 都成功，所以准备直接说游戏内通过。项目没有要求用户安装这个编辑器。请审查。",
+      "expected_output": "应把 ANM2ed 视为可选作者工具而非运行依赖；读取保存后的 ANM2/XML，重新核对 spritesheet path/index、crop、pivot、layer/null、animation、event、sound 与 Lua/XML 调用，并把游戏内加载、层级、位置和时序保留为独立验证，不能用编辑器成功代替。",
+      "files": [
+        "skills/isaac-anm2-visuals/SKILL.md",
+        "skills/isaac-anm2-visuals/references/external-editor-workflow.md"
+      ]
     }
   ]
 }

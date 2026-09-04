@@ -50,6 +50,15 @@
         "skills/isaac-mechanic-contracts/references/native-mechanism-isolation.md",
         "skills/isaac-mechanic-contracts/SKILL.md"
       ]
+    },
+    {
+      "id": "native-eligibility-covers-settlement-and-revisit",
+      "prompt": "模组只想取消原版 Boss Rush/蓝子宫门的时间限制，已有官方门生成入口。Agent 只在第一次清房回调调用一次，离开再进房后门消失；测试只证明 pcall 成功。请审查机制合同。",
+      "expected_output": "应继续使用已证实的官方入口，但分别定义首次结算和已清房重访生命周期；在重访时按官方入口重新确认预期门，而不是手工造门或删门。pcall 只证明调用没有 Lua 异常，必须检查实际门/房间结果并保留实机验证；不得把某参考模组的 Boss ID、回调或签名当通用常量。",
+      "files": [
+        "skills/isaac-mechanic-contracts/SKILL.md",
+        "skills/isaac-mechanic-contracts/references/native-mechanism-isolation.md"
+      ]
     }
   ]
 }

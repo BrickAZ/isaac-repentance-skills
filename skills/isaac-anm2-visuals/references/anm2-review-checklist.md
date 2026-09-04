@@ -43,6 +43,14 @@ Use this before final handoff.
 - EID: icon shortcut, size, frame, and fallback are registered.
 - Vanilla reuse: spritesheet index and `LoadGraphics()` are correct.
 
+## Optional Editor Round Trip
+
+- Editor choice is optional and user/project approved; no editor binary is a runtime dependency.
+- The pre-edit source or version-control state is recoverable.
+- The saved ANM2 reparses as XML outside the editor.
+- Spritesheet paths, crop rectangles, pivots, layers, animations, events, sounds, and Lua/XML references are rechecked from the saved file.
+- Editor preview/export success is not reported as Isaac runtime proof.
+
 ## Verification
 
 - Add or update a behavior test when Lua references the asset.

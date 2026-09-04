@@ -30,6 +30,28 @@ choices.
 - Do not infer isolation from a single successful use, an empty room, a `pcall`,
   or a lack of an immediate crash.
 
+## Native Eligibility And Revisit Lifecycle
+
+When the request changes whether a vanilla door/reward/route may appear and an
+official entrypoint exists, prefer that entrypoint over a visual imitation.
+Then prove the complete lifecycle rather than one call:
+
+- Identify the authoritative first-settlement event that creates or evaluates
+  the native result.
+- Identify re-entry/revisit behavior after the room is already clear or the
+  initial callback has passed.
+- Reassert only through the official, discovered entrypoint when the native
+  result is expected to persist; do not manually reconstruct or delete doors.
+- Confirm the observable result after the call. A successful `pcall` proves
+  only that Lua invoked a function, not that the engine created the door,
+  decoded a resource, or accepted the room layout.
+- Keep exact Boss IDs, callback names, and helper signatures project/API facts;
+  one small mod does not make them universal constants.
+
+There's No Rush is positive evidence for pairing the initial clean-award moment
+with a new-room revisit check while still calling official door helpers. It does
+not prove that every timed door uses the same callbacks or IDs.
+
 ## Required Proof For Native Reuse
 
 Before approving explicit native reuse under a no-interference requirement:

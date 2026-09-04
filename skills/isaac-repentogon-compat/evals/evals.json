@@ -36,6 +36,15 @@
         "skills/isaac-repentogon-compat/SKILL.md",
         "skills/isaac-repentogon-compat/references/repentogon-contract.md"
       ]
+    },
+    {
+      "id": 5,
+      "prompt": "项目明确把 REPENTOGON 设为必需前置，但初始化先注册了扩展回调和菜单，随后版本检查失败才 return。请审查。",
+      "expected_output": "必须把依赖/最低版本/就绪检查移到扩展注册和共享状态变更之前；失败时清晰停止本模初始化，不能留下半注册回调、菜单、实体或存档状态，也不能偷偷切到行为不同的 vanilla 路线。",
+      "files": [
+        "skills/isaac-repentogon-compat/SKILL.md",
+        "skills/isaac-repentogon-compat/references/repentogon-contract.md"
+      ]
     }
   ]
 }

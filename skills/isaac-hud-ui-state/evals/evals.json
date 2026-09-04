@@ -25,6 +25,24 @@
         "skills/isaac-hud-ui-state/SKILL.md",
         "skills/isaac-hud-ui-state/references/ui-state-review.md"
       ]
+    },
+    {
+      "id": "equivalent-hud-provider-arbitration",
+      "prompt": "一个模组自己绘制星象房概率；检测到 REPENTOGON 后，扩展也能显示同一数字。Agent 打算两个都保留，并静默改写全局 HUD 选项。请审查。",
+      "expected_output": "必须建立 HUD 可见性矩阵并选定单一显示 owner；不能重复绘制。是否改用扩展显示和是否修改全局选项由项目/用户决定，临时修改必须在退出、错误和 reload 时恢复；REPENTOGON 仍是声明后才可用的依赖。",
+      "files": [
+        "skills/isaac-hud-ui-state/SKILL.md",
+        "skills/isaac-hud-ui-state/references/ui-state-review.md"
+      ]
+    },
+    {
+      "id": "modal-menu-restores-entry-state",
+      "prompt": "一个道具选择菜单打开时锁玩家输入、冻结房间实体、改鼠标状态并临时改了另一个菜单模组的快捷键；当前只在正常确认时恢复。请给生命周期审查。",
+      "expected_output": "必须列出每个被改变状态及其 owner，并为确认、取消、房间切换、reload、错误/异常退出建立对称恢复；不得默认冻结无关实体或修改外国模组快捷键，除非用户/项目明确批准且可可靠恢复。",
+      "files": [
+        "skills/isaac-hud-ui-state/SKILL.md",
+        "skills/isaac-hud-ui-state/references/ui-state-review.md"
+      ]
     }
   ]
 }

@@ -51,6 +51,7 @@ may add checks only after that project establishes a stable convention.
 The first version checks:
 
 - XML files under `content/` and discovered resource roots can be parsed.
+- A root-level `content/` XML filename that is very close to a known native registration filename receives an `XML_FILENAME` warning; syntactically valid `costymes2.xml` may still be ignored instead of loading as `costumes2.xml`.
 - Resource-only layouts are accepted; native-named tables such as resource-root `players.xml` or `costumes2.xml` receive exact-path/load-order warnings rather than a false missing-content failure.
 - Unresolved asset references from those broad native tables are summarized per file because they may intentionally fall back to official game resources; the summary still requires target-build and in-game verification.
 - Asset references resolve across every discovered resource root, including versioned roots such as `resources-dlc3/`.
@@ -68,12 +69,24 @@ Read `references/static-checks.md` before extending the validator. Read `referen
 
 
 `-CheckPngTransparency` is a conservative image warning profile, not a proof that arbitrary art is correct. It can catch missing alpha, a uniform opaque outer matte, and a large dense low-luminance rectangle including an inset plate. It cannot infer an author's intended subject mask, decide whether a deliberately dark full-frame object is wrong, or validate ANM2 frame crops without their discovered crop manifest. Pair it with `isaac-anm2-visuals` and the three-background visual review.
+
+## Character-Art Contract Preflight
+
+Before running or extending a character-art profile, read `../isaac-character-art-surfaces/references/source-fact-and-mode-validation.md` and compare the selected surface, art mode, Alpha policy, approved masks, identity requirements, and validator assertions. Treat a contradictory configuration as a blocked contract, not as proof that the candidate is bad.
+
+- `pure-recolor` may require complete source-Alpha equality.
+- `original-full-skin` must allow controlled Alpha changes inside approved owning masks.
+- `separate-decoration` validates its layer independently from the base.
+- UI/name/portrait surfaces use their own measured Alpha policies rather than a project-wide binary rule.
+
+Use `isaac-character-art-surfaces/scripts/inspect-png-surface.ps1`, `isaac-anm2-visuals/scripts/build-anm2-crop-manifest.ps1`, and `isaac-character-art-surfaces/scripts/validate-owned-crops.ps1` for deterministic facts. Their pass result is static evidence only; it cannot prove identity, visual quality, native-scale proportion, or in-game rendering.
+
 ## Hard Rules
 
 - Do not call static validation "game verified." Static checks prove only that files are internally plausible.
 - Do not fail a confirmed resource-only mod because `main.lua`, `RegisterMod`, or `content/` is absent.
 - Do not decide which same-relative-path resource wins across roots or mod load order without runtime/version evidence.
-- Treat hot-path asset reload, first-player ownership, broad exact-path override, and unbound ANM2 event results as warnings unless a narrower proven contract justifies failure.
+- Treat near-native XML filenames, hot-path asset reload, first-player ownership, broad exact-path override, and unbound ANM2 event results as warnings unless a narrower proven contract justifies failure.
 - If a validator failure points at unrelated dirty work, report it separately and do not silently fix it unless the user asked.
 - Prefer adding a deterministic validator for repeated mistakes instead of writing the same manual checklist again.
 - Keep validators conservative. A false positive that blocks every run will teach future agents to ignore the tool.

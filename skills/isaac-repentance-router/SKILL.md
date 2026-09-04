@@ -90,6 +90,7 @@ undeclared entity/audio/description work.
 | Custom player/tainted character | `isaac-players-characters` |
 | Existing vanilla reskin/resource-only exact-path override | `isaac-reskins-resource-overrides` |
 | Custom-player art or sprite-surface generation | `isaac-character-art-surfaces` |
+| Cross-surface source identity/style translation | `isaac-visual-style-translation` |
 | HUD/prompts/world-following marker/UI state | `isaac-hud-ui-state` |
 | ANM2 load/animation/assets | `isaac-anm2-visuals` |
 | Sound/shader/overlay/input blocking | `isaac-audio-render-feedback` |
