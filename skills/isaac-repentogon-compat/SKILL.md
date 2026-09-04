@@ -1,6 +1,6 @@
 ---
 name: isaac-repentogon-compat
-description: Add, review, or debug optional REPENTOGON integration for Binding of Isaac Repentance+ mods. Use for REPENTOGON-only callbacks, Lua API extensions, XML extensions, version guards, custom tags, performance features, or compatibility with REPENTOGON's Lua 5.4 runtime. Require explicit project intent plus a usable REPENTOGON global and version proof; never assume REPENTOGON exists. 中文触发：忏悔龙、Repentogon、REPENTOGON、扩展 API、扩展回调、Repentogon XML、Lua 5.4、版本检查。
+description: Add, review, or debug third-party REPENTOGON integration for Binding of Isaac Repentance+ mods. Use for REPENTOGON-only callbacks, Lua API extensions, XML extensions, version guards, custom tags, performance features, or compatibility with REPENTOGON's Lua 5.4 runtime. Require explicit project intent plus a usable REPENTOGON global and version proof; never assume REPENTOGON exists. 中文触发：忏悔龙、Repentogon、REPENTOGON、扩展 API、扩展回调、Repentogon XML、Lua 5.4、版本检查。
 ---
 
 # Isaac REPENTOGON Compatibility
@@ -17,32 +17,42 @@ A `TBD` is an unresolved project fact or user decision, not permission to guess.
 
 Read `../isaac-mod-context/references/tbd-disclosure.md` whenever an unresolved fact or user decision remains active.
 
-REPENTOGON is an optional script extender. Treat every one of its callbacks,
-globals, XML attributes, and runtime behaviors as unavailable until the target
-project explicitly opts in and the actual runtime proves support.
+REPENTOGON is a third-party script extender. The target project may declare it
+as a required dependency or use it as an optional enhancement; undeclared means
+optional. Treat every callback, global, XML attribute, and runtime behavior as
+unavailable until project intent and the actual runtime prove support.
 
 ## First Move
 
 1. Use `isaac-mod-context` to discover the project's declared target game,
    dependency policy, bootstrap, Lua compatibility expectations, and tests.
-2. Confirm the user wants a REPENTOGON-only enhancement. Keep the core mechanic
-   on official APIs unless the user explicitly accepts a REPENTOGON requirement.
-3. Verify a usable global and the installed version. Use the discovered version
-   check/API documentation; never compare guessed version strings or assume the
-   newest web documentation matches the player's build.
-4. Classify the proposed feature: extended callback, Lua API, XML attribute,
-   custom tag, performance enhancement, or runtime-only convenience. Then read
-   the exact installed documentation for that surface.
+2. Classify the dependency mode from project declarations or an explicit user
+   decision: **required**, **optional enhancement**, or **undeclared**. Keep the
+   core mechanic on official APIs for optional/undeclared use; do not invent an
+   allegedly equivalent vanilla fallback after the project chooses required.
+3. Verify a usable global, the installed version, and the exact extension
+   surface. Use discovered documentation; never compare guessed version strings
+   or assume the newest website matches the player's build.
+4. Classify the feature: extended callback, Lua API, XML attribute, custom tag,
+   performance enhancement, or runtime-only convenience. Then read the exact
+   installed documentation for that surface.
 
-## Capability Contract
+## Dependency And Capability Contract
 
-- **Absent**: do not call REPENTOGON APIs. Run the official implementation or
-  explicitly omit the optional enhancement without a crash, softlock, or
-  malformed XML path.
-- **Present but insufficient**: do not call the newer API. Use an earlier
-  supported route or omit the enhancement; record the version requirement.
+- **Required + absent/insufficient**: stop this mod's initialization before any
+  extension-only callback, registry, XML-dependent mutation, or partial gameplay
+  state is installed. Report the missing dependency/minimum version clearly.
+  Do not continue under a behaviorally different fallback and call it equivalent.
+- **Optional/undeclared + absent**: do not evaluate REPENTOGON symbols. Run the
+  official implementation or explicitly omit only the optional enhancement
+  without a crash, softlock, or malformed XML path.
+- **Optional + present but insufficient**: do not call the newer API. Use a
+  separately proven earlier route or omit the enhancement and report the
+  unsupported surface.
 - **Present and sufficient**: use only the discovered API signature, callback
-  return contract, XML spelling, and lifecycle behavior.
+  return contract, XML spelling, lifecycle behavior, and ready timing.
+- Presence alone is not version proof. A reference mod's guard can demonstrate
+  dependency intent while still being too weak to copy as a version gate.
 - Do not treat Lua 5.4 availability as permission to rely on Lua-version
   features in code intended to load without REPENTOGON.
 
@@ -50,6 +60,8 @@ project explicitly opts in and the actual runtime proves support.
 
 - Never register a REPENTOGON callback, use an extended enum, or add an
   REPENTOGON XML attribute on an unguarded path.
+- Resolve the dependency gate before extension registration. A failed required
+  gate must not leave half-registered callbacks, menus, entities, or save state.
 - Do not copy a callback return policy from a vanilla callback or another
   REPENTOGON callback. Route exact timing and returns to
   `isaac-callback-contracts`.
@@ -71,8 +83,9 @@ the installed REPENTOGON build and its bundled docs remain authoritative.
 
 ```markdown
 ## REPENTOGON Compatibility Contract
-- User-approved REPENTOGON requirement or optional enhancement:
-- Project declaration and runtime/version proof:
+- Dependency mode: required / optional enhancement / undeclared:
+- Project declaration and runtime/version/ready proof:
+- Required-dependency stop boundary or optional no-extension behavior:
 - Exact API/XML/callback surface verified from installed docs:
 - Official fallback or explicit omitted-enhancement behavior:
 - Version gate and no-REPENTOGON gate:

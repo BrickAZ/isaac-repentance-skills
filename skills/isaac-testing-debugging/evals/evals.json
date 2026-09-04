@@ -108,6 +108,16 @@
         "skills/isaac-testing-debugging/SKILL.md",
         "skills/isaac-testing-debugging/references/verification-layers.md"
       ]
+    },
+    {
+      "id": "visual-delivery-state-cannot-skip-evidence",
+      "prompt": "图像生成器刚返回一张角色图，Agent 已测得实际尺寸与请求不一致，但认为画面很好看，准备在报告里写资源完成。另一个 Agent 说只要尺寸、Alpha 和裁切后来通过，就可以直接称为最终视觉。请审查证据状态。",
+      "expected_output": "尺寸不符的图只能是 generation-candidate；必须记录 requested、actual generated 和 final native canvas。候选需先达到 native-conformed，再经过 static-validated、native-1x-reviewed、真实消费者中的 in-game-verified，最后由用户批准才能称为最终视觉。静态通过不能跳过 1x、游戏内或 user-approved。",
+      "files": [
+        "skills/isaac-testing-debugging/SKILL.md",
+        "skills/isaac-testing-debugging/references/verification-layers.md",
+        "skills/isaac-character-art-surfaces/references/art-delivery-lifecycle.md"
+      ]
     }
   ]
 }

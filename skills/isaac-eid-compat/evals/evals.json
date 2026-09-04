@@ -36,6 +36,15 @@
         "skills/isaac-eid-compat/SKILL.md",
         "skills/isaac-eid-compat/references/eid-api-contract.md"
       ]
+    },
+    {
+      "id": 5,
+      "prompt": "Agent 在 EID 源码里看到它为了追踪当前模组而覆盖全局 RegisterMod，于是准备把这段抄进普通内容模组；metadata.xml 与 Lua 内版本号还不一致。请审查。",
+      "expected_output": "必须拒绝复制 EID 的库内部全局拦截；普通模组只通过已发现的 EID 公共对象/API 注册自己的运行时 subtype。版本能力以运行对象和安装源码/文档交叉确认，metadata 冲突要报告，不能自行选更高版本。",
+      "files": [
+        "skills/isaac-eid-compat/SKILL.md",
+        "skills/isaac-eid-compat/references/eid-api-contract.md"
+      ]
     }
   ]
 }

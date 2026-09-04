@@ -5,6 +5,7 @@ Static validators are useful when they check facts that do not require Isaac to 
 ## Good Static Checks
 
 - XML parses.
+- Root-level content registration filenames match the intended native name; a near-match is a warning because valid XML can still be ignored by the game.
 - Duplicate ids or names are absent inside a file.
 - Referenced files exist at the expected path.
 - A registered custom entity has a unique positive type/variant, a name, a valid ANM2, at least one spritesheet, and a defined default animation.
@@ -30,7 +31,7 @@ When adding a check:
 
 1. Make the check deterministic.
 2. Keep output actionable: file, field, value, and expected fix.
-3. Use warnings for uncertain checks and failures for definite breakage.
+3. Use warnings for uncertain checks and failures for definite breakage. A near-native filename warning must name both the observed and candidate filename, without claiming the engine definitely loaded either one.
 4. Avoid network access.
 5. Avoid modifying files from a validator.
 6. Scope spawn checks to this mod's registrations and code. Unknown third-party entities are not static failures.

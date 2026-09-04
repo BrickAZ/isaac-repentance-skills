@@ -26,14 +26,18 @@ other description paths must work without it.
    existing optional-library guards, and description ownership.
 2. Prove the current runtime exposes a usable EID global/API before calling it.
    A folder name, Workshop subscription, or reference-mod example is not proof.
-3. Discover the installed API/version when it exists. Do not invent method
-   names, inline-icon fields, or language codes.
+3. Discover the installed API/version when it exists. Prefer the active runtime
+   object and installed source for exact signatures; package metadata alone may
+   be stale. Do not invent method names, inline-icon fields, or language codes.
 4. Keep user-provided text, values, icons, and language choices locked; omitted
    presentation decisions stay `TBD`.
 
 ## Hard Rules
 
 - Guard every EID registration. Missing EID means skip registration cleanly.
+- Treat EID's own bootstrap, global interception, caches, and internal module
+  loading as library implementation details. A content mod must not copy EID's
+  internal `RegisterMod` override or mutate EID globals to register descriptions.
 - Do not `require` EID, add it as a mandatory dependency, or make gameplay
   depend on description registration succeeding.
 - Register only this mod's discovered IDs and languages; do not overwrite

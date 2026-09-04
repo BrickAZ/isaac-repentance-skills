@@ -36,6 +36,14 @@ Do not interpret “draw a character” as permission to make a standalone illus
 
 Read [references/character-surface-matrix.md](references/character-surface-matrix.md) before proposing a canvas size, source image, or generation prompt.
 
+## Delivery Status And Generator Boundary
+
+Every requested surface must move through an explicit evidence state: `semantic-reference` -> `generation-candidate` -> `native-conformed` -> `static-validated` -> `native-1x-reviewed` -> `in-game-verified` -> `user-approved`. Do not skip from an attractive generated image to a completion claim.
+
+An exact size written in an image-generation prompt is intent, not a guarantee. After generation, measure and report **requested canvas**, **actual generated canvas**, and **final native canvas** separately. A mismatch remains `generation-candidate`; never uniformly shrink a generated illustration or atlas into a native player sheet. Rebuild or edit the approved design on the exact native edit target and real crop manifest.
+
+Read [references/art-delivery-lifecycle.md](references/art-delivery-lifecycle.md) for transitions and the required audit. Read [references/source-fact-and-mode-validation.md](references/source-fact-and-mode-validation.md) before selecting Alpha or silhouette assertions.
+
 ## Reference-Locked Sprite Editing
 
 When the user supplies an official or project-owned sprite reference and asks to alter that character, the default task is a **reference-locked edit**, not concept art.
@@ -79,6 +87,8 @@ Do not confuse the two. A custom character may have hair, hats, stems, leaves, h
 The crop or frame canvas is capacity, not a composition target. A `64x64` crop does not mean the visible art should approach `64x64`, touch its sides, or contain a minimum amount of ink. Design against the measured vanilla actor at native game scale first, then place the result inside the discovered crop contract.
 
 ## Pure Recolor Versus Original Full Skin
+
+Surface/consumer and art mode are independent axes. A player skin, name image, portrait, co-op icon, and decoration each own their native canvas and Alpha policy; `pure-recolor`, `original-full-skin`, `separate-decoration`, and `independent-composition` describe how that one surface may change. Never validate a UI name image with a player-atlas Alpha rule merely because both belong to one character.
 
 | Mode | Intended result | Alpha/silhouette rule | Required proof |
 | --- | --- | --- | --- |
@@ -164,6 +174,8 @@ Before approval, review reduced game-size renders rather than only a zoomed atla
 
 ## Automated Test Suggestions
 
+Run the bundled deterministic PNG and owned-crop tools described in [references/source-fact-and-mode-validation.md](references/source-fact-and-mode-validation.md) before adding project-specific visual assertions. Build the crop manifest with `isaac-anm2-visuals/scripts/build-anm2-crop-manifest.ps1`; do not infer a grid from the PNG.
+
 Automated checks should report pass/fail separately from visual review:
 
 - Source/output canvas, RGBA mode, and pixel-density match.
@@ -213,6 +225,7 @@ For each requested row, state all of the following before pixels are generated:
 - Whether it is a reference-locked edit or a new surface-specific asset.
 - Source image path and its measured dimensions; `TBD` when absent.
 - Exact output canvas and whether it is a whole atlas or a single source cell.
+- Requested canvas, actual generated canvas, final native canvas, and current delivery state. Do not fill the final native value before native conformance.
 - The approved changed feature and the protected regions/frame cells.
 - Transparent-background requirement, if the source has transparency.
 - Explicit exclusions: no scene background, no concept-art pose, no 3D/painted rendering, no upscaling, and no unrelated redesigned clothing/body unless separately approved.
@@ -232,7 +245,7 @@ For a single crop, state its exact source rectangle and animation users from the
 - A `144x144` player portrait, `192x64` name image, `48x48` select portrait, and `32x32` co-op portrait are different assets with different atlas routes.
 - Do not turn a character-select icon, co-op icon, or death portrait into an in-run sprite sheet, or vice versa.
 - Do not overwrite a shared official atlas merely because an output uses the same frame size. Discover the current project's own atlas/ANM2/mapping first.
-- Do not claim generated art is game-ready until its canvas, alpha, frame grid, target mapping, and requested in-game surface have each been checked.
+- A candidate cannot be called final merely because its canvas, Alpha, or frame grid passes. Require the named delivery states through native `1x`, the actual in-game consumer, and user approval.
 - Treat a custom costume or extra body layer as a separate asset. It may need the same visual language, but it does not inherit the base skin's dimensions or frame sequence without ANM2 evidence.
 
 ## Handoff
@@ -243,6 +256,6 @@ For a single crop, state its exact source rectangle and animation users from the
 
 ## Final Review
 
-Report every requested surface, its source and output dimensions, whether it was reference-locked, the protected regions and discovered crop manifest, the remaining mapping work, and separate in-game checks for each requested surface. Do not say a player skin works merely because a menu portrait looks correct.
+Report every requested surface, its source and output dimensions, requested/actual/final canvases, current delivery state and full generation audit, whether it was reference-locked, the protected regions and discovered crop manifest, the remaining mapping work, and separate in-game checks for each requested surface. Do not say a player skin works merely because a menu portrait looks correct.
 
 When any active `TBD` remains, the **last section** must be **User decisions required** and repeat every unresolved source, surface, variant, mask, mapping, or acceptance decision.

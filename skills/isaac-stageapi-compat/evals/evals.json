@@ -36,6 +36,15 @@
         "skills/isaac-stageapi-compat/SKILL.md",
         "skills/isaac-stageapi-compat/references/stageapi-contract.md"
       ]
+    },
+    {
+      "id": 5,
+      "prompt": "StageAPI 全局已经非 nil，但它尚未 MarkLoaded。当前模组立即 NewRoom 并注册自定义门，随后 ready 回调又注册一次。请审查加载合同。",
+      "expected_output": "必须把 object、version、bootstrap/load order 与 ready/loaded state 分开；只使用当前安装版本证明的 ready hook（例如已证实签名的 RunWhenMarkedLoaded）或项目既有后加载入口，并使立即就绪与延迟就绪汇合为一次幂等注册。",
+      "files": [
+        "skills/isaac-stageapi-compat/SKILL.md",
+        "skills/isaac-stageapi-compat/references/stageapi-contract.md"
+      ]
     }
   ]
 }

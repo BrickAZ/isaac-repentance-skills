@@ -81,6 +81,55 @@ function Test-Xml([string]$path) {
     }
 }
 
+function Get-EditDistance([string]$left, [string]$right) {
+    $left = $left.ToLowerInvariant()
+    $right = $right.ToLowerInvariant()
+    $previous = New-Object 'int[]' ($right.Length + 1)
+    for ($column = 0; $column -le $right.Length; $column++) {
+        $previous[$column] = $column
+    }
+
+    for ($row = 1; $row -le $left.Length; $row++) {
+        $current = New-Object 'int[]' ($right.Length + 1)
+        $current[0] = $row
+        for ($column = 1; $column -le $right.Length; $column++) {
+            $cost = if ($left[$row - 1] -ceq $right[$column - 1]) { 0 } else { 1 }
+            $current[$column] = [Math]::Min(
+                [Math]::Min($current[$column - 1] + 1, $previous[$column] + 1),
+                $previous[$column - 1] + $cost
+            )
+        }
+        $previous = $current
+    }
+
+    return $previous[$right.Length]
+}
+
+function Test-ContentXmlFilename([System.IO.FileInfo]$file, [string]$contentRoot) {
+    if (-not $contentRoot -or $file.DirectoryName -ine $contentRoot) { return }
+
+    $knownNames = @(
+        'achievements.xml', 'challenges.xml', 'costumes2.xml', 'entities2.xml',
+        'itempools.xml', 'items.xml', 'music.xml', 'players.xml',
+        'pocketitems.xml', 'sounds.xml', 'transformations.xml', 'wisps.xml'
+    )
+    if ($file.Name -in $knownNames) { return }
+
+    $closestName = $null
+    $closestDistance = [int]::MaxValue
+    foreach ($knownName in $knownNames) {
+        $distance = Get-EditDistance $file.Name $knownName
+        if ($distance -lt $closestDistance) {
+            $closestDistance = $distance
+            $closestName = $knownName
+        }
+    }
+
+    if ($closestDistance -le 2) {
+        Add-Warning "Content XML filename '$($file.Name)' is close to native registration filename '$closestName'. Verify the exact filename; valid XML under an unrecognized name may be ignored by the game: $($file.FullName)" "XML_FILENAME"
+    }
+}
+
 function Test-XmlShape([string]$path, [xml]$doc) {
     foreach ($attributeName in @("id", "name")) {
         # costumes2.xml may intentionally repeat an id to compose multiple visual layers.
@@ -458,8 +507,10 @@ Initialize-ResourceRoots
 
 $xmlFiles = New-Object System.Collections.Generic.List[System.IO.FileInfo]
 $contentDir = Join-Path $Root "content"
+$contentRoot = $null
 if (Test-Path -LiteralPath $contentDir) {
-    foreach ($file in Get-ChildItem -LiteralPath $contentDir -Recurse -Filter "*.xml") {
+    $contentRoot = (Resolve-Path -LiteralPath $contentDir).Path
+    foreach ($file in Get-ChildItem -LiteralPath $contentRoot -Recurse -Filter "*.xml") {
         $xmlFiles.Add($file) | Out-Null
     }
 }
@@ -474,6 +525,7 @@ if ($xmlFiles.Count -eq 0) {
 }
 
 foreach ($file in ($xmlFiles | Sort-Object FullName -Unique)) {
+    Test-ContentXmlFilename $file $contentRoot
     $doc = Test-Xml $file.FullName
     if (-not $doc) { continue }
     Test-XmlShape $file.FullName $doc

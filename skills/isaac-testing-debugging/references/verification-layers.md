@@ -41,3 +41,17 @@ Required for:
 - Audible custom-audio playback, including target trigger, volume/pitch, overlap, and repeated-use behavior.
 
 Report in-game checks as concrete steps, not vague advice.
+
+## Visual Asset State Ladder
+
+For generated or edited character art, layer the ordinary proof types into an explicit delivery state:
+
+1. `semantic-reference`
+2. `generation-candidate`
+3. `native-conformed`
+4. `static-validated`
+5. `native-1x-reviewed`
+6. `in-game-verified`
+7. `user-approved`
+
+Requested dimensions and delivered dimensions are separate facts. A mismatched generator output remains a candidate, and a static pass never implies the later visual, game, or approval states. Read `../../isaac-character-art-surfaces/references/art-delivery-lifecycle.md` for transition evidence and reporting.

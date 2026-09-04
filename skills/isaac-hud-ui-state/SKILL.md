@@ -44,6 +44,25 @@ Do not use HUD coordinates for world movement or a loose manually-rendered sprit
 as a collision, damage, AI, HP, or targeting entity. Route such behavior through
 `isaac-entities`.
 
+## Visibility And Display Ownership
+
+Before rendering a HUD feature, write a visibility matrix for the discovered
+game/project states that matter: HUD hidden or disabled, pause/menu, special
+rooms or sequences, no-HUD seeds, co-op/player ownership, render pass, and any
+third-party equivalent display. Unknown states stay explicit; do not infer the
+whole matrix from one working room.
+
+If the base game, REPENTOGON, or another declared integration can show the same
+information, choose one display owner. Do not draw both. Enabling, disabling, or
+temporarily mutating another provider's option requires project/user authority;
+if a temporary mutation is approved, restore it on every exit, error, reload,
+and shutdown path. A library's equivalent feature is not a default dependency.
+
+Cache layout only when its inputs are stable. Recompute on discovered
+invalidation edges such as HUD offset, viewport, player count/identity, language,
+or option changes; do not use stale coordinates or rebuild immutable sprites
+every render.
+
 ## Coordinate Contract
 
 Read `../isaac-anm2-visuals/references/lua-sprite-effects.md` for the canonical
@@ -78,6 +97,12 @@ For temporary UI define creation, update, visibility, and cleanup at duration
 expiry, owner removal/death/invalidity, required room/level/run boundaries,
 pause/menu behavior, and mod reload. Discover asset paths and animation names;
 never invent them.
+
+For modal menus, inventory every state changed on entry: input capture, player
+controls, frozen entities, timers, mouse state, and foreign configuration. Every
+normal close, cancellation, room transition, reload, and error path must restore
+the approved changes. Do not freeze unrelated entities or rewrite another mod's
+menu key merely because one reference implementation did so.
 
 Read `references/ui-state-review.md` for the carrier/coordinate/lifecycle table.
 Never call a UI correct merely because it did not crash or because a stub rendered.

@@ -214,6 +214,7 @@ Skills 提供的是决策合同，不是固定代码模板。目标项目已经�
 | Skill | 作用 |
 | --- | --- |
 | `isaac-character-art-surfaces` | 拆分角色各类美术表面，并约束原版参考编辑、头发/头饰比例、1× 叠加预览、服装遮挡矩阵和头套式失败。 |
+| `isaac-visual-style-translation` | 把同一来源身份转译到玩家、道具、跟班、敌人/Boss、肖像与 UI，并把原生 1× 视觉统一性和技术有效性分开验收。 |
 | `isaac-reskins-resource-overrides` | 处理原版角色换皮、纯资源模组、精确路径覆盖、多资源根、运行时换图与加载顺序冲突。 |
 | `isaac-anm2-visuals` | 处理 ANM2、Sprite、坐标系、视觉载体和可覆盖的原生 UI 资源基线。 |
 | `isaac-audio-render-feedback` | 处理 SFX/音乐注册与格式、播放器职责、解码证据、shader、render 和输入拦截。 |
@@ -239,7 +240,7 @@ Skills 提供的是决策合同，不是固定代码模板。目标项目已经�
 
 ## 验证与证据边界
 
-仓库级检查会验证 48 个 Skill 的 frontmatter、内部引用、TBD 合同、路由覆盖、
+仓库级检查会验证 49 个 Skill 的 frontmatter、内部引用、TBD 合同、路由覆盖、
 eval schema、离线第三方 API 参考、证据矩阵和已安装文件一致性。
 
 ```powershell
@@ -263,7 +264,7 @@ powershell -ExecutionPolicy Bypass -File tests/test-skill-repository.ps1
 
 ```text
 .codex-plugin/plugin.json  Codex plugin 清单
-skills/                    48 个通用 Isaac Skills
+skills/                    49 个通用 Isaac Skills
 docs/                      eval schema 与证据矩阵
 tests/                     仓库审计和安装一致性检查
 AGENTS.md                  维护本仓库时必须遵守的 AI 边界

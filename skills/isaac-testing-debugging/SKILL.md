@@ -46,6 +46,10 @@ Before proposing a fix:
 
 Read `references/verification-layers.md` before planning verification. Read `references/debug-report-template.md` before final reporting.
 
+## Visual Asset Evidence States
+
+For generated or edited character art, read [the exact delivery lifecycle reference](../isaac-character-art-surfaces/references/art-delivery-lifecycle.md) owned by `isaac-character-art-surfaces`: `semantic-reference`, `generation-candidate`, `native-conformed`, `static-validated`, `native-1x-reviewed`, `in-game-verified`, and `user-approved`. Record requested, actual generated, and final native canvases separately. A good-looking candidate or clean static check cannot skip the native `1x`, actual consumer, or user-approval stages. Do not guess a similarly named reference file.
+
 ## Hard Rules
 
 - Do not claim an Isaac runtime behavior is fixed only because code looks right.
