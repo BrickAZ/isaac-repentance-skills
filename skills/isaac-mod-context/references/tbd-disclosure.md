@@ -1,25 +1,42 @@
-# TBD Disclosure
+# User Decisions and Technical Discovery
 
-Use this policy whenever a project fact or user design decision is unresolved.
+This policy clarifies the shared TBD block in every skill.
 
-## What Counts As Active
+## Technical Facts: Agent Discovery
 
-An active `TBD` changes the current recommendation, code path, validation plan, or whether work can honestly be called complete. Examples include an unspecified room-entry route, unconfirmed callback owner, user-owned balance value, optional dependency choice, unknown resource path, or unfinished persistence policy.
+Unknown file paths, runtime IDs, callback owners, signatures, source versions,
+registration and test commands are **Unverified — discovery required**, not
+user design choices. Search the actual project and matching authoritative API
+evidence. Continue authorized independent work. If evidence cannot be accessed,
+state the precise limit; ask for missing access/information only when needed.
+Do not make the user choose API facts or request permission for routine research.
 
-A historical unknown that no longer affects the task is not active. A fact discovered from the project, official API, or an explicit user decision is no longer a `TBD` and must not keep being repeated.
+A fact established from source may still lack runtime proof. Record that boundary
+rather than converting it into a user decision. Existing incorrect code does not
+override documented/matching implementation semantics.
 
-## Required Response Shape
+## Active TBD: Only a User Choice
 
-1. Label each active item as **`TBD — user decision required`** at the point it affects the work.
-2. State the consequence: what cannot be implemented, verified, or claimed until it is decided.
-3. Keep any alternatives explicitly optional; do not silently select one.
-4. At the end of every response relying on active items, list all remaining items under **User decisions required**.
-5. If a mutation would choose one alternative, stop before it. Safe discovery, read-only validation, and conditional planning may continue.
+Use **TBD — user decision required** for genuinely unresolved mechanic, balance,
+art, route, dependency policy or persistence semantics that affect this turn.
+Explain the consequence, offer alternatives as suggestions, and list active
+choices at the end of responses that depend on them. Stop only mutations that
+would choose an unresolved user-owned alternative. Continue safe discovery.
 
-## Example
+Explicit earlier decisions and standing preferences remain authorization. Do not
+ask again. A user's future-new-mod required REPENTOGON preference applies to new
+mods; preserve a different explicit policy in an existing project until migration
+is requested. Routine module naming, file placement and callback selection can
+be resolved from evidence within the authorized task.
 
-`TBD — user decision required: the active item's fallback when no legal gallery room can be allocated. Until this is decided, the implementation can discover and test room eligibility, but must not silently turn the item into a no-op or choose a third-party room framework.`
+## Examples
 
-**User decisions required**
+Unknown callback signature: research the matching release source, not "user
+decision required: choose callback parameters".
 
-- Gallery-entry fallback when no legal room allocation route exists.
+User has already chosen +1 damage and REPENTOGON required: preserve both; inspect
+native formula stages and remove duplicate contribution without reopening either.
+
+Unspecified behavior when no legal gallery room exists: a real design choice if
+no existing policy or delegation settles it. Explain the consequence, continue
+testing room eligibility, and do not silently substitute another mechanic.

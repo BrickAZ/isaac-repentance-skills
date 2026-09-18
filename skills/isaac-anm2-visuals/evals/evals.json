@@ -224,6 +224,15 @@
         "skills/isaac-anm2-visuals/SKILL.md",
         "skills/isaac-anm2-visuals/references/external-editor-workflow.md"
       ]
+    },
+    {
+      "id": "curse-hud-crop-is-not-visible-size",
+      "prompt": "请按 Repentance 原版 HUD 风格生成一个自定义诅咒图标。有人说原版诅咒图集是 235x55，而且 ANM2 帧是 16x16，所以图标主体也应该画满 16x16。项目可能使用原版路线，也可能使用已声明扩展的自定义诅咒入口。请审查资源合同。",
+      "expected_output": "必须把整图画布、ANM2 裁切和可见 Alpha 包围盒分开。当前原版 MapItemIcons.png 是 64x64，mapitemicons.anm2 的 curses 动画为七个 16x16 裁切帧且 pivot 为 (8,8)，可见主体按帧约为 12-15x13-14 并保留透明边距；拒绝 235x55 和必须填满 16x16 的说法，也不按 curses.xml 列表顺序擅自给帧绑定诅咒名。若项目使用扩展或自定义 loader，必须发现其实际 API、atlas 和映射，不能强套原版布局。",
+      "files": [
+        "skills/isaac-anm2-visuals/SKILL.md",
+        "skills/isaac-anm2-visuals/references/official-native-ui-baselines.md"
+      ]
     }
   ]
 }

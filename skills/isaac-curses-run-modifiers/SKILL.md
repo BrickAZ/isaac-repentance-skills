@@ -7,15 +7,19 @@ description: "Design, implement, review, debug, or write handoff prompts for Bin
 
 ## TBD Disclosure Contract
 
-A `TBD` is an unresolved project fact or user decision, not permission to guess.
+A `TBD` is a genuinely unresolved user design choice. Missing paths, API
+signatures, callback owners, build identities, and tool commands are technical
+facts: discover them, or report **Unverified — discovery required** with the
+specific evidence gap. Do not turn research work into a request for user permission.
+Existing project decisions and explicit standing user preferences remain binding.
 
 - Whenever an active `TBD` affects this turn's recommendation, implementation, test plan, or completion claim, label it exactly as **`TBD — user decision required`** and state the consequence of leaving it unresolved.
 - In every response that relies on one or more active `TBD`s, end with a concise **User decisions required** list containing every still-active item. Do not hide a decision inside code, a default value, or an implementation note.
-- Give optional alternatives only as suggestions. Do not choose a balance value, room route, fallback mechanism, asset, dependency, identifier, callback, or persistence policy on the user's behalf.
+- Give optional alternatives only as suggestions. Preserve user-owned balance, mechanics, assets, dependency policy, and persistence semantics; resolve routine technical implementation choices within the authorized scope.
 - If safe discovery or validation can continue, continue it conditionally while keeping the decision visible. If the next mutation depends on the `TBD`, stop before that mutation and ask the user.
 - Do not create artificial `TBD`s for facts already confirmed by the project or explicitly decided by the user. Once a decision is confirmed, remove it from later reminders.
 
-Read `../isaac-mod-context/references/tbd-disclosure.md` whenever an unresolved fact or user decision remains active.
+Read `../isaac-mod-context/references/tbd-disclosure.md` for the shared user-decision and technical-discovery policy.
 
 Use `isaac-mod-context` first in an unfamiliar project. This skill owns runtime
 evaluation of existing curse-mask behavior, not challenge XML or a new custom
@@ -28,6 +32,13 @@ preserves existing `LevelCurse` bits or reacts to them. Use `isaac-challenges`
 for static challenge `cursefilter`/forced-curse XML; use `isaac-rooms-stages` for
 room/floor transitions; use `isaac-state-lifecycle` for modifier state and reset;
 use `isaac-callback-contracts` to prove the actual evaluation callback/signature.
+
+This skill owns curse mechanics, not curse-icon art. When a request also adds,
+generates, or repairs a HUD curse icon, use `isaac-anm2-visuals` for the actual
+sheet/crop/pivot/visible-bounds contract and `isaac-hud-ui-state` for display
+ownership and placement. Keep the curse bit or custom-curse identity separate
+from its visual frame mapping. If REPENTOGON or another extension is declared,
+discover its matching-build loader/API before applying any vanilla atlas layout.
 
 Default to official Isaac APIs. A project library may offer a curse helper, but
 it is optional only after explicit declaration and usable API discovery. Never

@@ -3,47 +3,98 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "用户想要一个忏悔龙优化，但未明确允许模组强制依赖忏悔龙。",
-      "expected_output": "应保留官方核心实现，先取得用户意图和 REPENTOGON global/version 证明；不存在或版本不足时安全回退或明确省略增强。",
+      "prompt": "必需忏悔龙模块需要1.1.2g修复，当前Version=1.1.2a但MeetsVersion返回true。给最小门禁方案。",
+      "expected_output": "指出数值比较忽略字母，完整release比较拒绝a，在扩展求值前停止；不重问依赖。",
       "files": [
-        "skills/isaac-repentogon-compat/SKILL.md",
-        "skills/isaac-repentogon-compat/references/repentogon-contract.md"
+        "skills/isaac-repentogon-compat/SKILL.md"
+      ],
+      "expectations": [
+        "指出数值比较忽略字母，完整release比较拒绝a，在扩展求值前停止；不重问依赖。",
+        "不声称未执行的游戏运行验证。"
       ]
     },
     {
       "id": 2,
-      "prompt": "一个 REPENTOGON XML 属性在本机可解析，但部分玩家没有忏悔龙。",
-      "expected_output": "应避免无守卫 XML/回调路径，验证 absent、insufficient、sufficient 三分支；不能用本机解析成功推导所有玩家可加载。",
+      "prompt": "实验副本Version=dev build。直接算最新版行吗？",
+      "expected_output": "拒绝匿名开发构建，需要独立commit证据；不假造稳定版本。",
       "files": [
-        "skills/isaac-repentogon-compat/SKILL.md",
-        "skills/isaac-repentogon-compat/references/repentogon-contract.md"
+        "skills/isaac-repentogon-compat/SKILL.md"
+      ],
+      "expectations": [
+        "拒绝匿名开发构建，需要独立commit证据；不假造稳定版本。",
+        "不声称未执行的游戏运行验证。"
       ]
     },
     {
       "id": 3,
-      "prompt": "运行时有 REPENTOGON.MeetsVersion，Agent 只要它返回 true 就认为任何版本门都可靠。",
-      "expected_output": "不可靠。要识别官方记录的 1.0.10b 及以前恒 true 缺陷，确认安装版本和 API 表面后再决定门控。",
+      "prompt": "可选增强模块顶层读取扩展枚举，然后bootstrap才if REPENTOGON。修正加载边界。",
+      "expected_output": "在include前惰性检查；缺失保持原版核心，不只移动AddCallback。",
       "files": [
-        "skills/isaac-repentogon-compat/SKILL.md",
-        "skills/isaac-repentogon-compat/references/repentogon-contract.md"
+        "skills/isaac-repentogon-compat/SKILL.md"
+      ],
+      "expectations": [
+        "在include前惰性检查；缺失保持原版核心，不只移动AddCallback。",
+        "不声称未执行的游戏运行验证。"
       ]
     },
     {
       "id": 4,
-      "prompt": "用户明确要求模组必须依赖 REPENTOGON，是否仍要偷偷写一个行为不一致的 vanilla 回退？",
-      "expected_output": "不需要伪造回退；应记录明确依赖、最低版本和所有扩展专用表面，缺失或版本不足时清晰拒绝加载/省略，而不是冒充等价实现。",
+      "prompt": "给content/items.xml加扩展属性，然后Lua gate就能兼容无忏悔龙吗？",
+      "expected_output": "明确Lua不控制引擎XML解析，检查条件目录及发行包装。",
       "files": [
-        "skills/isaac-repentogon-compat/SKILL.md",
-        "skills/isaac-repentogon-compat/references/repentogon-contract.md"
+        "skills/isaac-repentogon-compat/SKILL.md"
+      ],
+      "expectations": [
+        "明确Lua不控制引擎XML解析，检查条件目录及发行包装。",
+        "不声称未执行的游戏运行验证。"
       ]
     },
     {
       "id": 5,
-      "prompt": "项目明确把 REPENTOGON 设为必需前置，但初始化先注册了扩展回调和菜单，随后版本检查失败才 return。请审查。",
-      "expected_output": "必须把依赖/最低版本/就绪检查移到扩展注册和共享状态变更之前；失败时清晰停止本模初始化，不能留下半注册回调、菜单、实体或存档状态，也不能偷偷切到行为不同的 vanilla 路线。",
+      "prompt": "提供低版本、缺失能力及足够版本的Gate.check调用，能力探测会Spawn。",
+      "expected_output": "探测只能读且惰性；不执行Spawn；指明版本与语义不同。",
       "files": [
-        "skills/isaac-repentogon-compat/SKILL.md",
-        "skills/isaac-repentogon-compat/references/repentogon-contract.md"
+        "skills/isaac-repentogon-compat/SKILL.md"
+      ],
+      "expectations": [
+        "探测只能读且惰性；不执行Spawn；指明版本与语义不同。",
+        "不声称未执行的游戏运行验证。"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "1.1.10、1.1.9z、1.1.2a、1.1.2g、v1.1.2和1.1.2rc1该如何排序？",
+      "expected_output": "按数值段/单字母比较，未知格式拒绝，无整串字典序。",
+      "files": [
+        "skills/isaac-repentogon-compat/SKILL.md"
+      ],
+      "expectations": [
+        "按数值段/单字母比较，未知格式拒绝，无整串字典序。",
+        "不声称未执行的游戏运行验证。"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "静态扫描没发现扩展调用，可以标全模组兼容通过吗？",
+      "expected_output": "列扫描范围和别名/动态引用局限，零结果不证明guard或引擎。",
+      "files": [
+        "skills/isaac-repentogon-compat/SKILL.md"
+      ],
+      "expectations": [
+        "列扫描范围和别名/动态引用局限，零结果不证明guard或引擎。",
+        "不声称未执行的游戏运行验证。"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "同tag版本函数文档例子反向而Lua正向。该听谁？",
+      "expected_output": "记录冲突，以匹配实现解释行为，不能盲信installed docs或翻译。",
+      "files": [
+        "skills/isaac-repentogon-compat/SKILL.md"
+      ],
+      "expectations": [
+        "记录冲突，以匹配实现解释行为，不能盲信installed docs或翻译。",
+        "不声称未执行的游戏运行验证。"
       ]
     }
   ]

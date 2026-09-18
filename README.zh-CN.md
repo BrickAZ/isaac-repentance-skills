@@ -34,6 +34,13 @@ neverbrith 或其他参考模组。参考模组只用于构建和验证规则，
 3. 项目明确声明或用户明确要求的第三方库。
 
 CuerLib、EID、MCM、StageAPI、REPENTOGON 等均不被默认视为必需前置。
+项目声明或用户明确的长期选择可以将 REPENTOGON 设为 required；已经决定后直接执行，
+不用重复确认。针对新 Mod 的选择不改变现有项目明确的 optional 政策。
+已选择扩展表面时，以匹配构建的文档和源码解释精确 API 语义，优先于通用原版建议。
+
+本次 REPENTOGON 参考快照以 **1.1.2g** 为核验基线；它不是所有功能的最低版本，
+也不证明用户安装了该版本。每项功能分别记录引入版本、所需修复和实际构建。
+参见 [1.2.0 更新说明](docs/repentogon-1.2.0.md)。
 
 ## 安装
 
@@ -106,22 +113,40 @@ isaac-passive-collectibles 和 isaac-callback-contracts。
 先输出发现项，再实现并分别报告静态检查与尚未完成的实机验证。
 ```
 
+新建 REPENTOGON 项目或明确要求迁移时，可以使用开发入口：
+
+```text
+使用 isaac-repentogon-dev。这个新 Mod 已确定 required REPENTOGON。
+先发现项目和构建，再通过 callbacks/content/world/UI 的专属合同实现已授权功能。
+保留我决定的机制和数值。
+```
+
+专项任务可直接使用 `isaac-repentogon-callbacks`、`isaac-repentogon-content`、
+`isaac-repentogon-world` 或 `isaac-repentogon-ui`；compat 负责门禁与加载边界。
+dev 负责把授权工作落实到实现与验证，不把路由清单当成完成。
+
 只想审查、不允许修改文件时，应把边界直接写进提示词：
 
 ```text
 这是只读审查。不要修改文件。
 检查这个世界跟随 Sprite 是否混用了世界坐标、屏幕坐标、PositionOffset
-和 callback RenderOffset；未知项目事实保持 TBD。
+和 callback RenderOffset；主动查证项目/API 技术事实，证据不足时标明
+Unverified — discovery required。
 ```
 
-当一个未知项会阻止正确实现时，Skills 会将它标为：
+路径、ID、API 签名、回调所有者、构建和测试命令属于 Agent 应主动发现的技术事实。
+查证后仍缺证据时，标为 `Unverified — discovery required` 并说明具体限制；
+不能把查文档和常规实现选择丢给用户决定。
+
+只有真正未决的用户选择使用以下标签，并说明它影响什么：
 
 ```text
-TBD — 需要用户决定
+TBD — user decision required
 ```
 
-并说明它影响什么。Skill 不应擅自替用户决定平衡数值、池子、权重、解锁条件、
-美术方向或机制设计。
+平衡数值、池子、权重、解锁条件、美术、机制、依赖政策和持久化语义仍归用户决定。
+已接受的选择继续构成授权；仅会替用户决定未决选项的那项修改需要等待，
+独立的技术发现和已授权实现可以继续。
 
 ## 工作方式
 
@@ -144,7 +169,8 @@ Skills 提供的是决策合同，不是固定代码模板。目标项目已经�
 | 世界与空间 | 房间、楼层、GridEntity、多房间区域和独立 Dimension |
 | 道具与进度 | 主动/被动、注册、卡牌、饰品、经济、商店、联动、奖励、挑战和解锁 |
 | 运行规则 | 伤害、生命、诅咒、重掷、移除、随机数和形态变身 |
-| 资源与兼容 | ANM2、角色美术、换皮覆盖、音效、HUD、多语言及可选第三方 API |
+| 资源与兼容 | ANM2、角色美术、换皮覆盖、音效、HUD、多语言及已声明的第三方 API |
+| REPENTOGON 开发 | required/optional 门禁、项目起步、原生内容、扩展回调、世界 API、RNG 和 ImGui |
 
 ## 完整 Skill Map
 
@@ -209,7 +235,7 @@ Skills 提供的是决策合同，不是固定代码模板。目标项目已经�
 | `isaac-damage-health-contracts` | 处理伤害语义、无敌帧、来源归属、递归与致命/复活边界。 |
 | `isaac-curses-run-modifiers` | 管理已有诅咒位的运行期增加、抑制、重算和清理。 |
 
-### 资源、文本与可选集成
+### 资源、文本与集成
 
 | Skill | 作用 |
 | --- | --- |
@@ -225,7 +251,12 @@ Skills 提供的是决策合同，不是固定代码模板。目标项目已经�
 | `isaac-eid-compat` | 处理可选 EID 描述、图标与语言注册。 |
 | `isaac-mcm-compat` | 处理可选 Mod Config Menu 配置界面与重复注册。 |
 | `isaac-stageapi-compat` | 处理可选 StageAPI 房间、楼层与版本兼容。 |
-| `isaac-repentogon-compat` | 处理可选 REPENTOGON API、版本门控和官方 fallback。 |
+| `isaac-repentogon-compat` | 处理 required/optional 依赖与能力门禁、字母补丁、构建证据和 Lua/XML 加载边界。 |
+| `isaac-repentogon-dev` | 通过专属合同实现新 REPENTOGON 项目、明确要求的迁移和跨表面功能。 |
+| `isaac-repentogon-callbacks` | 处理扩展回调参数与返回链、伤害、库存/innate 所有权、掉落与卸载。 |
+| `isaac-repentogon-content` | 处理原生 XML 属性、null 道具、复活标签、自定义缓存、成就和 players.xml。 |
+| `isaac-repentogon-world` | 处理 Ambush、RoomConfig、房间放置、描述符与 RNG/权重预览边界。 |
+| `isaac-repentogon-ui` | 处理游戏内入口、ImGui 构建与事件、输入、菜单/对局守卫和所属 UI 清理。 |
 
 ## 核心约束
 
@@ -240,7 +271,7 @@ Skills 提供的是决策合同，不是固定代码模板。目标项目已经�
 
 ## 验证与证据边界
 
-仓库级检查会验证 49 个 Skill 的 frontmatter、内部引用、TBD 合同、路由覆盖、
+仓库级检查会验证 54 个 Skill 的 frontmatter、内部引用、TBD 合同、路由覆盖、
 eval schema、离线第三方 API 参考、证据矩阵和已安装文件一致性。
 
 ```powershell
@@ -264,7 +295,7 @@ powershell -ExecutionPolicy Bypass -File tests/test-skill-repository.ps1
 
 ```text
 .codex-plugin/plugin.json  Codex plugin 清单
-skills/                    49 个通用 Isaac Skills
+skills/                    54 个通用 Isaac Skills
 docs/                      eval schema 与证据矩阵
 tests/                     仓库审计和安装一致性检查
 AGENTS.md                  维护本仓库时必须遵守的 AI 边界

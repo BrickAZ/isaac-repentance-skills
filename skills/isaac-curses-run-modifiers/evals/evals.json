@@ -16,6 +16,15 @@
       "files": [
         "skills/isaac-curses-run-modifiers/SKILL.md"
       ]
+    },
+    {
+      "id": "curse-mechanic-and-hud-icon-routing",
+      "prompt": "一个自定义诅咒既要参与楼层诅咒计算，也要在 HUD 显示图标。没有说明它使用原版机制、REPENTOGON 还是项目自定义 loader。请只给职责分流和发现项。",
+      "expected_output": "诅咒位、计算时机与楼层生命周期由 curses skill 负责；图标的 sheet/crop/pivot/可见范围交给 anm2-visuals，显示所有权和位置交给 hud-ui-state。扩展入口、API、atlas 和映射保持待发现，不把原版 MapItemIcons 布局当成自定义系统的默认前置。",
+      "files": [
+        "skills/isaac-curses-run-modifiers/SKILL.md",
+        "skills/isaac-anm2-visuals/references/official-native-ui-baselines.md"
+      ]
     }
   ]
 }

@@ -7,15 +7,19 @@ description: Plan, generate, review, or write a handoff prompt for Binding of Is
 
 ## TBD Disclosure Contract
 
-A `TBD` is an unresolved project fact or user decision, not permission to guess.
+A `TBD` is a genuinely unresolved user design choice. Missing paths, API
+signatures, callback owners, build identities, and tool commands are technical
+facts: discover them, or report **Unverified — discovery required** with the
+specific evidence gap. Do not turn research work into a request for user permission.
+Existing project decisions and explicit standing user preferences remain binding.
 
 - Whenever an active `TBD` affects this turn's recommendation, implementation, test plan, or completion claim, label it exactly as **`TBD — user decision required`** and state the consequence of leaving it unresolved.
 - In every response that relies on one or more active `TBD`s, end with a concise **User decisions required** list containing every still-active item. Do not hide a decision inside code, a default value, or an implementation note.
-- Give optional alternatives only as suggestions. Do not choose a balance value, room route, fallback mechanism, asset, dependency, identifier, callback, or persistence policy on the user's behalf.
+- Give optional alternatives only as suggestions. Preserve user-owned balance, mechanics, assets, dependency policy, and persistence semantics; resolve routine technical implementation choices within the authorized scope.
 - If safe discovery or validation can continue, continue it conditionally while keeping the decision visible. If the next mutation depends on the `TBD`, stop before that mutation and ask the user.
 - Do not create artificial `TBD`s for facts already confirmed by the project or explicitly decided by the user. Once a decision is confirmed, remove it from later reminders.
 
-Read `../isaac-mod-context/references/tbd-disclosure.md` whenever an unresolved fact or user decision remains active.
+Read `../isaac-mod-context/references/tbd-disclosure.md` for the shared user-decision and technical-discovery policy.
 
 This skill owns the art brief and native-surface matrix for a playable character. It does not register a player, edit `players.xml`, select a gameplay mechanic, or wire an ANM2. Route those parts to `isaac-players-characters` and `isaac-anm2-visuals` after the art surfaces are defined.
 ## Default: Original-First, Not Concept Art

@@ -7,15 +7,19 @@ description: "Route Binding of Isaac: Repentance mod requests to the smallest co
 
 ## TBD Disclosure Contract
 
-A `TBD` is an unresolved project fact or user decision, not permission to guess.
+A `TBD` is a genuinely unresolved user design choice. Missing paths, API
+signatures, callback owners, build identities, and tool commands are technical
+facts: discover them, or report **Unverified — discovery required** with the
+specific evidence gap. Do not turn research work into a request for user permission.
+Existing project decisions and explicit standing user preferences remain binding.
 
 - Whenever an active `TBD` affects this turn's recommendation, implementation, test plan, or completion claim, label it exactly as **`TBD — user decision required`** and state the consequence of leaving it unresolved.
 - In every response that relies on one or more active `TBD`s, end with a concise **User decisions required** list containing every still-active item. Do not hide a decision inside code, a default value, or an implementation note.
-- Give optional alternatives only as suggestions. Do not choose a balance value, room route, fallback mechanism, asset, dependency, identifier, callback, or persistence policy on the user's behalf.
+- Give optional alternatives only as suggestions. Preserve user-owned balance, mechanics, assets, dependency policy, and persistence semantics; resolve routine technical implementation choices within the authorized scope.
 - If safe discovery or validation can continue, continue it conditionally while keeping the decision visible. If the next mutation depends on the `TBD`, stop before that mutation and ask the user.
 - Do not create artificial `TBD`s for facts already confirmed by the project or explicitly decided by the user. Once a decision is confirmed, remove it from later reminders.
 
-Read `../isaac-mod-context/references/tbd-disclosure.md` whenever an unresolved fact or user decision remains active.
+Read `../isaac-mod-context/references/tbd-disclosure.md` for the shared user-decision and technical-discovery policy.
 
 Use this skill to produce a small, ordered route. It dispatches work; it does
 not discover a project or implement a feature.
@@ -45,9 +49,12 @@ architecture. Route those as primary or immediate companions now.
 Treat project-specific facts as unknown until discovery: callback names, paths,
 IDs, resource formats, entity variants, existing modules, tests, and optional
 libraries. Put a skill under **Conditional** only if its semantic surface is not
-stated, such as ANM2 versus another visual carrier, `isaac-eid-compat`,
-`isaac-mcm-compat`, `isaac-stageapi-compat`, `isaac-repentogon-compat`, or
-undeclared entity/audio/description work.
+stated, such as an unchosen visual carrier or undeclared entity/audio/description
+work. A requested required or optional REPENTOGON surface is already confirmed:
+route its specialist now. Missing version/API proof is technical discovery, not
+a reason to demote that surface to Conditional or ask the user to choose it again.
+A standing required preference for new mods does not migrate an existing
+explicitly optional project without a migration request.
 
 ## Routing Rules
 
@@ -55,13 +62,15 @@ undeclared entity/audio/description work.
    verification.
 2. Choose exactly one primary specialist. Discovery preflight cannot displace it.
 3. Add immediate companions for separately stated semantic surfaces only.
-4. Put optional/unproven surfaces under Conditional.
+4. Put only unstated or unconfirmed semantic surfaces under Conditional; a
+   confirmed optional integration still has an immediate contract.
 5. Put verification skills in **Verification route** by default. Include
    `isaac-testing-debugging` as an immediate companion only when debugging/proof
    itself is central; include `isaac-validators` immediately only when static
    XML/id/asset validation is already a stated surface.
-6. Keep user values locked. Do not choose balance, assets, persistence, callback
-   returns, or dependencies.
+6. Keep user-owned balance, assets, mechanics, persistence and dependency policy
+   locked. Discover callback signatures and returns from matching evidence;
+   routine technical choices do not require new user approval.
 7. Exclude near-matches that would duplicate or conflict with the route.
 
 ## Primary Matrix
@@ -108,7 +117,12 @@ undeclared entity/audio/description work.
 | Exact optional EID API integration | `isaac-eid-compat` |
 | Exact optional MCM API integration | `isaac-mcm-compat` |
 | Exact optional StageAPI integration | `isaac-stageapi-compat` |
-| Exact optional REPENTOGON integration | `isaac-repentogon-compat` |
+| REPENTOGON required/optional dependency, version and capability gates | `isaac-repentogon-compat` |
+| REPENTOGON new-project setup, requested migration or broad development | `isaac-repentogon-dev` |
+| REPENTOGON changed callbacks, damage chains, inventory, loot and unload | `isaac-repentogon-callbacks` |
+| REPENTOGON native XML stats/null/tags/cache, achievements and players | `isaac-repentogon-content` |
+| REPENTOGON Ambush, RoomConfig, placement and world-preview RNG | `isaac-repentogon-world` |
+| REPENTOGON ImGui panels, in-game UI entry, input and teardown | `isaac-repentogon-ui` |
 | Runtime translation | `isaac-localization-runtime` |
 | Mod config/options | `isaac-config-options` |
 | Runtime state ownership/reset/save/reload | `isaac-state-lifecycle` |
@@ -125,9 +139,17 @@ undeclared entity/audio/description work.
 - New collectible whose XML/local id and colored icon are missing: primary
   `isaac-collectible-registration`; add passive or active behavior, economy,
   localization, and ANM2 only for separately stated surfaces.
-- Optional third-party API request: use the exact EID, MCM, StageAPI, or
-  REPENTOGON specialist as primary; compatibility/descriptions remains a
-  companion only for shared text, dependency-gate, or synchronization work.
+- Optional EID, MCM or StageAPI request: use that exact specialist as primary;
+  compatibility/descriptions remains a companion only for shared text,
+  dependency-gate or synchronization work.
+- REPENTOGON project setup or requested migration: primary
+  `isaac-repentogon-dev`, with compat for the build/loading contract. Carry
+  already-required intent into implementation without reasking or inventing a
+  vanilla substitute; preserve existing optional projects.
+- Focused REPENTOGON work: select callbacks, content, world or UI as primary
+  according to the extension surface. Add the ordinary mechanic skill only for
+  its separate design/ownership responsibilities. Matching-build extension
+  semantics take precedence over generic vanilla API assumptions.
 - Projectile with damage rewriting: primary projectile-combat; add damage-health
   only for cancellation/replacement/health semantics.
 - Projectile that applies poison without replacing damage: primary

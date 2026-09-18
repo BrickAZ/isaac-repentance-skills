@@ -1,15 +1,15 @@
 {
   "name": "isaac-repentance-skills",
-  "version": "1.1.0",
-  "description": "Self-contained Codex skills for Binding of Isaac: Repentance mod development.",
+  "version": "1.2.0",
+  "description": "Self-contained Codex skills for Isaac Repentance and declared REPENTOGON development.",
   "author": {
     "name": "Isaac Repentance Skill Suite"
   },
   "skills": "./skills/",
   "interface": {
     "displayName": "Isaac Repentance Skills",
-    "shortDescription": "Build and validate Repentance mods safely.",
-    "longDescription": "A self-contained skill suite for Isaac Repentance mod discovery, mechanics, entities, assets, callbacks, state, compatibility, testing, and validation.",
+    "shortDescription": "Isaac mods and REPENTOGON development.",
+    "longDescription": "A self-contained skill suite for Isaac Repentance and required/optional REPENTOGON development: project discovery, native content, callbacks, world APIs, UI, state, build gates, testing, and validation.",
     "developerName": "Isaac Repentance Skill Suite",
     "category": "Developer Tools",
     "capabilities": [],

@@ -1,3 +1,4 @@
 interface:
-  display_name: "Isaac Repentogon Compat"
-  short_description: "Help with Isaac Repentogon Compat tasks"
+  display_name: "REPENTOGON Compatibility"
+  short_description: "Gate exact REPENTOGON releases and capabilities."
+  default_prompt: "Use $isaac-repentogon-compat for this Isaac REPENTOGON task; preserve declared dependency intent, inspect actual project evidence, implement authorized work, and separate automated from in-game proof."

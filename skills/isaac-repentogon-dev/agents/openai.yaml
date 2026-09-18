@@ -1,0 +1,4 @@
+interface:
+  display_name: "REPENTOGON Development"
+  short_description: "Build Isaac mods with precise REPENTOGON contracts."
+  default_prompt: "Use $isaac-repentogon-dev for this Isaac REPENTOGON task; preserve declared dependency intent, inspect actual project evidence, implement authorized work, and separate automated from in-game proof."

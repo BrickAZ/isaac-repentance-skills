@@ -1,0 +1,12 @@
+{
+  "skill_name": "isaac-repentogon-world",
+  "evals": [
+    {"id": 1, "prompt": "已确认 required REPENTOGON 1.1.2g。为任何房间的开发面板每帧调用 Ambush.GetNextWave().Name，是否安全？请给修复方案，不再询问依赖。", "expected_output": "沿用 required 授权；访问前确认 Isaac.IsInGame 和 ROOM_CHALLENGE，Boss Rush 不适用；处理 nil，不把返回配置等同实际还有波次，不修改共享配置，不要求用户回答可自行核实的 API 问题。", "files": ["skills/isaac-repentogon-world/SKILL.md", "skills/isaac-repentogon-world/references/ambush.md"]},
+    {"id": 2, "prompt": "在 1.1.2g 中使用 Ambush.GetNextWaves() 做严格无副作用的 Boss 挑战房所有后续波预览，返回表长就是剩余波数吗？", "expected_output": "指出共同房型守卫、未使用 Boss limit 的普通波数循环、减权后 !config 早退绕过恢复，不能保证严格只读或表长准确；以 tag 源码推断标记缺陷，默认改用单波查询或核实目标构建，不捏造已修复版本。", "files": ["skills/isaac-repentogon-world/references/ambush.md"]},
+    {"id": 3, "prompt": "临时把普通/Boss 挑战房波数改为 6，离房统一写回 3/2；其他 Mod 也会改。审查状态范围与恢复。", "expected_output": "识别全局共享变量与不随新局自动重置；记录原值、写入值、所有者、退出/续局/重载策略，恢复前确认冲突；不无条件覆盖其他 Mod，不把 Boss Rush 字段 reset 语义混同。", "files": ["skills/isaac-repentogon-world/references/ambush.md", "skills/isaac-repentogon-world/references/rng-and-ownership.md"]},
+    {"id": 4, "prompt": "给 Level:TryPlaceRoom 传 gridIndex=169 后，只在结果等于 nil 时处理失败，然后访问 result.Data；再把 AllowNoNeighbors=true 保证成功。请审查。", "expected_output": "tag 越界返回 false，普通失败 nil，使用 if not result；解释 0..168、维度、门/占用预检与提交复验；不以允许孤岛偷偷改变设计，失败保留原逻辑。", "files": ["skills/isaac-repentogon-world/references/rooms.md"]},
+    {"id": 5, "prompt": "用 level:GetGenerationRNG():Next() 和 RoomConfig.GetRandomRoom(seed,true,...) 刷新只读地图预览。两次画面相同就证明无副作用吗？", "expected_output": "指出 engine RNG 指针与 true 减权；用 Phantom 或 seed+GetShiftIdx 独立复制并判 shift nil，预览 reduceWeight=false；对比调用前后 RNG/权重/房间数，不宣称克隆可预测所有实际行为。", "files": ["skills/isaac-repentogon-world/references/rng-and-ownership.md", "skills/isaac-repentogon-world/references/rooms.md"]},
+    {"id": 6, "prompt": "RoomConfig.AddRooms 返回表有一个 nil；使用 ipairs 部署所有房间，并把 LoadStb 的路径写成 content/rooms/shared.stb。这是否已把房间放进当前地图？", "expected_output": "区分配置集注册与地图放置，提示 nil 孔洞不能靠 ipairs 越过；LoadStb 路径不带 content/rooms 前缀且同名可从多 Mod 全部加载；实际地图用 TryPlaceRoom，有一次性注册与所有权。", "files": ["skills/isaac-repentogon-world/references/rooms.md"]},
+    {"id": 7, "prompt": "只修改 RoomDescriptor.Doors[0] 和 AllowedDoors，就宣称已经创建可走的双向门。静态测试全部通过，能交付实机验收通过吗？", "expected_output": "解释字段 setter 不含完整连接事务，区分模板/描述符/活动 Room；门与拓扑用已核实放置接口或专门合同，并明确静态不替代实机可通行、维度与续局验收。", "files": ["skills/isaac-repentogon-world/SKILL.md", "skills/isaac-repentogon-world/references/rooms.md"]}
+  ]
+}

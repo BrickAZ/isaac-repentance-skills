@@ -7,15 +7,19 @@ description: Design, implement, review, or write handoff prompts for a Binding o
 
 ## TBD Disclosure Contract
 
-A `TBD` is an unresolved project fact or user decision, not permission to guess.
+A `TBD` is a genuinely unresolved user design choice. Missing paths, API
+signatures, callback owners, build identities, and tool commands are technical
+facts: discover them, or report **Unverified — discovery required** with the
+specific evidence gap. Do not turn research work into a request for user permission.
+Existing project decisions and explicit standing user preferences remain binding.
 
 - Whenever an active `TBD` affects this turn's recommendation, implementation, test plan, or completion claim, label it exactly as **`TBD — user decision required`** and state the consequence of leaving it unresolved.
 - In every response that relies on one or more active `TBD`s, end with a concise **User decisions required** list containing every still-active item. Do not hide a decision inside code, a default value, or an implementation note.
-- Give optional alternatives only as suggestions. Do not choose a balance value, room route, fallback mechanism, asset, dependency, identifier, callback, or persistence policy on the user's behalf.
+- Give optional alternatives only as suggestions. Preserve user-owned balance, mechanics, assets, dependency policy, and persistence semantics; resolve routine technical implementation choices within the authorized scope.
 - If safe discovery or validation can continue, continue it conditionally while keeping the decision visible. If the next mutation depends on the `TBD`, stop before that mutation and ask the user.
 - Do not create artificial `TBD`s for facts already confirmed by the project or explicitly decided by the user. Once a decision is confirmed, remove it from later reminders.
 
-Read `../isaac-mod-context/references/tbd-disclosure.md` whenever an unresolved fact or user decision remains active.
+Read `../isaac-mod-context/references/tbd-disclosure.md` for the shared user-decision and technical-discovery policy.
 
 Use this skill when a feature owns a graph of two or more rooms. It coordinates the area; it does not replace room registration, door primitives, or game-level dimension ownership.
 
@@ -25,7 +29,15 @@ Use this skill when a feature owns a graph of two or more rooms. It coordinates 
 - **isaac-rooms-stages owns**: individual room registration, room XML, door slots, grid legality, level APIs, and per-room mutation.
 - **isaac-dimensions owns**: game-level Dimension identity, entry/exit between dimensions, and cross-dimension isolation. This skill consumes a confirmed dimension context; it never creates or switches one.
 - **isaac-state-lifecycle owns**: storage/keying/reset/save mechanics after this skill defines the network state.
-- **Optional APIs**: StageAPI or REPENTOGON are guarded integrations only after the project declares them. They are not the default way to make a room network.
+- **Declared APIs**: StageAPI or REPENTOGON follow the project's required or optional policy and a verified capability gate. They are not imposed on undeclared projects; an accepted required dependency does not need reapproval.
+
+## REPENTOGON Companion
+
+When REPENTOGON is declared for the network, use `isaac-repentogon-world` for
+legal placement, descriptor identity, dimensions, neighboring doors and failures.
+Its matching-build placement contract takes precedence over vanilla assumptions.
+This skill still owns the network promise, route/fallback and partial-commit
+recovery; direct descriptor writes do not replace verified placement/connection.
 
 ## First Move
 

@@ -1,0 +1,4 @@
+interface:
+  display_name: "REPENTOGON Callback Contracts"
+  short_description: "Exact callback chains, inventory events and loot RNG"
+  default_prompt: "Use $isaac-repentogon-callbacks to implement or audit REPENTOGON callbacks using the selected runtime version and verified return, lifecycle, ownership, and RNG contracts."

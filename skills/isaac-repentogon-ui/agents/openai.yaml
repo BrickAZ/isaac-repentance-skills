@@ -1,0 +1,4 @@
+interface:
+  display_name: "Isaac REPENTOGON UI"
+  short_description: "实现游戏内开发面板、可回收 UI 与 HUD 输入入口"
+  default_prompt: "Use $isaac-repentogon-ui to build or review this in-game Isaac interface with verified ImGui APIs, lifecycle cleanup, and coordinate handling."

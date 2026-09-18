@@ -1,0 +1,77 @@
+{
+  "skill_name": "isaac-repentogon-callbacks",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "REPENTOGON 1.1.2g必需。将玩家所受伤害乘已确定系数0.8；其他mod会改伤害或false取消，要求支持ExtraSource。给完整注册与handler。",
+      "expected_output": "保留隐式mod；EntityType过滤；按输入damage返回{Damage=damage*0.8}，支持nullable ExtraSource，指出1.1.2引入；false终止取消而true忽略；不递归TakeDamage，不强行覆盖其他修改。",
+      "files": [
+        "skills/isaac-repentogon-callbacks/SKILL.md",
+        "skills/isaac-repentogon-callbacks/references/dispatch-damage-lifecycle.md"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "解释以下回调为何玩家变量错位：mod:AddCallback(ModCallbacks.MC_POST_ADD_COLLECTIBLE,function(player,id) ... end)。也说明LATE能否保证最后运行。",
+      "expected_output": "完整参数为mod,Type,Charge,FirstTime,Slot,VarData,Player；filter为CollectibleType；数字小先执行，同priority按注册顺序，LATE100不是最后保证。",
+      "files": [
+        "skills/isaac-repentogon-callbacks/SKILL.md",
+        "skills/isaac-repentogon-callbacks/references/dispatch-damage-lifecycle.md"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "做跨mod注册，首次脚本加载后运行，luamod卸载时清理。MC_PRE_MOD_UNLOAD里的两个mod参数怎么用？需要游戏状态吗？",
+      "expected_output": "POST_MODS_LOADED handler只有隐式mod，初始化幂等；PRE_MOD_UNLOAD为mod,unloadedMod,shuttingDown，检查所属mod，1.1.0布尔扩展；区分Lua加载完成与运行对象/PersistentGameData就绪。",
+      "files": [
+        "skills/isaac-repentogon-callbacks/SKILL.md",
+        "skills/isaac-repentogon-callbacks/references/dispatch-damage-lifecycle.md"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "1.1.2g真道具每次增加奖励一次，wisp和innate不算。POST_ADD和POST_TRIGGER_ADDED能同时发奖吗？如何数指定group的innate？",
+      "expected_output": "不能两处重复结算；TRIGGER为mod,Player,Type,FirstTimePickingUp,WispOrInnate，POST_ADD顺序不同；真道具GetCollectibleNum(id,true,true)，group用GetInnateCollectibleCount，拒绝GetInnateCollectibleNum；FirstTime不证明自然拾取。",
+      "files": [
+        "skills/isaac-repentogon-callbacks/SKILL.md",
+        "skills/isaac-repentogon-callbacks/references/inventory-loot.md"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "给普通箱子LootList多加一枚硬币，古比眼预览和开箱一致。能否在ShouldAdvance=false时return、POST返回table，或回调内GetLootList？",
+      "expected_output": "完整POST签名含隐式mod,Pickup,LootList,ShouldAdvance,RNG,Player，Player可nil；preview也修改list，PushEntry用提供rng种子，POST不返回；避免递归GetLootList、spawn及计数写入；说明整个PRE+POST后回滚及d/f/g版本边界。",
+      "files": [
+        "skills/isaac-repentogon-callbacks/SKILL.md",
+        "skills/isaac-repentogon-callbacks/references/inventory-loot.md"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "只支持1.1.2，我想用新loot POST和group过滤，文档现在都有，所以直接注册即可？现有项目没查过，不准把技术未知都问我。",
+      "expected_output": "主动查本地运行时和tag；POST参数最低d且RNG f修复目标g，group duplicate a；通过compat处理门禁，技术缺口继续调查而不是用户TBD；不在未授权时扩大依赖政策。",
+      "files": [
+        "skills/isaac-repentogon-callbacks/SKILL.md",
+        "skills/isaac-repentogon-callbacks/references/version-evidence.md"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "复读一个受伤事件：早期回调返回{Damage=4}，下一回调return true，后一个return false。POST会拿到4并能回滚吗？",
+      "expected_output": "解释4被传下去，true不强制，false停止并取消；POST不是回滚机制，不能声称取消事件仍有已承诺的POST伤害；按源码和实际触发验证。",
+      "files": [
+        "skills/isaac-repentogon-callbacks/SKILL.md",
+        "skills/isaac-repentogon-callbacks/references/dispatch-damage-lifecycle.md"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "使用named innate group给临时道具，continue和Glowing Hourglass后数量翻倍，过期removal也重复发奖。请给排查方案，先不改游戏文件。",
+      "expected_output": "只读调查稳定groupKey、授权所有者和注册，区分持久化原生数量与手动重放；Count精确group，Remove专用API和ExpiredDuration；1.1.2a过滤重复修复；不将缓存/继续事件当新获得，自陈静态与游戏证据边界。",
+      "files": [
+        "skills/isaac-repentogon-callbacks/SKILL.md",
+        "skills/isaac-repentogon-callbacks/references/inventory-loot.md"
+      ]
+    }
+  ]
+}

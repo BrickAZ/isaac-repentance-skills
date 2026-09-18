@@ -1,0 +1,4 @@
+interface:
+  display_name: "REPENTOGON Native Content"
+  short_description: "Native XML stats, effects, cache and progression"
+  default_prompt: "Use $isaac-repentogon-content to implement or audit REPENTOGON XML, native effects, custom cache, achievements, and character content with one owner for each mechanic."

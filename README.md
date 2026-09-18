@@ -53,7 +53,16 @@ The default authority order is:
 3. third-party libraries explicitly declared by the project or requested by the user.
 
 CuerLib, EID, MCM, StageAPI, REPENTOGON, and similar libraries are never assumed
-dependencies.
+dependencies. An explicit project declaration or standing user choice can make
+REPENTOGON required. Carry that decision into implementation without reasking;
+a preference for new mods does not migrate an existing explicitly optional mod.
+For a selected extension surface, matching-build documentation/source governs
+its API semantics ahead of generic vanilla advice.
+
+The REPENTOGON reference snapshot targets **1.1.2g**. This is an evidence baseline,
+not every feature's minimum version or proof of the user's installed build.
+Track each feature's introduction, required fixes and actual build separately.
+See [the 1.2.0 update notes](docs/repentogon-1.2.0.md).
 
 ## Installation
 
@@ -137,25 +146,43 @@ project facts before implementing, then separate static checks from remaining
 in-game validation.
 ```
 
+For a new REPENTOGON project or an explicitly requested migration:
+
+```text
+Use isaac-repentogon-dev. REPENTOGON is required for this new mod.
+Discover the project and build, then implement the authorized feature through
+the focused callback/content/world/UI contracts. Preserve my chosen mechanic.
+```
+
+For focused work, name `isaac-repentogon-callbacks`, `isaac-repentogon-content`,
+`isaac-repentogon-world`, or `isaac-repentogon-ui`; use compat for gates and
+packaging. The development entry coordinates implementation rather than stopping
+at a route list.
+
 When the task is review-only, state the edit boundary directly:
 
 ```text
 This is a read-only review. Do not modify files.
 Check whether this world-following Sprite mixes world coordinates, screen
-coordinates, PositionOffset, and callback RenderOffset. Keep unknown project
-facts as TBD.
+coordinates, PositionOffset, and callback RenderOffset. Investigate unknown
+project/API facts and report unavailable evidence as Unverified — discovery required.
 ```
 
-When an unresolved fact blocks a reliable implementation, the skills identify it
-as:
+Missing paths, IDs, API signatures, callback owners, builds and test commands
+are the agent's discovery work. Investigate them and, if evidence remains
+unavailable, report `Unverified — discovery required` with the precise limit.
+Do not ask the user to choose technical facts or approve routine investigation.
+
+Reserve the following label for a genuinely unresolved user choice:
 
 ```text
 TBD — user decision required
 ```
 
-They should also explain what the decision affects. Skills must not silently
-choose balance values, pools, weights, unlock conditions, art direction, or
-mechanic design on the user's behalf.
+Explain its consequence and preserve user-owned balance, pools, weights,
+unlocks, art, mechanics, dependency policy and persistence semantics. Existing
+authorization covers routine technical implementation; only a mutation that
+would make an unresolved user choice needs to wait.
 
 ## How It Works
 
@@ -179,7 +206,8 @@ take priority over general guidance.
 | World and space | Rooms, stages, GridEntity logic, multi-room regions, and engine-level Dimensions |
 | Items and progression | Active/passive items, registration, cards, trinkets, economy, shops, synergies, rewards, challenges, and unlocks |
 | Run rules | Damage, health, curses, rerolls, removal, RNG, and transformations/forms |
-| Assets and compatibility | ANM2, character art, reskins, audio, HUD, localization, and optional third-party APIs |
+| Assets and compatibility | ANM2, character art, reskins, audio, HUD, localization, and declared third-party APIs |
+| REPENTOGON development | Required/optional gates, project setup, native content, changed callbacks, world APIs, RNG and ImGui |
 
 ## Complete Skill Map
 
@@ -244,7 +272,7 @@ take priority over general guidance.
 | `isaac-damage-health-contracts` | Handles damage semantics, invulnerability frames, source ownership, recursion, and lethal/revival boundaries. |
 | `isaac-curses-run-modifiers` | Manages runtime addition, suppression, recalculation, and cleanup for existing curse bits. |
 
-### Assets, Text, and Optional Integrations
+### Assets, Text, and Integrations
 
 | Skill | Purpose |
 | --- | --- |
@@ -260,7 +288,12 @@ take priority over general guidance.
 | `isaac-eid-compat` | Handles optional EID descriptions, icons, and language registration. |
 | `isaac-mcm-compat` | Handles optional Mod Config Menu integration and duplicate registration. |
 | `isaac-stageapi-compat` | Handles optional StageAPI rooms, stages, and version compatibility. |
-| `isaac-repentogon-compat` | Handles optional REPENTOGON APIs, version gates, and official-API fallbacks. |
+| `isaac-repentogon-compat` | Handles required/optional dependency and capability gates, release suffixes, build evidence, and Lua/XML loading boundaries. |
+| `isaac-repentogon-dev` | Implements new REPENTOGON projects, requested migrations and broad features through focused contracts. |
+| `isaac-repentogon-callbacks` | Handles changed callback signatures/returns, damage chains, inventory/innate ownership, loot and unload. |
+| `isaac-repentogon-content` | Handles native XML stats, null items, revive tags, custom cache, achievements and players.xml. |
+| `isaac-repentogon-world` | Handles Ambush, RoomConfig, room placement, descriptors and RNG/weight-safe previews. |
+| `isaac-repentogon-ui` | Handles in-game UI entry, ImGui construction/events, input, menu/run guards and owned teardown. |
 
 ## Core Constraints
 
@@ -277,7 +310,7 @@ take priority over general guidance.
 
 Repository checks validate frontmatter, internal references, TBD contracts, router
 coverage, eval schemas, offline third-party API references, evidence matrices, and
-installed-file parity for all 49 skills.
+installed-file parity for all 54 skills.
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File tests/test-skill-repository.ps1
@@ -300,8 +333,8 @@ result must remain explicitly unverified rather than being filled in by inferenc
 
 ```text
 .codex-plugin/plugin.json  Codex plugin manifest
-skills/                    49 general Isaac skills
-docs/                      Eval schema and evidence matrix
+skills/                    54 general Isaac skills
+docs/                      Eval schema, evidence matrix and release notes
 tests/                     Repository audit and installation-parity checks
 AGENTS.md                  AI maintenance boundaries for this repository
 README.md                  English documentation

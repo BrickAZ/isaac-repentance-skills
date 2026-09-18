@@ -1,0 +1,4 @@
+interface:
+  display_name: "Isaac REPENTOGON World"
+  short_description: "核验忏悔龙房间放置、波次、RNG 预览与世界状态"
+  default_prompt: "Use $isaac-repentogon-world to implement or review this Isaac world feature using verified REPENTOGON APIs and explicit state ownership."

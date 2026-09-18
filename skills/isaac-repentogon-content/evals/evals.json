@@ -1,0 +1,95 @@
+{
+  "skill_name": "isaac-repentogon-content",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "REPENTOGON 1.1.2g必需。道具damage=1已写XML，再在MC_EVALUATE_CACHE给player.Damage加1。这样可确保双倍正确吗？同时说明flatdamage和effectdamage区别。",
+      "expected_output": "识别两个authority重复；damage公式阶段不等于最终+1，flatdamage在原生平加阶段，effectdamage属于TemporaryEffect；原生XML自动cache且1.1.0引入；保持用户设定，不擅定双倍需求。",
+      "files": [
+        "skills/isaac-repentogon-content/SKILL.md",
+        "skills/isaac-repentogon-content/references/native-items.md"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "给10秒、换房保留的null和costume关联。id=1是否直接传AddNullEffect？AddNullItemEffect第四参数是count吗？",
+      "expected_output": "XML匹配same-mod type=none localID>=1，GetNullItemIdByName查runtime；persistent真、cooldown300但能过期；helper参数id,costume,cooldown,additive非count；校验持续与服装并声明游戏未证实。",
+      "files": [
+        "skills/isaac-repentogon-content/SKILL.md",
+        "skills/isaac-repentogon-content/references/native-items.md"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "用customcache=tearscap familiarmultiplier，文档说Value永远0且familiar回调void，我从0累加并return 0禁用跟班。请按1.1.2g纠正。",
+      "expected_output": "tearscap初始5且变更firecache；familiarmultiplier不触发普通callback，lazy独立handler含mod,Familiar,Mult,Player且numeric chain，既有BFFS/HiveMind，native最终>0限制；引用源码冲突。",
+      "files": [
+        "skills/isaac-repentogon-content/SKILL.md",
+        "skills/isaac-repentogon-content/references/custom-cache.md"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "我用Lua AddCustomCacheTag注册foo但没XML声明，能确保所有CACHE_ALL重算吗？每帧EvaluateItems保存foo到mod存档行吗？",
+      "expected_output": "Lua手动tag不等于XML-known CACHE_ALL，声明或正确触发；默认队列vstrue立即且效果移除延迟；评估纯函数，按源变化触发，保留传入value，不每帧递归不保存第二权威派生值。",
+      "files": [
+        "skills/isaac-repentogon-content/SKILL.md",
+        "skills/isaac-repentogon-content/references/custom-cache.md"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "只加customtags=revive就能自动复活吗？如果死亡后才加标签，run save会怎样？我要原版复活先执行，耗一个null生命。",
+      "expected_output": "标签只extra-life/save保护，需预先存在；POST_CHECK_REVIVES隐式mod+player，单owner消费一个并return false或Revive；不承诺通用半心，健康/合作与其他mod阻止需测试。",
+      "files": [
+        "skills/isaac-repentogon-content/SKILL.md",
+        "skills/isaac-repentogon-content/references/native-items.md"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "achievements.xml固定id=900，自己SaveData记录unlocked=true，然后TryUnlock失败就Unlock重试，能避免成就丢失吗？",
+      "expected_output": "原生ID生成忽略固定id，name lookup；REPENTOGON权威持久化不用平行flag，TryUnlock禁用或已解锁可false，Unlock强制1.1.2不可偷偷替换；合适生命周期而非top-level或假定MODS_LOADED万能。",
+      "files": [
+        "skills/isaac-repentogon-content/SKILL.md",
+        "skills/isaac-repentogon-content/references/achievements-players.md"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "为角色设置soulhearts=2、blackhearts=2、bonehearts=1，加modcostume，开局innateitems与card都用名字。请说明单位和最低版本，别让我查API。",
+      "expected_output": "soul/black各半心单位且black追加不替换，bone一颗空；modcostume本modnone localID、与costume互斥；innate1.1.2 card名d；主动查证未固定历史版本，XML权威避免continue重复grants。",
+      "files": [
+        "skills/isaac-repentogon-content/SKILL.md",
+        "skills/isaac-repentogon-content/references/achievements-players.md"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "这个mod必须兼容没有REPENTOGON的普通忏悔。我把自定义null/achievements都放content，然后main.lua if REPENTOGON保护API就够了吗？",
+      "expected_output": "明确Lua不能挡XML引擎加载，content新增/resources覆盖不同；经compat核对content-repentogon/resources-repentogon1.1.1及实际部署、既定fallback，不擅自改强依赖；技术布局继续调查而非TBD问用户。",
+      "files": [
+        "skills/isaac-repentogon-content/SKILL.md",
+        "skills/isaac-repentogon-content/references/native-items.md"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "maxcoins、自定义power、statmultiplier都从0算可行吗？希望只应用本mod贡献并保留别的mod。",
+      "expected_output": "普通0，coins99/999共享只P1，statmultiplier native1/CrackedCrown/TBethany；基于传入值贡献而非重置；tearscap、healthtype默认也不同，记录来源与纯评估。",
+      "files": [
+        "skills/isaac-repentogon-content/SKILL.md",
+        "skills/isaac-repentogon-content/references/custom-cache.md"
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "REPENTOGON 1.1.2g下，我想把普通挑战房波次加到content/ambush.xml的challenge section。还同时放content-repentogon/ambush.xml和content/ambush.xml，两份都会合并吗？我在Lua里if REPENTOGON门禁就能保护XML吧？",
+      "expected_output": "明确ambush.xml只读取Boss Rush的bossrush section，普通challenge entries自Repentance已弃用而不是新版本功能；content追加BossRush、resources替换原文件也不恢复challenge；引用tag文档和XMLData.cpp。1.1.1增加conditional roots，同mod同XML按content-repentogon > content-dlc3 > content选首个存在文件，不叠加三份；resources有对应优先级。Lua gate不控制引擎XML加载，普通挑战需求查world/rooms实际契约。区分静态加载契约和游戏内波次验证。",
+      "files": [
+        "skills/isaac-repentogon-content/SKILL.md",
+        "skills/isaac-repentogon-content/references/xml-loading.md"
+      ]
+    }
+  ]
+}

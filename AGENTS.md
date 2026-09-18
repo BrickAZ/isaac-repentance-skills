@@ -22,11 +22,14 @@ an Isaac mod project.
 - Treat the target mod's confirmed files and official Isaac API as authority.
 - Treat third-party libraries as optional unless the target project explicitly
   declares them. Never assume, Reverie, CuerLib, EID, MCM, or StageAPI.
-- Keep unknown project facts as `TBD`; do not invent paths, IDs, callbacks,
-  animation names, entities, or dependency APIs.
-- Every active `TBD` must be labeled `TBD — user decision required`, explain its
-  consequence, and appear again in the response-level `User decisions required`
-  list until the project or user resolves it. Never turn a `TBD` into a silent default.
+- Discover unknown technical facts such as paths, IDs, callback owners, API
+  signatures, builds, and test commands. If evidence remains unavailable, report
+  `Unverified — discovery required` with the specific limit; do not invent facts
+  or ask the user to choose them. Continue authorized independent work.
+- Reserve `TBD — user decision required` for genuinely unresolved user choices.
+  Explain their consequences and list them under `User decisions required` in
+  responses that depend on them. Stop only mutations that would make that choice;
+  accepted decisions remain authorization for routine technical implementation.
 - Do not replace user-owned design choices such as balance, pools, weights,
   unlock criteria, visual direction, or naming.
 - Distinguish static validation, isolated behavior tests, and in-game results.

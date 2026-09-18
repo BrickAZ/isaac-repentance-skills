@@ -1,0 +1,77 @@
+{
+  "skill_name": "isaac-repentogon-dev",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "我以后的新模组都必需忏悔龙。空目录准备开始道具开发，继续执行起步。",
+      "expected_output": "继承已定依赖，发现空目录与身份；不复制neverbrith、不重复询问依赖。",
+      "files": [
+        "skills/isaac-repentogon-dev/SKILL.md"
+      ],
+      "expectations": [
+        "继承已定依赖，发现空目录与身份；不复制neverbrith、不重复询问依赖。",
+        "不声称未执行的游戏运行验证。"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "现有项目声明原版核心和可选忏悔龙，未来新mod required偏好会改变它吗？",
+      "expected_output": "保持既有显式政策，除非授权迁移。",
+      "files": [
+        "skills/isaac-repentogon-dev/SKILL.md"
+      ],
+      "expectations": [
+        "保持既有显式政策，除非授权迁移。",
+        "不声称未执行的游戏运行验证。"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "把Lua手工加伤和存成就改为忏悔龙原生功能，保持原效果。",
+      "expected_output": "分配唯一stat/持久化owner，比较公式与旧存档，不叠加。",
+      "files": [
+        "skills/isaac-repentogon-dev/SKILL.md"
+      ],
+      "expectations": [
+        "分配唯一stat/持久化owner，比较公式与旧存档，不叠加。",
+        "不声称未执行的游戏运行验证。"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "我要伤害改写、掉落预览和开发面板，给最小技能组合并继续实现。",
+      "expected_output": "callbacks及UI按实际主次，compatgate，无全技能堆叠且继续授权工作。",
+      "files": [
+        "skills/isaac-repentogon-dev/SKILL.md"
+      ],
+      "expectations": [
+        "callbacks及UI按实际主次，compatgate，无全技能堆叠且继续授权工作。",
+        "不声称未执行的游戏运行验证。"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "只跑静态扫描和Lua mock，能说所有REPENTOGON机制已实机通过吗？",
+      "expected_output": "明确三个证据层界限和剩余原生验证，无虚构游戏执行。",
+      "files": [
+        "skills/isaac-repentogon-dev/SKILL.md"
+      ],
+      "expectations": [
+        "明确三个证据层界限和剩余原生验证，无虚构游戏执行。",
+        "不声称未执行的游戏运行验证。"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "我需要索引中没有的渲染API。可以猜签名直接写吗？",
+      "expected_output": "从官方class和匹配binding继续查证，缺口技术发现不是用户选API。",
+      "files": [
+        "skills/isaac-repentogon-dev/SKILL.md"
+      ],
+      "expectations": [
+        "从官方class和匹配binding继续查证，缺口技术发现不是用户选API。",
+        "不声称未执行的游戏运行验证。"
+      ]
+    }
+  ]
+}

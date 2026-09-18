@@ -7,19 +7,32 @@ description: "Design, implement, review, debug, or write handoff prompts for Bin
 
 ## TBD Disclosure Contract
 
-A `TBD` is an unresolved project fact or user decision, not permission to guess.
+A `TBD` is a genuinely unresolved user design choice. Missing paths, API
+signatures, callback owners, build identities, and tool commands are technical
+facts: discover them, or report **Unverified — discovery required** with the
+specific evidence gap. Do not turn research work into a request for user permission.
+Existing project decisions and explicit standing user preferences remain binding.
 
 - Whenever an active `TBD` affects this turn's recommendation, implementation, test plan, or completion claim, label it exactly as **`TBD — user decision required`** and state the consequence of leaving it unresolved.
 - In every response that relies on one or more active `TBD`s, end with a concise **User decisions required** list containing every still-active item. Do not hide a decision inside code, a default value, or an implementation note.
-- Give optional alternatives only as suggestions. Do not choose a balance value, room route, fallback mechanism, asset, dependency, identifier, callback, or persistence policy on the user's behalf.
+- Give optional alternatives only as suggestions. Preserve user-owned balance, mechanics, assets, dependency policy, and persistence semantics; resolve routine technical implementation choices within the authorized scope.
 - If safe discovery or validation can continue, continue it conditionally while keeping the decision visible. If the next mutation depends on the `TBD`, stop before that mutation and ask the user.
 - Do not create artificial `TBD`s for facts already confirmed by the project or explicitly decided by the user. Once a decision is confirmed, remove it from later reminders.
 
-Read `../isaac-mod-context/references/tbd-disclosure.md` whenever an unresolved fact or user decision remains active.
+Read `../isaac-mod-context/references/tbd-disclosure.md` for the shared user-decision and technical-discovery policy.
 
 Use `isaac-mod-context` before an unfamiliar project. Discover existing HUD,
 render, asset, state, and multiplayer conventions rather than assuming paths,
 animation names, or a UI framework.
+
+## REPENTOGON Companion
+
+For declared REPENTOGON ImGui/HUD integration, use `isaac-repentogon-ui` for
+construction, events, input, menu/run guards and owned teardown. Its matching-build
+UI contract takes precedence over vanilla-only advice. A pinned ImGui window is
+not an interactive normal-play HUD entry; preserve the requested in-game location
+and test each input device separately. This skill retains carrier, coordinates
+and display-state ownership.
 
 ## Boundary
 
@@ -29,9 +42,10 @@ authoring. Use `isaac-mechanic-contracts` for settlement, `isaac-anm2-visuals`
 for ANM2 facts, `isaac-state-lifecycle` for durable state, and
 `isaac-audio-render-feedback` for broader audiovisual feedback.
 
-Default to official Isaac APIs. Third-party UI APIs and REPENTOGON are optional
-only after explicit project declaration and runtime/API discovery. They cannot be
-the default route or erase the need for an official fallback.
+Keep the official UI route when no extension is declared. For explicitly
+selected REPENTOGON, retain its required or optional mode and verify the build.
+Required projects do not need a behaviorally different vanilla fallback;
+optional projects preserve their proven core without the enhancement.
 
 ## Select a Carrier Before Coding
 

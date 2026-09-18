@@ -7,19 +7,31 @@ description: "Design, implement, review, debug, or write handoff prompts for Bin
 
 ## TBD Disclosure Contract
 
-A `TBD` is an unresolved project fact or user decision, not permission to guess.
+A `TBD` is a genuinely unresolved user design choice. Missing paths, API
+signatures, callback owners, build identities, and tool commands are technical
+facts: discover them, or report **Unverified — discovery required** with the
+specific evidence gap. Do not turn research work into a request for user permission.
+Existing project decisions and explicit standing user preferences remain binding.
 
 - Whenever an active `TBD` affects this turn's recommendation, implementation, test plan, or completion claim, label it exactly as **`TBD — user decision required`** and state the consequence of leaving it unresolved.
 - In every response that relies on one or more active `TBD`s, end with a concise **User decisions required** list containing every still-active item. Do not hide a decision inside code, a default value, or an implementation note.
-- Give optional alternatives only as suggestions. Do not choose a balance value, room route, fallback mechanism, asset, dependency, identifier, callback, or persistence policy on the user's behalf.
+- Give optional alternatives only as suggestions. Preserve user-owned balance, mechanics, assets, dependency policy, and persistence semantics; resolve routine technical implementation choices within the authorized scope.
 - If safe discovery or validation can continue, continue it conditionally while keeping the decision visible. If the next mutation depends on the `TBD`, stop before that mutation and ask the user.
 - Do not create artificial `TBD`s for facts already confirmed by the project or explicitly decided by the user. Once a decision is confirmed, remove it from later reminders.
 
-Read `../isaac-mod-context/references/tbd-disclosure.md` whenever an unresolved fact or user decision remains active.
+Read `../isaac-mod-context/references/tbd-disclosure.md` for the shared user-decision and technical-discovery policy.
 
 Use `isaac-mod-context` first in an unfamiliar project. This skill decides how
 randomness is owned and verified; it does not decide what reward, attack, item,
 or enemy behavior should be selected.
+
+## REPENTOGON Companion
+
+For declared REPENTOGON RNG or world previews, use `isaac-repentogon-world` for
+exact RNG/Phantom operations, room weights and query side effects, and
+`isaac-repentogon-callbacks` for loot consumption. Their matching-build contracts
+take precedence over vanilla-only API advice. Keep preview and committed draws
+separately owned; Get or Preview names do not prove RNG/weights remain unchanged.
 
 ## Boundary
 
@@ -28,9 +40,10 @@ and co-op isolation. Use `isaac-rewards-pickups`, `isaac-projectile-combat`,
 `isaac-npc-boss-ai`, or another specialist for the selected behavior itself.
 Use `isaac-state-lifecycle` when a drawn outcome must persist.
 
-Default to official Isaac RNG and discovered project helpers. Do not introduce a
-third-party RNG API. Do not assume `math.random` is acceptable merely because a
-visual effect looks cosmetic; user intent decides whether variation must be
+Default to official Isaac RNG and discovered project helpers unless a supported
+REPENTOGON surface is explicitly selected. Do not impose an undeclared RNG
+library. Do not assume `math.random` is acceptable merely because a visual
+effect looks cosmetic; user intent decides whether variation must be
 deterministic.
 
 ## Randomness Contract

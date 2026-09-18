@@ -7,19 +7,32 @@ description: "Design, implement, review, debug, or write handoff prompts for Bin
 
 ## TBD Disclosure Contract
 
-A `TBD` is an unresolved project fact or user decision, not permission to guess.
+A `TBD` is a genuinely unresolved user design choice. Missing paths, API
+signatures, callback owners, build identities, and tool commands are technical
+facts: discover them, or report **Unverified — discovery required** with the
+specific evidence gap. Do not turn research work into a request for user permission.
+Existing project decisions and explicit standing user preferences remain binding.
 
 - Whenever an active `TBD` affects this turn's recommendation, implementation, test plan, or completion claim, label it exactly as **`TBD — user decision required`** and state the consequence of leaving it unresolved.
 - In every response that relies on one or more active `TBD`s, end with a concise **User decisions required** list containing every still-active item. Do not hide a decision inside code, a default value, or an implementation note.
-- Give optional alternatives only as suggestions. Do not choose a balance value, room route, fallback mechanism, asset, dependency, identifier, callback, or persistence policy on the user's behalf.
+- Give optional alternatives only as suggestions. Preserve user-owned balance, mechanics, assets, dependency policy, and persistence semantics; resolve routine technical implementation choices within the authorized scope.
 - If safe discovery or validation can continue, continue it conditionally while keeping the decision visible. If the next mutation depends on the `TBD`, stop before that mutation and ask the user.
 - Do not create artificial `TBD`s for facts already confirmed by the project or explicitly decided by the user. Once a decision is confirmed, remove it from later reminders.
 
-Read `../isaac-mod-context/references/tbd-disclosure.md` whenever an unresolved fact or user decision remains active.
+Read `../isaac-mod-context/references/tbd-disclosure.md` for the shared user-decision and technical-discovery policy.
 
 Use `isaac-mod-context` in an unfamiliar project. Define the mechanic with
 `isaac-mechanic-contracts` before selecting/registering a handler with
 `isaac-callback-contracts`.
+
+## REPENTOGON Companion
+
+For declared REPENTOGON damage, use `isaac-repentogon-callbacks` for exact damage
+fields, propagation, ExtraSource and death/revival timing. Its matching-build
+return contract takes precedence over vanilla-only advice; do not cancel and
+recursively call `TakeDamage` when supported in-place rewriting expresses the
+chosen mechanic. Use `isaac-repentogon-content` for native revive tags/effects;
+this skill still owns the intended health outcome.
 
 ## Boundary
 
@@ -33,9 +46,10 @@ eligibility/duration/stacking/removal to `isaac-status-effects`. Keep this skill
 as a companion only when the status cancels, replaces, adds, or recursively
 causes damage or changes health.
 
-Default to official Isaac APIs. An undeclared library is optional only after
-project and runtime/API discovery. Its absence needs an official fallback or a
-clearly stated unsupported branch.
+Keep the official route for vanilla or undeclared projects. For explicitly
+selected REPENTOGON, retain required/optional mode and the verified extension
+contract: required failure stops initialization; optional failure preserves the
+proven core or omits only the enhancement.
 
 ## Write the Hit Contract First
 

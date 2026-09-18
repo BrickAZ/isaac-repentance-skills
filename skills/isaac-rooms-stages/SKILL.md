@@ -7,21 +7,33 @@ description: Design, implement, review, or write handoff prompts for custom room
 
 ## TBD Disclosure Contract
 
-A `TBD` is an unresolved project fact or user decision, not permission to guess.
+A `TBD` is a genuinely unresolved user design choice. Missing paths, API
+signatures, callback owners, build identities, and tool commands are technical
+facts: discover them, or report **Unverified — discovery required** with the
+specific evidence gap. Do not turn research work into a request for user permission.
+Existing project decisions and explicit standing user preferences remain binding.
 
 - Whenever an active `TBD` affects this turn's recommendation, implementation, test plan, or completion claim, label it exactly as **`TBD — user decision required`** and state the consequence of leaving it unresolved.
 - In every response that relies on one or more active `TBD`s, end with a concise **User decisions required** list containing every still-active item. Do not hide a decision inside code, a default value, or an implementation note.
-- Give optional alternatives only as suggestions. Do not choose a balance value, room route, fallback mechanism, asset, dependency, identifier, callback, or persistence policy on the user's behalf.
+- Give optional alternatives only as suggestions. Preserve user-owned balance, mechanics, assets, dependency policy, and persistence semantics; resolve routine technical implementation choices within the authorized scope.
 - If safe discovery or validation can continue, continue it conditionally while keeping the decision visible. If the next mutation depends on the `TBD`, stop before that mutation and ask the user.
 - Do not create artificial `TBD`s for facts already confirmed by the project or explicitly decided by the user. Once a decision is confirmed, remove it from later reminders.
 
-Read `../isaac-mod-context/references/tbd-disclosure.md` whenever an unresolved fact or user decision remains active.
+Read `../isaac-mod-context/references/tbd-disclosure.md` for the shared user-decision and technical-discovery policy.
 
 Use this skill for world and level structure. A challenge-only room restriction
 belongs to `isaac-challenges`; a single entity behavior belongs to
 `isaac-entities` or `isaac-npc-boss-ai`. A GridEntity mutation routes to
 `isaac-grid-entities`; a multi-room owned area routes to `isaac-room-networks`;
 a game-level Dimension routes to `isaac-dimensions`.
+
+## REPENTOGON Companion
+
+For declared REPENTOGON rooms, use `isaac-repentogon-world` for RoomConfig,
+RoomDescriptor, Level placement and Ambush preconditions. Its matching-build
+signatures, nil/false failures and mutation timing take precedence over generic
+vanilla API advice. This skill retains room/stage intent, topology and transition
+ownership; do not silently add StageAPI or replace placement with raw door writes.
 
 ## First Move
 

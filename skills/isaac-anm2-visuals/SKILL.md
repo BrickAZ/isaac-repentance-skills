@@ -1,21 +1,25 @@
 ---
 name: isaac-anm2-visuals
-description: Work with `.anm2` visual assets for Binding of Isaac Repentance mods. Use this whenever the user asks to create, fix, review, or write a prompt for Isaac `.anm2` visuals, costumes, Lua-loaded Sprite effects, UI/HUD sprites, collectible death portraits, ESC My Stuff sketches, collection-page or Last Will item sketches, EID inline icons, weapon appearances, weapon icons, or vanilla animation-template reuse. If the visual needs collision, AI, HP, pickup behavior, contact damage, or entities2.xml registration, also use isaac-entities; use isaac-familiars first when the registered entity is a custom familiar. 中文触发：anm2、贴图、外观、服装、变身、以撒身上、头上特效、光环、HUD、ESC 草图、死亡遗嘱道具图、收藏页道具草图、图标、动画不显示。
+description: Work with `.anm2` visual assets for Binding of Isaac Repentance mods. Use this whenever the user asks to create, fix, review, or write a prompt for Isaac `.anm2` visuals, costumes, Lua-loaded Sprite effects, UI/HUD sprites, HUD curse icons, collectible death portraits, ESC My Stuff sketches, collection-page or Last Will item sketches, EID inline icons, weapon appearances, weapon icons, or vanilla animation-template reuse. If the visual needs collision, AI, HP, pickup behavior, contact damage, or entities2.xml registration, also use isaac-entities; use isaac-familiars first when the registered entity is a custom familiar. 中文触发：anm2、贴图、外观、服装、变身、以撒身上、头上特效、光环、HUD、诅咒图标、ESC 草图、死亡遗嘱道具图、收藏页道具草图、图标、动画不显示。
 ---
 
 # Isaac ANM2 Visuals
 
 ## TBD Disclosure Contract
 
-A `TBD` is an unresolved project fact or user decision, not permission to guess.
+A `TBD` is a genuinely unresolved user design choice. Missing paths, API
+signatures, callback owners, build identities, and tool commands are technical
+facts: discover them, or report **Unverified — discovery required** with the
+specific evidence gap. Do not turn research work into a request for user permission.
+Existing project decisions and explicit standing user preferences remain binding.
 
 - Whenever an active `TBD` affects this turn's recommendation, implementation, test plan, or completion claim, label it exactly as **`TBD — user decision required`** and state the consequence of leaving it unresolved.
 - In every response that relies on one or more active `TBD`s, end with a concise **User decisions required** list containing every still-active item. Do not hide a decision inside code, a default value, or an implementation note.
-- Give optional alternatives only as suggestions. Do not choose a balance value, room route, fallback mechanism, asset, dependency, identifier, callback, or persistence policy on the user's behalf.
+- Give optional alternatives only as suggestions. Preserve user-owned balance, mechanics, assets, dependency policy, and persistence semantics; resolve routine technical implementation choices within the authorized scope.
 - If safe discovery or validation can continue, continue it conditionally while keeping the decision visible. If the next mutation depends on the `TBD`, stop before that mutation and ask the user.
 - Do not create artificial `TBD`s for facts already confirmed by the project or explicitly decided by the user. Once a decision is confirmed, remove it from later reminders.
 
-Read `../isaac-mod-context/references/tbd-disclosure.md` whenever an unresolved fact or user decision remains active.
+Read `../isaac-mod-context/references/tbd-disclosure.md` for the shared user-decision and technical-discovery policy.
 
 Use this skill for `.anm2` visual work in Isaac Repentance mods.
 
@@ -90,6 +94,8 @@ For original full custom-player skins, preserve the ANM2 coordinate contract rat
 
 
 When the task targets a native menu or HUD surface, read `references/official-native-ui-baselines.md` for the asset decision gate and overrideable official size/ANM2 baselines. If the user asks to generate an absent asset, generate the listed source frame and integrate it into the discovered atlas/mapping.
+
+For a HUD curse icon, record sheet canvas, ANM2 crop/pivot, and visible Alpha bounding box as three separate facts. In the current official Repentance route, `MapItemIcons.png` is 64x64 while the `mapitemicons.anm2` `curses` frames are 16x16 with visible symbols smaller than their crops. Do not repeat an unverified 235x55 sheet claim, force the symbol to fill 16x16, or transfer the vanilla atlas layout to a project/extension loader that has not been discovered.
 
 Then identify the visual route:
 

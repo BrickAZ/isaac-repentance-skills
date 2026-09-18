@@ -7,15 +7,19 @@ description: Design, implement, review, or write handoff prompts for state lifec
 
 ## TBD Disclosure Contract
 
-A `TBD` is an unresolved project fact or user decision, not permission to guess.
+A `TBD` is a genuinely unresolved user design choice. Missing paths, API
+signatures, callback owners, build identities, and tool commands are technical
+facts: discover them, or report **Unverified — discovery required** with the
+specific evidence gap. Do not turn research work into a request for user permission.
+Existing project decisions and explicit standing user preferences remain binding.
 
 - Whenever an active `TBD` affects this turn's recommendation, implementation, test plan, or completion claim, label it exactly as **`TBD — user decision required`** and state the consequence of leaving it unresolved.
 - In every response that relies on one or more active `TBD`s, end with a concise **User decisions required** list containing every still-active item. Do not hide a decision inside code, a default value, or an implementation note.
-- Give optional alternatives only as suggestions. Do not choose a balance value, room route, fallback mechanism, asset, dependency, identifier, callback, or persistence policy on the user's behalf.
+- Give optional alternatives only as suggestions. Preserve user-owned balance, mechanics, assets, dependency policy, and persistence semantics; resolve routine technical implementation choices within the authorized scope.
 - If safe discovery or validation can continue, continue it conditionally while keeping the decision visible. If the next mutation depends on the `TBD`, stop before that mutation and ask the user.
 - Do not create artificial `TBD`s for facts already confirmed by the project or explicitly decided by the user. Once a decision is confirmed, remove it from later reminders.
 
-Read `../isaac-mod-context/references/tbd-disclosure.md` whenever an unresolved fact or user decision remains active.
+Read `../isaac-mod-context/references/tbd-disclosure.md` for the shared user-decision and technical-discovery policy.
 
 Use this skill whenever a mechanic needs memory.
 
@@ -24,6 +28,16 @@ Keep a user-specified lifecycle boundary unchanged. Treat omitted persistence an
 The goal is to make state ownership explicit. Isaac mods often look correct for one room and then break after a room transition, save/reload, second player, item loss, challenge exit, or repeated callback.
 
 This skill owns storage and reset, not the meaning of the mechanic. When trigger, success/failure, exclusion, or settlement is still ambiguous, use `isaac-mechanic-contracts` first.
+
+## REPENTOGON Companion
+
+For declared REPENTOGON state, select only the relevant companion:
+`isaac-repentogon-callbacks` for load/unload and inventory event timing,
+`isaac-repentogon-world` for shared maxima, world references and preview state,
+or `isaac-repentogon-ui` for owned UI teardown. Their matching-build lifecycle
+contracts take precedence over vanilla-only timing assumptions. This skill owns
+stable keys, serialization and recovery; native persisted state must not gain a
+second competing SaveData authority.
 
 ## First Move
 

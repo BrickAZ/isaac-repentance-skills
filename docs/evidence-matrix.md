@@ -21,6 +21,7 @@ for users of this Skill package:
 
 | Source | Source kind | Dependency mode | Positive evidence | Counterexample or limit | Use |
 | --- | --- | --- | --- | --- | --- |
+| [REPENTOGON docs](https://repentogon.com/) and [1.1.2g source](https://github.com/TeamREPENTOGON/REPENTOGON/tree/1.1.2g) | Maintainer contract and implementation | Required or optional per target | Exact native content, callback, world and ImGui evidence, with pure/helper and UI mock regressions. | A dated source baseline is not the user's installed build or universal minimum; mocks and static checks are not game acceptance. | Version-bound source evidence |
 | `ysd` | Content mod | Optional EID/CuerLib integrations | Compact item/card/challenge/player code; guarded EID and optional CuerLib translation; ANM2, sound and shader resources. | Compact `main.lua`-centric wiring is not a required architecture; CuerLib remains optional unless the target declares it. | Positive and mixed |
 | `reverie` | Content mod | Required CuerLib; other integrations vary | Broad modular items, trinkets, entities, rooms, players, EID, MCM, StageAPI and CuerLib-backed localization. | CuerLib is this mod's declared dependency, not a generic default; duplicate `achievement` in `resources/players.xml` is invalid/counterexample evidence. | Positive and mixed |
 | `benighted soul_3290493485` | Content mod | Required REPENTOGON | Explicit REPENTOGON gate, modular characters/achievements/callbacks/rooms/entities, temporary/persistent state separation, and EID/other guarded integrations. | Presence-only REPENTOGON gating is not version proof; duplicate `chargetype` in `content/items.xml` is strict-invalid XML evidence. | Positive and mixed |
@@ -39,6 +40,29 @@ for users of this Skill package:
 | `planetarium chance_2489006943` | Content mod | Optional REPENTOGON | Engine probability authority, HUD visibility/layout invalidation and equivalent-provider handoff. | Unguarded SaveData decode and silent global option mutation are recovery/ownership counterexamples; known runtime display limits remain. | Mixed |
 | `stageapi15_1348031964` | Third-party API/library | Required or optional per target | Direct load-order, loaded-mod readiness, room/stage/door APIs, converter workflow and dimension-aware state evidence. | Exact signatures, names, version and ready hooks are installed-version-sensitive; it is never a generic default dependency. | Positive and dependency-bound |
 | `theres-no-rush_2488481628` | Content mod | None observed | Official door helper reuse at initial settlement plus room revisit. | Hard-coded Boss IDs/callback choices are local and do not generalize to every timed door. | Positive, narrow |
+
+## REPENTOGON Build And Proof Boundary
+
+The expanded contracts use [maintainer documentation](https://repentogon.com/)
+and [the 1.1.2g source tag](https://github.com/TeamREPENTOGON/REPENTOGON/tree/1.1.2g)
+as a dated reference snapshot (2026-09-05). Each specialist links the exact page,
+binding or dispatcher for its surface. This baseline is neither every feature's
+minimum version nor evidence of a user's installed build. Record introduction,
+required fixes, selected build and execution evidence separately.
+
+A translated page helps navigation but does not override a matching release
+contract. When documentation and matching implementation disagree, identify the
+conflict, inspect the actual dispatcher/binding and state which conclusion comes
+from source rather than a documented guarantee. Do not combine incompatible
+versions into a fabricated API. Existing project code can reveal intent and
+ownership while still containing a bug; it does not override proven API semantics.
+
+Pure Lua tests, Python fixtures and extracted-document UI mocks support only
+their checked branches. The surface inventory is deliberately heuristic: it does
+not resolve all dynamic/indirect calls or certify guards. No result here proves
+native loading, real damage dispatch, playable room topology, Ambush waves,
+achievement persistence, mouse/controller behavior or any unrun game check.
+Missing technical evidence calls for agent discovery, not a user design decision.
 
 ## Per-Skill Classification
 
@@ -76,7 +100,12 @@ for users of this Skill package:
 | `isaac-players-characters` | Players XML and player modules in YSD/Reverie/Benighted/Samael and character packs. | Josuke player-zero access and broad globals are co-op counterexamples. | Resolve actual player/type, own state per player/twin, separate registration/art/unlocks and test co-op/continue. | Mixed |
 | `isaac-projectile-combat` | YSD projectile assets/scripts; Reverie/Benighted/Samael tears, lasers and entity combat. | Type-only scans can capture foreign projectiles. | Require source/owner marker, exact callback scope, collision/damage contract and recursion/lifecycle cleanup. | Direct |
 | `isaac-repentance-router` | Cross-skill coverage is validated by this matrix and repository audit tests. | Reference mods cannot prove a dispatcher implementation. | Route by requested behavior and discovered capability, naming every shipped specialist without adding dependencies. | Methodology only |
-| `isaac-repentogon-compat` | Benighted Soul declares REPENTOGON required; Planetarium Chance demonstrates optional equivalent-feature handoff. | Presence-only guards, latest web docs, or another mod do not prove installed version/readiness. | Classify required/optional/undeclared; gate before registration, fail clearly for required absence, and preserve official core behavior for optional absence. | Direct, dependency-bound |
+| `isaac-repentogon-compat` | Maintainer docs and matching 1.1.2g source; pure release-gate and scan regressions. | A version label, true MeetsVersion result, presence guard or heuristic finding is not complete build/semantic proof; XML loads independently of Lua guards. | Preserve required/optional policy; prove feature introduction and fixes, compare supported release suffixes and defer read-only capability probes until the release gate passes. | Source-backed; no game proof |
+| `isaac-repentogon-dev` | Bundled source/capability map and implementation workflow; declared dependency intent in target projects. | A route list or reference mod is not a completed feature; a new-mod preference does not migrate an existing optional mod. | Carry accepted intent into setup/implementation, discover technical facts and choose one focused extension owner per surface. | Workflow and source-backed |
+| `isaac-repentogon-callbacks` | 1.1.2g dispatcher/binding evidence for changed damage, inventory, loot and lifecycle contracts. | Generic vanilla return rules, symbol presence and inventory notifications cannot prove chain propagation, pickup provenance or exclusive true-item ownership. | Verify exact signature/filter/priority and per-callback returns; separate true items, wisps, innate sources, previews and committed consumption. | Source-backed; no game proof |
+| `isaac-repentogon-content` | Maintainer XML documentation and matching 1.1.2g item/cache/achievement/player implementations. | XML parse success does not establish loading or effect semantics; duplicate Lua contributions and authored IDs are not native authority. | Assign native/Lua formula and persistence ownership once; resolve runtime identities; separate revive tags from revival logic and conditional XML from Lua gating. | Source-backed; no game proof |
+| `isaac-repentogon-world` | 1.1.2g RoomConfig, Level, RoomDescriptor, Ambush and RNG bindings/source. | Query names can hide RNG/weight/state mutation; nil/false placement failures and mode restrictions remain material; the documented GetNextWaves issue needs an explicit boundary. | Separate templates, descriptors and live rooms; validate context before mutation, preserve failed previews and restore only owned shared state. | Source-backed; no game proof |
+| `isaac-repentogon-ui` | 1.1.2g ImGui APIs and the actual documented factory exercised by 16 Lua mock checks. | Pinned overlays are not normal-play HUD input; mocks do not establish native ImGui, font, resolution or controller behavior. | Create once, namespace IDs, distinguish menu/run state, dispatch actions outside render and tear down only owned UI. | Source plus mocks; no game proof |
 | `isaac-reroll-removal-contracts` | Replacement/spawn-heavy item mechanics in YSD/Reverie/Benighted/Samael. | Spawn events alone do not prove final inventory state or ownership. | Observe state changes separately from idempotent reconciliation; preserve foreign content and test reroll/removal/continue. | Direct |
 | `isaac-reskins-resource-overrides` | Fancy Costumes exact-path resource-only overrides; character packs and large mods show costume alternatives. | Invented `_mystuff.png` files and alpha-channel-only validation are counterexamples. | Identify the exact visual surface first, preserve path/atlas contract, and validate alpha/background per rendered frame. | Direct |
 | `isaac-rewards-pickups` | Reverie pickups/rewards; pools and spawn paths across major refs. | Numeric subtype ranges and broad Morph/Spawn can erase foreign mod rewards. | Separate candidate selection, registered content validation, spawn/replacement ownership, deduplication and failure preservation. | Direct |
