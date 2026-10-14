@@ -317,3 +317,14 @@ README.zh-CN.md            中文说明
 这类反馈比单纯增加更多规则更有价值，因为它能区分 Skill 缺口、项目事实缺失、
 测试桩失真和执行 Agent 没有遵守现有合同。可以通过
 [GitHub Issues](https://github.com/BrickAZ/isaac-repentance-skills/issues) 提交。
+
+## 许可证与第三方范围
+
+维护者有权授权的原创 Skill 指令、文档示例、脚本、测试、测试夹具与
+插件元数据采用 [MIT 许可证](LICENSE)。允许商用、修改和再分发；
+复制或分发副本或实质部分时，应保留许可要求的版权和许可声明。
+
+第三方代码、引用片段、参考项目、游戏素材与商标保留原权利和许可，
+不会因本仓库添加 MIT 而被重新授权。使用这些 Skills 开发的模组
+也不会仅因此自动采用 MIT。
+来源清单与范围见[第三方说明](THIRD-PARTY-NOTICES.md)。

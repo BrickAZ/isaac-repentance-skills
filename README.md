@@ -357,3 +357,16 @@ This evidence helps distinguish a skill gap from missing project facts, an
 unrealistic test double, or an implementation agent that did not follow an
 existing contract. Report problems through
 [GitHub Issues](https://github.com/BrickAZ/isaac-repentance-skills/issues).
+
+## License and third-party scope
+
+Maintainer-authored Skill instructions, original documentation/examples,
+scripts, tests, fixtures and plugin metadata are available under the
+[MIT License](LICENSE), to the extent the maintainer has authority to license
+them. Commercial use, modification and redistribution are permitted subject
+to retaining the required copyright and license notices.
+
+Third-party code, excerpts, reference projects, game assets and trademarks
+retain their original rights and licenses. MIT does not relicense them or
+require a mod developed using these Skills to adopt MIT. See
+[THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md) for the source inventory and scope.
