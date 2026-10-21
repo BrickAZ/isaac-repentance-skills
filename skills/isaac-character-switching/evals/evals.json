@@ -1,0 +1,57 @@
+{
+  "skill_name": "isaac-character-switching",
+  "evals": [
+    {
+      "id": "health-capability-projection",
+      "prompt": "一个临时身份道具每个房间调用 ChangePlayerType。当前实现先清空全部生命，再把原角色相同类型的心写回；纯红心角色变蓝婴、Lost 变 Keeper 时可能成为零血。兑换比例尚未决定。请给出实现前契约。",
+      "expected_output": "Selects isaac-character-switching as primary, requires source health ledger plus target capability discovery, keeps exchange ratio/minimum-survival/overflow as user decisions, preflights before mutation, forbids clear-and-blind-copy, and requires read-back plus in-game death verification.",
+      "files": [
+        "skills/isaac-character-switching/SKILL.md",
+        "skills/isaac-character-switching/references/health-projection.md"
+      ]
+    },
+    {
+      "id": "tainted-forgotten-stale-soul",
+      "prompt": "里骨身体切换成普通角色后，旧里骨魂仍留在房间。Agent 想保存切换前的魂 userdata，然后 ChangePlayerType 后直接调用 Remove。请审查。",
+      "expected_output": "Rejects destructive use of pre-switch userdata, requires normalized main/partner discovery and capability preflight, reacquires current live wrappers after the type change, removes only the exact proven former native partner, preserves unrelated co-op, and leaves native behavior as in-game verification.",
+      "files": [
+        "skills/isaac-character-switching/references/player-topology.md",
+        "skills/isaac-character-switching/references/switch-contract.md"
+      ]
+    },
+    {
+      "id": "secondary-item-owner",
+      "prompt": "雅各和以扫中只有以扫持有换角色道具。切出双子形态时以扫会消失，但道具仍需允许机制稍后恢复原角色。不能复制其他道具。请定义所有权处理。",
+      "expected_output": "Normalizes the pair to one switch authority, captures only approved partner state, defines an explicit counted proxy/transfer for the switching item, prevents a second per-body switch, invalidates the proxy on loss/reroll/consumption, and does not copy unrelated inventory into the main player.",
+      "files": [
+        "skills/isaac-character-switching/references/player-topology.md"
+      ]
+    },
+    {
+      "id": "compensation-not-atomic",
+      "prompt": "ChangePlayerType 已成功，但旧副体删除失败。开发者说函数可以把类型改回去，所以整个操作是原子事务，随后可以清掉所有恢复记录。请审查失败路径。",
+      "expected_output": "Rejects the atomic-rollback claim, requires staged postcondition checks and best-effort compensation, verifies restored identity/topology/health/owned state, retains plain recovery data when restoration is unproved, and emits a failed/unverified transition rather than committing.",
+      "files": [
+        "skills/isaac-character-switching/references/switch-contract.md"
+      ]
+    },
+    {
+      "id": "live-state-becomes-authoritative",
+      "prompt": "双体恢复后，以扫已经消耗了主动充能、受伤并重掷掉一个道具。下一次进房代码准备再次应用最初的副体快照，以保证数据完整。请审查存档与实时状态权威。",
+      "expected_output": "Rejects replaying the stale snapshot. Once the live partner is restored and verified it becomes authoritative; later consumption, damage, reroll and item loss update current state. SaveData keeps only approved stable plain data and never live player/entity userdata.",
+      "files": [
+        "skills/isaac-character-switching/SKILL.md",
+        "skills/isaac-character-switching/references/player-topology.md"
+      ]
+    },
+    {
+      "id": "negative-costume-boundary",
+      "prompt": "一个套装达到三件后只添加 Null Costume、属性和特效，不改变 PlayerType。是否应该使用角色切换 Skill？",
+      "expected_output": "Rejects isaac-character-switching as primary because PlayerType does not change. Routes the named threshold form to isaac-transformations-forms, with visual/state companions only as required.",
+      "files": [
+        "skills/isaac-character-switching/SKILL.md",
+        "skills/isaac-transformations-forms/SKILL.md"
+      ]
+    }
+  ]
+}

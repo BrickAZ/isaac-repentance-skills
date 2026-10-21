@@ -97,6 +97,7 @@ explicitly optional project without a migration request.
 | Book of Virtues/item-wisp behavior | `isaac-wisps-virtues` |
 | NPC/Boss AI | `isaac-npc-boss-ai` |
 | Custom player/tainted character | `isaac-players-characters` |
+| In-run actual PlayerType switch/restore and state migration | `isaac-character-switching` |
 | Existing vanilla reskin/resource-only exact-path override | `isaac-reskins-resource-overrides` |
 | Custom-player art or sprite-surface generation | `isaac-character-art-surfaces` |
 | Cross-surface source identity/style translation | `isaac-visual-style-translation` |
@@ -165,6 +166,10 @@ explicitly optional project without a migration request.
   route when HP/AI/custom callback behavior is required.
 - Collect-N-items named form: primary `isaac-transformations-forms`; synergies
   remains primary only for a combined effect without form/threshold lifecycle.
+- Temporary identity item that calls `ChangePlayerType`: primary
+  `isaac-character-switching`; players-characters supplies registered identity
+  facts, damage-health supplies the approved health outcome, and state-lifecycle
+  supplies stable save/continue ownership.
 - Blank card: primary cards-pockets; context is preflight; testing-debugging is
   immediate because the user asked for diagnosis; validators are verification;
   ANM2/descriptions/compatibility are conditional.

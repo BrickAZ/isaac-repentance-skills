@@ -59,6 +59,10 @@ Read `references/state-ownership.md`, then choose the reset/save references as n
 - **Reset lifecycle**: new room, new level, new run, challenge start/end, player death, item loss, entity remove, game exit. Read `references/reset-lifecycle.md`.
 - **Saved data**: `SaveData`, `LoadData`, JSON/plain table serialization, versioning, reload reconstruction. Read `references/savedata.md`.
 - **Module instances and cached closures**: stale Mod/entity references, query caches, teardown, rebinding and loader-versus-registration lifetime. Read `references/module-instance-lifecycle.md`; loader selection and export shape belong to `isaac-mod-architecture`.
+- **In-run character switch state**: use `isaac-character-switching` as primary
+  for capture/mutate/reacquire/reconcile/commit order. This skill owns stable
+  keys, serialization, continue/reset and reconstruction, not the identity or
+  health conversion itself.
 - **Pending entitlement**: a reward earned now but settled only in a later target context. Define its owner, target, settlement, expiry/carry-over policy, and reset boundary; use `isaac-rewards-pickups` for reward selection/spawn.
 - **Final review**: read `references/state-review-checklist.md`.
 
