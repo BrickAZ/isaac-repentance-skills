@@ -41,6 +41,10 @@ From the target mod root, inspect:
 
 1. `main.lua` and any bootstrap/load files for `RegisterMod`, `require`,
    `include`, and callback registration.
+   When imports/exports are relevant, inspect loader wrappers, cache keys,
+   returned values/factories, instance/registration owners and current-generation
+   rebinding. Follow calls rather than inferring semantics from the wrapper name;
+   use `references/project-discovery.md` for the loading contract.
 2. Existing Lua roots such as `scripts/`, `src/`, `modules/`, or the project's
    own equivalent. Do not assume all behavior belongs in `main.lua`.
 3. Existing `content/*.xml` files, including items, pools, pockets, entities,
@@ -68,6 +72,7 @@ Before handing work to another skill, output only observed facts:
 - RegisterMod object(s) and source file: none is valid for a confirmed resource-only mod
 - Bootstrap/load file(s):
 - Behavior module root(s):
+- Loader/export/cache and instance ownership, when relevant:
 - Content XML actually present:
 - Requested native visual surfaces and per-surface evidence:
 - Language variants actually present:

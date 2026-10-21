@@ -40,6 +40,7 @@ Before moving code:
 
 ## Route The Architecture Work
 
+- **Loading and exports**: `include`/`require`, shared instances, returned tables/factories, public query/effect methods, namespaces and dependency cycles. Read `references/module-loading-and-exports.md`.
 - **Module boundaries**: when to split item/card/entity/challenge code and what each module owns. Read `references/module-boundaries.md`.
 - **Callback registration**: shared callback helpers, load order, duplicate callback prevention, per-content registration. Read `references/callback-registration.md`.
 - **Shared helpers and constants**: id maps, state helpers, RNG helpers, language helpers, asset helpers. Read `references/shared-helpers.md`.
@@ -53,6 +54,9 @@ Before moving code:
 - Do not create a new abstraction unless it removes real duplication or matches an existing pattern.
 - Preserve existing public names and mod naming quirks unless the user explicitly asks to rename them.
 - Keep callback ownership obvious. A future agent should be able to find who registers a callback and why.
+- Before sharing a module, identify its export, instance owner, import-time side effects and registration lifetime. Private `local` values can remain private behind returned methods; neither copying the implementation nor making every helper global is required.
+- Consumers reuse the instance saved by the discovered bootstrap/registry. Re-running a stateful or registering module to fetch one method requires an explicit independent-instance contract.
+- A loader cache is not a lifecycle manager. Use `isaac-state-lifecycle` for stale references and reconstruction, `isaac-repentogon-ui` for UI ownership, and `isaac-testing-debugging` for loader/reload boundary tests.
 - Keep tests close to behavior changes.
 - Do not import an opaque tutorial template, custom callback bus, global helper table, or third-party library merely because an example uses it. Adopt it only when the current project already owns that abstraction or the user explicitly approves a dependency; otherwise express the same contract with discovered project modules and official Isaac APIs.
 
@@ -76,6 +80,9 @@ Lua compiles a source chunk with a finite local-variable budget. A large `main.l
 - Files to move or create:
 - Callback/load order:
 - Shared helpers:
+- Export / shared-instance owner / import side effects:
+- Query versus effect API / result ownership:
+- Registration / invalidation / teardown and rebind:
 - Risks:
 - Verification:
 - Rollback path:

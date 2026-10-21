@@ -8,6 +8,10 @@ Isaac callbacks are the spine of the mod. Keep registration explicit.
 - Avoid duplicate callbacks that scan the same entities or players for the same purpose.
 - Keep callback filters explicit when the API supports them.
 - Document load order when modules depend on shared ids or helpers.
+- Record whether import itself registers callbacks or exports an explicit installer.
+  A second consumer of an existing module reads its saved instance instead of
+  re-executing a registering file. Installer guards apply to a live generation,
+  and must allow a cleaned-up replacement to bind to the current Mod.
 - If a callback is challenge-only, card-only, or item-only, gate it early.
 
 ## Red Flags

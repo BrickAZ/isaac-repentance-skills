@@ -169,6 +169,14 @@ When changing a large, monolithic Lua entry file, include a check that parses or
 
 - Prefer a lightweight Isaac stub that executes the real entry file when the game cannot be launched.
 - Keep callback and asset stubs minimal; the goal is to prove the entry chunk loads and the changed handler is registered.
+
+## Module Loading And Reload Tests
+
+For loader/export changes, shared queries or cached integrations, read
+`references/module-loader-regressions.md`. Model repeated `include` execution
+separately from `require` cache hits, and exercise the actual export/installer
+instead of returning the same fixed table for both loaders. A parse or one-time
+bootstrap pass does not prove shared identity, current closures or native reload.
 - Report separately if only an isolated helper was tested, or if no compatible Lua runner is available.
 
 ## Common Debug Routes

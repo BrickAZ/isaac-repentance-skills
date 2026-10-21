@@ -2,6 +2,18 @@
   "skill_name": "isaac-mod-context",
   "evals": [
     {
+      "id": "discover-wrapper-export-and-instance",
+      "prompt": "陌生 Mod 有包装 include 的 Load 函数和 cache，实现尚未提供。片段为 local mod=OrchidMod 与 return function(LANG)。Agent 认定返回值是新 Mod，并要用户决定 scripts 路径。请审查。",
+      "expected_output": "不把别名当注册或工厂当实例；追踪 wrapper/调用者/路径解析/cache键与返回值/执行副作用/所有者和失效，缺证据是技术发现缺口，不要求用户决定技术路径或发明 scripts 根。",
+      "files": ["skills/isaac-mod-context/SKILL.md", "skills/isaac-mod-context/references/project-discovery.md"]
+    },
+    {
+      "id": "provider-readiness-separate-from-api-presence",
+      "prompt": "可选 EID 的兼容模块先加载，但道具 registry 还没创建；项目只给出 items.items 路径。Agent 认为这是假重复目录并准备先注册第二个 Mod 解决。",
+      "expected_output": "发现实际路径和原 Mod 所有者，保留合法目录；分别证明 EID能力可用和玩法provider就绪，沿发现的加载顺序/延迟查询处理，不创建第二个 Mod，不让可选集成阻断玩法。",
+      "files": ["skills/isaac-mod-context/references/project-discovery.md"]
+    },
+    {
       "id": 1,
       "prompt": "这是一个新的以撒 mod，main.lua 里有 RegisterMod，scripts/items 里有道具逻辑。先帮我加一个被动道具。",
       "expected_output": "先输出项目上下文：mod 对象、bootstrap、scripts/items、实际 content XML 和语言文件；不直接假设对象名或把逻辑写回 main.lua。",

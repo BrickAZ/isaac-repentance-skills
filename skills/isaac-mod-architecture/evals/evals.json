@@ -2,6 +2,30 @@
   "skill_name": "isaac-mod-architecture",
   "evals": [
     {
+      "id": "include-consumers-share-one-instance",
+      "prompt": "道具文件顶层有 local cache 和 AddCallback，最后 return Planner。入口已 include 一次；B 道具和 EID 准备各 include 一次取得 GetPreview。有人说 local 不能复用，必须复制或改全局。请审查。",
+      "expected_output": "保留私有 local，通过返回接口及闭包复用；由已发现的 bootstrap/registry 保存同一实例，消费者不重执行注册模块。明确缓存、方法调用和结果所有权；不假设项目已有注册表名称。",
+      "files": ["skills/isaac-mod-architecture/SKILL.md", "skills/isaac-mod-architecture/references/module-loading-and-exports.md"]
+    },
+    {
+      "id": "loader-namespace-is-not-folder-style",
+      "prompt": "两个 Mod 都 require('scripts.shared')。Agent 想把所有模块统一改 require 保状态，或强制所有 include-only 项目重命名 scripts。请判断。",
+      "expected_output": "区分 require 名称缓存/跨 Mod 冲突与 include 每次执行/所属 Mod 路径，发现 wrapper 和目标构建后按实例、副作用、生命周期选型；不统一替换，不把 include-only scripts 目录本身判成错误，不修改全局 require 或清除他人缓存。",
+      "files": ["skills/isaac-mod-architecture/references/module-loading-and-exports.md"]
+    },
+    {
+      "id": "module-table-not-published-during-construction",
+      "prompt": "mod.Items={A=loadA(),B=loadB()}，A 初始化时读取 mod.Items.B；开发者认为把 B 写在 A 前面就一定能修好。请评审。",
+      "expected_output": "说明新表右侧构造完成前尚未赋给 mod.Items，可能读到 nil 或旧表；按真实依赖先加载并发布、注入工厂或必要的分阶段绑定，不能只靠表字段排列，也不为独立模块引入大框架。",
+      "files": ["skills/isaac-mod-architecture/references/module-loading-and-exports.md"]
+    },
+    {
+      "id": "public-query-and-effect-ownership",
+      "prompt": "GetPreview 返回内部可变表，另一个道具直接调用原 OnUse 以复用部分效果。请定义最小公共接口。",
+      "expected_output": "明确查询、执行、返回数据所有权及显式玩家/RNG/flags；浅拷贝不隔离嵌套可变对象。判断需要完整原生 UseActiveItem 还是既有共享效果核心，不把 OnUse 自动当成公共 API，不决定未确认消耗或平衡。",
+      "files": ["skills/isaac-mod-architecture/references/module-loading-and-exports.md"]
+    },
+    {
       "id": 1,
       "prompt": "main.lua 越来越大了，我想把道具、卡牌、挑战、实体拆模块，但不要把现有功能弄坏。先写一个执行提示词。",
       "expected_output": "Plans module boundaries, load order, callback ownership, shared helpers, validator/test verification, and rollback while preserving existing conventions.",

@@ -2,6 +2,24 @@
   "skill_name": "isaac-eid-compat",
   "evals": [
     {
+      "id": "dynamic-query-cannot-consume-gameplay",
+      "prompt": "EID 每次绘制调用 GetNextItems，用玩法 RNG 抽取并从真实池移除条目，再排序返回表展示下一次结果。请审查。",
+      "expected_output": "使用玩法拥有的无副作用查询/既定结果或等价确定性预测，不推进玩法 RNG/池/资源，不执行效果，不擅自提前抽取改变机制。格式化前尊重返回表所有权，明确上下文和缓存失效，测试连续查询与真实执行一致性。",
+      "files": ["skills/isaac-eid-compat/references/dynamic-descriptions.md"]
+    },
+    {
+      "id": "modifier-factory-and-live-provider",
+      "prompt": "描述模块 return function(LANG)，加载早于玩法模块；Agent 想 require 一次就结束所有语言注册，或再 include 道具取得其接口。请审查。",
+      "expected_output": "区分缓存工厂和按语言调用注册；在已证实的就绪时机查当前玩法 provider，缺失时保留原描述/跳过附加内容，不重执行道具。EID 仍可选，重建后重新绑定或延迟取得当前实例。",
+      "files": ["skills/isaac-eid-compat/references/dynamic-descriptions.md"]
+    },
+    {
+      "id": "eid-locale-and-registration-generation",
+      "prompt": "EID 选择英语而游戏是中文。每次 reload 都注册同名 modifier，开发者说肯定重复累积所以永久设置 registered=true。请审查。",
+      "expected_output": "读取已安装 EID 的有效语言而非只读 Options.Language；核对同名 API 是更新/追加/拒绝，稳定命名并更新当前闭包；注册记录关联实际 EID/Mod 世代，不能用永久布尔阻止替换对象需要的注册。",
+      "files": ["skills/isaac-eid-compat/references/dynamic-descriptions.md", "skills/isaac-eid-compat/references/eid-api-contract.md"]
+    },
+    {
       "id": 1,
       "prompt": "陌生模组想加 EID 描述，但没有证明 EID 已安装。请给出实现边界。",
       "expected_output": "应要求先发现可用 EID global/API；EID 缺失时只跳过描述注册，核心玩法和 XML 本地化继续工作，不 require EID。",

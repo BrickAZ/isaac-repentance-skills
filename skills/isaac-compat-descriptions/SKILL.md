@@ -68,7 +68,7 @@ Before editing or writing a prompt:
 - **Static XML localization**: use only when the project already maintains per-locale XML templates and needs native static surfaces such as collectible names or pool entries to change before launch. Read `references/static-xml-localization.md`. Do not introduce template copying for a simple runtime HUD string or an unfamiliar project.
 - **Optional dependency gates**: `if EID then`, `if CuerLib then`, `if StageAPI then`, `if ModConfigMenu then`, or graceful fallback. Read `references/optional-dependency-gates.md`.
 - **MCM / Encyclopedia / Boss Bars / StageAPI**: config pages, wiki entries, boss bar support, stage API hooks. Read `references/compat-modules.md`. For a setting's default authority, persistence, malformed-data recovery, runtime gate, or in-flight behavior boundary, add `isaac-config-options`.
-- **Load order and module organization**: include/require order, descriptions folder, compatibility folder, and avoiding hard failure on missing optional mods. Read `references/load-order.md`.
+- **Load order and module organization**: read `references/load-order.md`; `isaac-mod-architecture` owns loader/export/shared-instance contracts. For computed EID descriptions, use `isaac-eid-compat` and its dynamic-query contract instead of loading gameplay modules again.
 
 ## Hard Rules
 

@@ -2,6 +2,18 @@
   "skill_name": "isaac-testing-debugging",
   "evals": [
     {
+      "id": "loader-doubles-must-model-distinct-semantics",
+      "prompt": "include 和 require 测试桩都直接返回同一固定表，入口只执行一次；测试通过后宣称共享模块和热重载安全。请审查。",
+      "expected_output": "指出测试消除了重新执行、缓存、作用域与世代差异；执行真实模块/工厂，分别建模 include 和 require，覆盖多消费者、第二次初始化、两个根同名键和依赖未就绪；模拟通过不能证明原生 reload。",
+      "files": ["skills/isaac-testing-debugging/references/module-loader-regressions.md"]
+    },
+    {
+      "id": "preview-and-stale-closure-observable-tests",
+      "prompt": "查询返回可变嵌套缓存，UI 回调捕获旧 Mod；已有检查只断言无异常。请提出范围相称的回归。",
+      "expected_output": "比较重复查询的实际结果、RNG/池/资源/调用数与数据别名隔离；执行效果验证相同上下文，替换 provider/Mod 后调用旧闭包不得影响新实例，独立清理外部根；列出原生构建/操作/日志证据缺口。",
+      "files": ["skills/isaac-testing-debugging/references/module-loader-regressions.md"]
+    },
+    {
       "id": 1,
       "prompt": "新主动道具按了没反应，你不要直接猜修法，先给我调试路线。",
       "expected_output": "Triages id lookup, callback registration, ownership, active slot, charge/use return, state and tests before proposing a fix.",

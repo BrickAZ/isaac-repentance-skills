@@ -57,6 +57,11 @@ other description paths must work without it.
 Read `references/eid-api-contract.md` before choosing an EID registration or
 late-load strategy. It records maintainer-documented common calls and their
 guard boundaries, but the installed EID build remains authoritative.
+
+For computed descriptions, shared item queries, modifier factories or language
+changes, read `references/dynamic-descriptions.md`. Obtain the live gameplay
+module through its existing owner; displaying a description must not execute
+the item, consume gameplay RNG/pools or reload its registering module.
 ## Required Output
 
 ```markdown
@@ -66,6 +71,7 @@ guard boundaries, but the installed EID build remains authoritative.
 - Registered content IDs and languages:
 - API calls verified from installed docs/code:
 - Duplicate/late-load policy:
+- Dynamic query provider / result ownership / invalidation, if applicable:
 - Failure/no-EID behavior:
 - Tests and in-game checks:
 ```
