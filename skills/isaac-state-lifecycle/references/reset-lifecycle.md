@@ -13,6 +13,10 @@ Use this when a mechanic should stop, clear, or roll over.
 - Challenge exit or non-challenge run: gate and clear challenge-only behavior.
 - Game reload: reconstruct only what was deliberately saved.
 
+Lua/module reload is distinct from a new run or continue. For cached exports,
+registration generations and stale-reference replacement, use
+[module-instance-lifecycle.md](module-instance-lifecycle.md).
+
 ## Callback Planning
 
 Name the callbacks or existing helpers that perform each reset. If the current repo has a reset helper, use it instead of creating a parallel lifecycle system.

@@ -2,6 +2,18 @@
   "skill_name": "isaac-state-lifecycle",
   "evals": [
     {
+      "id": "cached-instance-is-not-saved-gameplay",
+      "prompt": "require 模块缓存 Mod、房间 userdata、函数和 registered；团队想把整张模块表写进 SaveData 防止 reload 丢失。请设计状态边界。",
+      "expected_output": "分开加载缓存、运行实例、预测缓存、外部注册和已批准存档状态；不序列化模块/函数/userdata，不因缓存便利新增持久化，当前对象就绪后从批准的普通数据重建并重新绑定消费者。",
+      "files": ["skills/isaac-state-lifecycle/references/module-instance-lifecycle.md"]
+    },
+    {
+      "id": "destroy-and-rebind-different-generations",
+      "prompt": "Destroy 把 registered=true，新的 Mod 拿到旧缓存实例后不能注册；旧 Destroy 还可能删除新实例同名资源。请审查。",
+      "expected_output": "disposed 与 registered 分离；在核实的卸载点只解绑所属注册，旧闭包失效，新实例接收当前依赖并可重新注册，旧清理不能影响替换世代；原生回调清理和外部注册分别核对。",
+      "files": ["skills/isaac-state-lifecycle/references/module-instance-lifecycle.md"]
+    },
+    {
       "id": 1,
       "prompt": "主动道具使用后进入选择模式，直到离开当前房间才取消；如果玩家换房、死亡、或者道具丢失都不能残留 UI。写实现提示词。",
       "expected_output": "Defines UI/runtime state owner, player keying, create/update/reset callbacks, room/death/item-loss cleanup, and explicitly avoids saved data unless needed.",

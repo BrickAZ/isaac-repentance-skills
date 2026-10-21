@@ -5,6 +5,10 @@ Before finalizing architecture work, verify:
 - The change was needed for the current task.
 - File boundaries follow content identity or real shared behavior.
 - Load order is explicit.
+- Module export, shared-instance authority and import side effects are named.
+- Stateful consumers reuse the intended instance; query results have an ownership contract.
+- Loader cache keys and external registration IDs have separate namespaces.
+- Dependency cycles and stale references after rebind are handled where relevant.
 - Callback ownership is easy to trace.
 - No unrelated content was refactored.
 - Existing tests still pass where runnable.

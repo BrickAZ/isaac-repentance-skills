@@ -1,6 +1,18 @@
 {
   "skill_name": "isaac-repentogon-ui",
   "evals": [
+    {
+      "id": "require-cache-is-not-ui-lifecycle",
+      "prompt": "菜单 require 模块顶层捕获旧 Mod 并创建 ImGui。reload 新建 Mod，但 require 命中缓存；有人宣称一次执行已保证重载安全。请评审。",
+      "expected_output": "区分工厂缓存、当前实例、实际 UI 元素及注册；核对目标版本，旧实例经证实的卸载/Destroy 后用当前 Mod 安装，元素被清理时允许重建，不能仅依赖旧 registered 或新 Mod 字段。",
+      "files": ["skills/isaac-repentogon-ui/SKILL.md", "skills/isaac-repentogon-ui/references/developer-panel.md"]
+    },
+    {
+      "id": "stale-ui-callback-cannot-update-replacement",
+      "prompt": "旧面板 Destroy 后，新面板复用同一组 ID。测试仍保存旧读取/关闭函数并再次调用；目前它们只检查 ElementExists。请修复验收方案。",
+      "expected_output": "旧实例回调先检查其 disposed 状态，不读世界/不改动新面板，旧 Destroy 幂等；重复安装和当前 Mod 重建都测试，保留其他 Mod 元素，并区分模拟与原生时序。",
+      "files": ["skills/isaac-repentogon-ui/references/developer-panel.md", "skills/isaac-repentogon-ui/tests/test-developer-panel.lua"]
+    },
     {"id": 1, "prompt": "项目已确认 required REPENTOGON 1.1.2g，请直接写游戏内开发面板。已有草案 ImGui.AddWindow(id,title)，然后 AddElement(parent,id,ImGuiElement.Button,label,fn)。", "expected_output": "沿用依赖授权；修正为 CreateWindow(id,title)，通用 AddElement 后 AddCallback(id,ImGuiCallback.Clicked,fn)，或用 AddButton 第四参数；提供精确来源、ID 所有权、只读状态反馈，不重新询问 required，也不改浏览器界面。", "files": ["skills/isaac-repentogon-ui/SKILL.md", "skills/isaac-repentogon-ui/references/imgui-api.md"]},
     {"id": 2, "prompt": "我要求平时游戏画面有一个可点击的开发者小按钮。Agent 把 ImGui Button 固定显示，关闭覆盖层后说已经完成。请审查。", "expected_output": "指出 pinned 在 menuShown=false 被加 NoInputs；区分 HUD 输入入口与 ImGui 面板，实际实现需 HUD 绘制、同坐标 hitbox、点击边沿与输入仲裁，再打开自己的窗口和 ImGui.Show；不能用静态/固定显示冒充可点击验收。", "files": ["skills/isaac-repentogon-ui/SKILL.md", "skills/isaac-repentogon-ui/references/hud-and-coordinates.md"]},
     {"id": 3, "prompt": "在主菜单打开 ImGui，然后按钮读取顶层缓存的 Game():GetLevel():GetCurrentRoomDesc().Data；退出重开一局仍复用缓存。请给修复。", "expected_output": "按钮每次先 Isaac.IsInGame，再取当前对象；菜单状态给普通中文提示，不访问世界；新局/续局/退局清除旧显示，不持有跨局 userdata。", "files": ["skills/isaac-repentogon-ui/references/developer-panel.md", "skills/isaac-repentogon-ui/references/imgui-api.md"]},

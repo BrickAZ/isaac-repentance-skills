@@ -2,6 +2,18 @@
   "skill_name": "isaac-compat-descriptions",
   "evals": [
     {
+      "id": "computed-description-routes-to-provider-contract",
+      "prompt": "为了让动态 EID 获取道具预测结果，兼容层准备再次 include 会注册回调的道具文件。请指定职责与正确接入。",
+      "expected_output": "模块加载/导出交 isaac-mod-architecture，动态查询/语言/注册交 isaac-eid-compat；本技能负责可选门禁和加载关系。读取已就绪玩法实例而非重执行注册文件，EID缺失核心照常。",
+      "files": ["skills/isaac-compat-descriptions/SKILL.md", "skills/isaac-compat-descriptions/references/load-order.md"]
+    },
+    {
+      "id": "compat-before-gameplay-does-not-force-dependency",
+      "prompt": "兼容模块比道具先加载。开发者建议把 EID 改成硬前置，或靠 require 一次永远保存旧 provider。请审查。",
+      "expected_output": "保留已确认依赖策略，发现双方ready时机后注册/安全延迟查询；loader缓存不保证provider当前有效，世代替换需重绑定；不引入无依据每帧轮询，不把技术事实变成用户设计题。",
+      "files": ["skills/isaac-compat-descriptions/references/load-order.md"]
+    },
+    {
       "id": 1,
       "prompt": "给新道具补 EID：中文和英文都要有，还要加一个内联图标。请写给代码 Codex 的提示词，别让它直接假设 EID 一定存在。",
       "expected_output": "应该要求 if EID then guard，区分 items.xml/en_us/zh_cn 与 EID 文本，使用正确 collectible id，图标注册若用 anm2 要交给 anm2 skill，英文和中文分离。",

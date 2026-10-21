@@ -108,8 +108,19 @@ inGame = false
 local priorCalls = gameCalls
 elements[inspectId].click()
 check(gameCalls == priorCalls, "after-exit click cannot read Game")
+local staleInspect = elements[inspectId].click
+local staleClose = elements[window .. ".Close"].click
 local second = attach(mod)
 check(#callbacks == 3 and elements.Foreign ~= nil, "reattach has one owner, preserves foreign UI")
+inGame, room = true, { Data = { Name = "Replacement room" } }
+local beforeStaleClick = gameCalls
+local replacementText = elements[status].text
+staleInspect()
+check(gameCalls == beforeStaleClick and elements[status].text == replacementText,
+    "destroyed instance cannot read or update replacement")
+elements[window].visible = true
+staleClose()
+check(elements[window].visible == true, "stale close cannot hide replacement")
 first.Destroy()
 check(#callbacks == 3 and elements[window] ~= nil, "old destroy cannot remove replacement")
 elements[window .. ".Close"].click()
@@ -120,4 +131,15 @@ fire(3, mod, false)
 check(#callbacks == 0 and elements[window] == nil and elements.Foreign ~= nil, "self unload cleans only owned UI")
 second.Destroy()
 check(#callbacks == 0 and elements.Foreign ~= nil, "destroy is idempotent")
+local nextMod = { AddCallback = mod.AddCallback, RemoveCallback = mod.RemoveCallback }
+local third = attach(nextMod)
+check(#callbacks == 3 and elements[window] ~= nil, "cached factory can attach a fresh owner after teardown")
+elements[inspectId].click()
+check(elements[status].text:find("Replacement room", 1, true), "fresh owner reads current context")
+fire(3, mod, false)
+check(#callbacks == 3 and elements[window] ~= nil, "old owner unload cannot destroy fresh owner")
+fire(3, nextMod, false)
+check(#callbacks == 0 and elements[window] == nil and elements.Foreign ~= nil,
+    "fresh owner unload preserves foreign elements")
+third.Destroy()
 print("Developer panel mock checks passed: " .. checks .. "; native game behavior unverified")

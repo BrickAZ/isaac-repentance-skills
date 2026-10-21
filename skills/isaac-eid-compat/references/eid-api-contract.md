@@ -30,4 +30,6 @@ Language identifiers, markup, inline icons, transformations, conditional descrip
 - EID present: only discovered IDs/languages are registered.
 - EID loads late: registration happens once.
 - Repeated bootstrap/reload: no duplicate registrations.
+- Dynamic result: follow [dynamic-descriptions.md](dynamic-descriptions.md) for
+  shared providers, query purity, current-language selection and modifier rebinding.
 - Unsupported or incomplete API: skip the optional integration and report the missing surface.

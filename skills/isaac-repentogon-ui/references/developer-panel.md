@@ -19,6 +19,20 @@
 
 ## Lua 集成示例
 
+### 缓存与重建合同
+
+模块返回的工厂可以被缓存；初始化仍须在能力门禁后用当前 Mod 调用工厂。
+顶层捕获旧 Mod 并创建 UI 的模块，不能仅靠 `require` 的一次执行保证重载安全。
+区分工厂缓存、当前 UI 实例、外部元素是否存在这三个事实；元素被清理后，
+旧 `registered` 布尔值不能阻止必要的重建。先处理上一实例的清理，再安装新实例。
+
+替换 Mod 对象时，确认旧实例实际收到卸载或显式 Destroy；新 Mod 上的字段找不到
+旧实例，不能据此宣称没有旧回调。旧实例被销毁后，其外部残留函数也不能读取世界、
+更新或隐藏使用相同 ID 的新面板。`ElementExists` 只证明元素存在，不能证明它
+仍绑定当前依赖。具体加载与重载语义见
+[架构合同](../../isaac-mod-architecture/references/module-loading-and-exports.md)，
+实例替换见 [状态合同](../../isaac-state-lifecycle/references/module-instance-lifecycle.md)。
+
 把 `ExampleMod` 前缀一次性替换为项目已确认的唯一标识。以下代码可作为模块返回一个工厂；主初始化在门禁后调用 `AttachDeveloperPanel(mod)`。示例不在顶层创建 Game/Player，不使用全局 Reset/Hide。
 
 ```lua
@@ -33,15 +47,18 @@ local function AttachDeveloperPanel(mod)
     local destroyed = false
 
     local function SetStatus(text)
+        if destroyed then return end
         if ImGui.ElementExists(STATUS) then ImGui.UpdateText(STATUS, text) end
     end
 
     local function ResetRunView()
+        if destroyed then return end
         if ImGui.ElementExists(WINDOW) then ImGui.SetVisible(WINDOW, false) end
         SetStatus("点击读取当前房间；未进入对局时仅显示提示。")
     end
 
     local function InspectRoom()
+        if destroyed then return end
         if not Isaac.IsInGame() then
             SetStatus("请先进入一局游戏。")
             return
@@ -84,6 +101,7 @@ local function AttachDeveloperPanel(mod)
     ImGui.AddText(WINDOW, "点击读取当前房间。", true, STATUS)
     ImGui.AddButton(WINDOW, WINDOW .. ".Inspect", "读取房间", InspectRoom, true)
     ImGui.AddButton(WINDOW, WINDOW .. ".Close", "关闭", function()
+        if destroyed then return end
         ImGui.SetVisible(WINDOW, false)
     end, true)
     Bind(ModCallbacks.MC_POST_GAME_STARTED, ResetRunView)
@@ -100,11 +118,12 @@ return AttachDeveloperPanel
 
 接口依据：[官方 ImGui 示例](https://repentogon.com/examples/ImGuiMenu.html)、[tag 官方测试](https://github.com/TeamREPENTOGON/REPENTOGON/blob/1.1.2g/repentogon/resources/scripts/repentogon_tests/test_imgui.lua)、[tag 元素/回调绑定](https://github.com/TeamREPENTOGON/REPENTOGON/blob/1.1.2g/repentogon/ImGuiFeatures/LuaImGui.cpp)、[Isaac.IsInGame](https://repentogon.com/Isaac.html#isingame)。
 
-示例是生命周期模式，不替代项目门禁与 bootstrap。全量 luareset 会重新执行模块；若项目加载器创建新 mod 对象，必须保证旧实例实际收到了卸载/显式 Destroy，不能只依赖新对象上的 KEY 清理旧回调。若目标卸载阶段 UI 系统已不可访问，采用已验证的更早 teardown 时机；不猜测关闭顺序。
+示例是生命周期模式，不替代项目门禁与 bootstrap。`luamod`、`luareset` 对模块缓存和 UI 的处理按目标版本核验。若项目加载器创建新 mod 对象，必须保证旧实例实际收到了卸载/显式 Destroy，不能只依赖新对象上的 KEY 清理旧回调。若目标卸载阶段 UI 系统已不可访问，采用已验证的更早 teardown 时机；不猜测关闭顺序。
 
 ## 验证清单
 
 - 对同一 mod 工厂调用两次：仅一套根节点、一个读取 callback、三条生命周期注册。
+- 保存旧读取/关闭闭包，替换实例后再调用：不读取世界、不改动新面板；显式卸载后，同一工厂可为新 Mod 重建。
 - 主菜单点击：不调用 Game，不异常，出现中文提示；进入对局点击显示当前房间。
 - 新局/续局、退局：窗口隐藏，旧房间名清除；再开可读取新对象。
 - 自己卸载/Destroy 两次：幂等回收；其他 Mod 卸载不会关闭此面板，其他前缀节点保留。
