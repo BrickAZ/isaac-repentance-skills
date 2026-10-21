@@ -42,8 +42,10 @@ and persistence/reconciliation.
 - Use `isaac-passive-collectibles` for each contributor item's ordinary behavior.
 - Use `isaac-reroll-removal-contracts` when inventory changes must retract or
   rebuild the form.
-- Use `isaac-players-characters` when the mechanic actually registers or changes
-  a custom `PlayerType`, Tainted character, pocket active, or character start.
+- Use `isaac-players-characters` when the mechanic registers a custom
+  `PlayerType`, Tainted character, pocket active, or character start. If live
+  gameplay actually changes or restores `PlayerType`, use
+  `isaac-character-switching` for the migration protocol.
 - Use `isaac-anm2-visuals` and `isaac-character-art-surfaces` for transformation
   costumes, layers, spritesheets, and surface-specific art.
 - Use `isaac-eid-compat` only for optional transformation progress/icons/text.
@@ -107,7 +109,8 @@ and persistence/reconciliation.
   only approved stable keys/versioned data and rebuild runtime presentation.
 - Treat actual `PlayerType` conversion as a separate character mechanic with
   health, pocket, completion marks, co-op/twins, and continue implications; do
-  not use it as a shortcut for a cosmetic or item-set form.
+  not use it as a shortcut for a cosmetic or item-set form. Route that conversion
+  to `isaac-character-switching`.
 
 ## Verification
 

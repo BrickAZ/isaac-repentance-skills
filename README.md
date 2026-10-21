@@ -62,7 +62,8 @@ its API semantics ahead of generic vanilla advice.
 The REPENTOGON reference snapshot targets **1.1.2g**. This is an evidence baseline,
 not every feature's minimum version or proof of the user's installed build.
 Track each feature's introduction, required fixes and actual build separately.
-See [the 1.2.0 update notes](docs/repentogon-1.2.0.md).
+See [the 1.3.0 character-switching update notes](docs/character-switching-1.3.0.md).
+The previous [1.2.0 REPENTOGON notes](docs/repentogon-1.2.0.md) remain available.
 
 ## Installation
 
@@ -215,14 +216,14 @@ take priority over general guidance.
 
 | Skill | Purpose |
 | --- | --- |
-| `isaac-mod-context` | Discovers real entrypoints, resources, XML, dependencies, and validation commands. |
-| `isaac-mod-architecture` | Defines module boundaries and integration points while preventing duplicate registration. |
+| `isaac-mod-context` | Discovers entrypoints, assets, XML, dependencies, loader wrappers, exports, instance owners, and validation commands. |
+| `isaac-mod-architecture` | Defines exports, shared instances, include/require choices, dependency order, query/effect APIs, and registration ownership. |
 | `isaac-repentance-router` | Selects one primary skill for an unfamiliar request and limits supporting skills. |
 | `isaac-mechanic-contracts` | Defines a mechanic's inputs, outcomes, and boundaries before choosing an implementation. |
 | `isaac-callback-contracts` | Selects callbacks, filters, registration timing, and return-value semantics. |
-| `isaac-state-lifecycle` | Manages runtime state, SaveData, and cleanup across rooms, restarts, and deaths. |
+| `isaac-state-lifecycle` | Manages runtime state, SaveData, module caches, stale closure replacement, and room/run/death cleanup. |
 | `isaac-performance-hotpaths` | Reviews per-frame scans, repeated Spawn calls, and other performance hot paths. |
-| `isaac-testing-debugging` | Reproduces, debugs, and validates issues in layers, including separate checks for native UI surfaces. |
+| `isaac-testing-debugging` | Validates loader differences, query side effects, reload behavior, and native UI surfaces with separate evidence levels. |
 | `isaac-validators` | Checks XML, resource references, duplicate IDs, callback mistakes, and entity-generation chains owned by the current mod. |
 
 ### Entities and Combat
@@ -236,6 +237,7 @@ take priority over general guidance.
 | `isaac-projectile-combat` | Manages projectile ownership, damage, hits, and cleanup. |
 | `isaac-status-effects` | Manages target eligibility, sources, duration, stacking/refresh, immunity, periodic damage, and cleanup. |
 | `isaac-players-characters` | Develops custom characters and Tainted variants. |
+| `isaac-character-switching` | Handles live PlayerType switching, health-capability projection, native partner topology, ownership migration, and failed-switch compensation. |
 
 ### World and Space
 
@@ -283,9 +285,9 @@ take priority over general guidance.
 | `isaac-audio-render-feedback` | Handles SFX/music registration and formats, manager responsibilities, decoding evidence, shaders, rendering, and input interception. |
 | `isaac-hud-ui-state` | Manages HUD/UI display, world-to-screen conversion, and short-lived state cleanup. |
 | `isaac-localization-runtime` | Handles runtime localization and dependency routing. |
-| `isaac-compat-descriptions` | Handles EID/encyclopedia descriptions and optional-dependency compatibility. |
+| `isaac-compat-descriptions` | Coordinates text, optional integrations, load order, and routing to API and shared-module contracts. |
 | `isaac-config-options` | Handles configuration, SaveData, and optional MCM integration. |
-| `isaac-eid-compat` | Handles optional EID descriptions, icons, and language registration. |
+| `isaac-eid-compat` | Handles optional EID descriptions, icons, effective language, read-only dynamic queries, and modifier rebinding. |
 | `isaac-mcm-compat` | Handles optional Mod Config Menu integration and duplicate registration. |
 | `isaac-stageapi-compat` | Handles optional StageAPI rooms, stages, and version compatibility. |
 | `isaac-repentogon-compat` | Handles required/optional dependency and capability gates, release suffixes, build evidence, and Lua/XML loading boundaries. |
@@ -293,7 +295,7 @@ take priority over general guidance.
 | `isaac-repentogon-callbacks` | Handles changed callback signatures/returns, damage chains, inventory/innate ownership, loot and unload. |
 | `isaac-repentogon-content` | Handles native XML stats, null items, revive tags, custom cache, achievements and players.xml. |
 | `isaac-repentogon-world` | Handles Ambush, RoomConfig, room placement, descriptors and RNG/weight-safe previews. |
-| `isaac-repentogon-ui` | Handles in-game UI entry, ImGui construction/events, input, menu/run guards and owned teardown. |
+| `isaac-repentogon-ui` | Handles in-game entry, ImGui events, cached factories versus live instances, stale callbacks, and owned teardown. |
 
 ## Core Constraints
 
@@ -310,7 +312,7 @@ take priority over general guidance.
 
 Repository checks validate frontmatter, internal references, TBD contracts, router
 coverage, eval schemas, offline third-party API references, evidence matrices, and
-installed-file parity for all 54 skills.
+installed-file parity for all 55 skills.
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File tests/test-skill-repository.ps1
@@ -318,6 +320,18 @@ powershell -ExecutionPolicy Bypass -File tests/test-skill-repository.ps1
 
 On Windows, the validation script enables UTF-8 for `quick_validate.py` so the
 system GBK code page does not misclassify valid Chinese text as an encoding error.
+
+Run the module/reload example checks from the repository root:
+
+```text
+lua skills/isaac-mod-architecture/tests/test-module-contracts.lua
+lua skills/isaac-repentogon-ui/tests/test-developer-panel.lua
+```
+
+They execute the documented Lua factories to check shared identity, owned copies,
+cache invalidation, explicit effects, and stale UI callbacks. Loader/engine parts
+use explicit doubles; these checks do not prove native `luamod`, `luareset`, or
+in-game behavior across all third-party API versions.
 
 Evidence is separated into four layers:
 
@@ -333,7 +347,7 @@ result must remain explicitly unverified rather than being filled in by inferenc
 
 ```text
 .codex-plugin/plugin.json  Codex plugin manifest
-skills/                    54 general Isaac skills
+skills/                    55 general Isaac skills
 docs/                      Eval schema, evidence matrix and release notes
 tests/                     Repository audit and installation-parity checks
 AGENTS.md                  AI maintenance boundaries for this repository

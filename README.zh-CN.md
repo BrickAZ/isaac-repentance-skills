@@ -40,7 +40,8 @@ CuerLib、EID、MCM、StageAPI、REPENTOGON 等均不被默认视为必需前置
 
 本次 REPENTOGON 参考快照以 **1.1.2g** 为核验基线；它不是所有功能的最低版本，
 也不证明用户安装了该版本。每项功能分别记录引入版本、所需修复和实际构建。
-参见 [1.2.0 更新说明](docs/repentogon-1.2.0.md)。
+参见 [1.3.0 角色切换更新说明](docs/character-switching-1.3.0.md)；此前的
+[1.2.0 REPENTOGON 更新说明](docs/repentogon-1.2.0.md)仍然保留。
 
 ## 安装
 
@@ -178,14 +179,14 @@ Skills 提供的是决策合同，不是固定代码模板。目标项目已经�
 
 | Skill | 作用 |
 | --- | --- |
-| `isaac-mod-context` | 发现真实入口、资源、XML、依赖和验证命令。 |
-| `isaac-mod-architecture` | 划分模块边界、接入点并避免重复注册。 |
+| `isaac-mod-context` | 发现真实入口、资源、XML、依赖、加载器封装、导出与实例所有者和验证命令。 |
+| `isaac-mod-architecture` | 处理模块导出、共享实例、include/require、依赖顺序、公共查询／效果接口和注册归属。 |
 | `isaac-repentance-router` | 为陌生需求选择一个主 Skill，并控制辅助 Skill 的数量。 |
 | `isaac-mechanic-contracts` | 先定义机制的输入、结果与边界，再选择实现。 |
 | `isaac-callback-contracts` | 选择 callback、过滤器、注册时机和返回值。 |
-| `isaac-state-lifecycle` | 管理运行期状态、SaveData 以及房间、重开和死亡清理。 |
+| `isaac-state-lifecycle` | 管理运行期状态、SaveData、模块缓存与旧闭包替换，以及房间、重开和死亡清理。 |
 | `isaac-performance-hotpaths` | 审核逐帧扫描、重复 Spawn 和其他性能热点。 |
-| `isaac-testing-debugging` | 分层复现、调试和验证问题，并分开验证各原生 UI 表面。 |
+| `isaac-testing-debugging` | 分层复现与验证，检查加载器差异、查询副作用、重载和各原生 UI 表面的证据。 |
 | `isaac-validators` | 检查 XML、资源引用、重复 ID、常见回调和本模拥有的实体生成链。 |
 
 ### 实体与战斗
@@ -199,6 +200,7 @@ Skills 提供的是决策合同，不是固定代码模板。目标项目已经�
 | `isaac-projectile-combat` | 管理弹幕归属、伤害、命中和清理。 |
 | `isaac-status-effects` | 管理异常状态的目标资格、来源、持续、叠加/刷新、免疫、周期伤害与清理。 |
 | `isaac-players-characters` | 开发自定义角色和 Tainted 变体。 |
+| `isaac-character-switching` | 处理局中真实 PlayerType 切换、生命能力投影、双体拓扑、所有权迁移和失败补偿。 |
 
 ### 世界与空间
 
@@ -246,9 +248,9 @@ Skills 提供的是决策合同，不是固定代码模板。目标项目已经�
 | `isaac-audio-render-feedback` | 处理 SFX/音乐注册与格式、播放器职责、解码证据、shader、render 和输入拦截。 |
 | `isaac-hud-ui-state` | 管理 HUD/UI 显示、世界坐标转屏幕坐标和短效状态清理。 |
 | `isaac-localization-runtime` | 处理运行期多语言和依赖分流。 |
-| `isaac-compat-descriptions` | 处理 EID/百科描述与可选依赖兼容。 |
+| `isaac-compat-descriptions` | 处理描述同步、可选依赖和兼容层加载关系，并路由具体 API 与共享模块合同。 |
 | `isaac-config-options` | 处理配置、SaveData 和可选 MCM 接入。 |
-| `isaac-eid-compat` | 处理可选 EID 描述、图标与语言注册。 |
+| `isaac-eid-compat` | 处理可选 EID 描述、图标、有效语言、动态只读查询和修改器重新绑定。 |
 | `isaac-mcm-compat` | 处理可选 Mod Config Menu 配置界面与重复注册。 |
 | `isaac-stageapi-compat` | 处理可选 StageAPI 房间、楼层与版本兼容。 |
 | `isaac-repentogon-compat` | 处理 required/optional 依赖与能力门禁、字母补丁、构建证据和 Lua/XML 加载边界。 |
@@ -256,7 +258,7 @@ Skills 提供的是决策合同，不是固定代码模板。目标项目已经�
 | `isaac-repentogon-callbacks` | 处理扩展回调参数与返回链、伤害、库存/innate 所有权、掉落与卸载。 |
 | `isaac-repentogon-content` | 处理原生 XML 属性、null 道具、复活标签、自定义缓存、成就和 players.xml。 |
 | `isaac-repentogon-world` | 处理 Ambush、RoomConfig、房间放置、描述符与 RNG/权重预览边界。 |
-| `isaac-repentogon-ui` | 处理游戏内入口、ImGui 构建与事件、输入、菜单/对局守卫和所属 UI 清理。 |
+| `isaac-repentogon-ui` | 处理游戏内入口、ImGui 构建／事件、缓存工厂与当前实例、旧回调失效和所属 UI 清理。 |
 
 ## 核心约束
 
@@ -271,7 +273,7 @@ Skills 提供的是决策合同，不是固定代码模板。目标项目已经�
 
 ## 验证与证据边界
 
-仓库级检查会验证 54 个 Skill 的 frontmatter、内部引用、TBD 合同、路由覆盖、
+仓库级检查会验证 55 个 Skill 的 frontmatter、内部引用、TBD 合同、路由覆盖、
 eval schema、离线第三方 API 参考、证据矩阵和已安装文件一致性。
 
 ```powershell
@@ -280,6 +282,17 @@ powershell -ExecutionPolicy Bypass -File tests/test-skill-repository.ps1
 
 在 Windows 下，校验脚本会为 `quick_validate.py` 启用 UTF-8，避免系统 GBK 将
 合法中文误判为编码错误。
+
+模块接口与重载示例另有可执行检查，从仓库根目录运行：
+
+```text
+lua skills/isaac-mod-architecture/tests/test-module-contracts.lua
+lua skills/isaac-repentogon-ui/tests/test-developer-panel.lua
+```
+
+它们执行文档中的 Lua 工厂，验证共享实例、数据副本、缓存失效、显式效果调用和
+旧 UI 闭包清理。加载器与引擎部分由明确的测试替身模拟，不证明原生 `luamod`、
+`luareset` 或所有第三方 API 版本都已通过游戏内验收。
 
 证据分为四层：
 
@@ -295,7 +308,7 @@ powershell -ExecutionPolicy Bypass -File tests/test-skill-repository.ps1
 
 ```text
 .codex-plugin/plugin.json  Codex plugin 清单
-skills/                    54 个通用 Isaac Skills
+skills/                    55 个通用 Isaac Skills
 docs/                      eval schema 与证据矩阵
 tests/                     仓库审计和安装一致性检查
 AGENTS.md                  维护本仓库时必须遵守的 AI 边界

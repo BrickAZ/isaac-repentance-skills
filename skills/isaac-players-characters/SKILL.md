@@ -63,6 +63,11 @@ Use this only when the task explicitly requests a custom heart HUD surface. Read
 
 - **Existing vanilla character reskin**: when the request changes an existing character without adding a separately selectable identity, do not register a new player type. Route loading, exact-path overrides, runtime actor replacement, and Null Costume compatibility to `isaac-reskins-resource-overrides`.
 - **Registration**: player type, `players.xml`, and character identity.
+- **In-run identity switching**: when gameplay changes or restores a live
+  player's actual `PlayerType`, use `isaac-character-switching` as primary for
+  migration order, health capabilities, native partners, ownership and failure
+  recovery. This skill still owns the registered source/target identities and
+  starting-kit intent.
 - **Native character visuals**: character select, co-op menu, in-run HUD, boss portrait, death screen, costumes, and optional completion marks are separate surfaces. Discover each requested route; use `isaac-anm2-visuals` for ANM2/assets and do not assume one portrait supplies another.
 - **Character art plan**: before generating or commissioning character pixels, use isaac-character-art-surfaces to produce the per-surface matrix and choose pure recolor versus original full skin. Preserve the actual player ANM2 coordinate contract, not the vanilla alpha silhouette by default. Route base body replacement through a discovered `players.xml` `skin`; route independent hair/clothes/horns through a project-proven `type="none"` Null Costume only when its ANM2, priority, and Add/Remove lifecycle are discovered. Keep portrait, name image, select, co-op, and death art separate.
 - **Starting kit**: starting collectibles, trinkets, cards, pills, health, and
@@ -92,6 +97,9 @@ Use this only when the task explicitly requests a custom heart HUD surface. Read
   policy into final behavior; label any proposal as `Suggestion`.
 - Do not use a costume as proof of character identity. Costumes are visual;
   player type and ownership drive gameplay.
+- Do not treat a successful in-run `ChangePlayerType` call as a complete
+  character migration. Route the switch protocol and postconditions to
+  `isaac-character-switching`.
 - Do not use a working character-select, co-op, HUD, boss, death, or costume asset as proof another character surface is registered. Each requested surface needs its own source asset/ANM2/registration evidence and in-game check.
 - Do not make a custom character require EID, CuerLib, StageAPI, or another
   third-party mod unless the project explicitly declares that dependency.

@@ -46,6 +46,11 @@ eligibility/duration/stacking/removal to `isaac-status-effects`. Keep this skill
 as a companion only when the status cancels, replaces, adds, or recursively
 causes damage or changes health.
 
+When a live `PlayerType` change must project health across incompatible character
+models, use `isaac-character-switching` as primary for switch order, topology and
+failure recovery. This skill remains the companion authority for the approved
+health outcome, lethal boundary, and special survival semantics.
+
 Keep the official route for vanilla or undeclared projects. For explicitly
 selected REPENTOGON, retain required/optional mode and the verified extension
 contract: required failure stops initialization; optional failure preserves the

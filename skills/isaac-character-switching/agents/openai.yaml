@@ -1,0 +1,4 @@
+interface:
+  display_name: "Isaac Character Switching"
+  short_description: "Migrate live PlayerType, health, partners, and state safely"
+  default_prompt: "Design or review an in-run Isaac PlayerType switch with explicit health projection, partner topology, ownership, failure recovery, and evidence boundaries."
