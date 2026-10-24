@@ -40,6 +40,7 @@ Read `../isaac-mod-context/references/tbd-disclosure.md` for the shared user-dec
 - 使用 `CreateWindow`，不存在已核实的 1.1.2g `AddWindow`。`AddElement` 不收点击函数；用 `AddButton` 第四参数或独立 `AddCallback`。
 - 创建一次，状态变化更新；ID 用本 Mod 唯一前缀。关闭只隐藏本窗口；销毁仅移除自己的元素和回调，不调用全局 `ImGui.Reset()` / `Hide()` 清场。
 - `require` 命中缓存只证明模块未重执行，不证明菜单仍存在或闭包依赖仍有效。按 `references/developer-panel.md` 的缓存与重建合同管理工厂、当前实例和实际元素；重复 ID 的处理按目标版本核对。
+- 先记录项目支持正常启动/重启、重复安装还是原生热重载。明确只支持重启验证时按该范围验收；不强制补造热重载系统，也不把未测的开发操作称为通过。
 - 按钮回调每次以 `Isaac.IsInGame()` 判断对局，再取当前世界对象。菜单能显示不代表玩家/房间存在；不跨退出保存 userdata。
 - 只读按钮无游戏状态写入。未来动作按钮单独核验目标、触发一次、失败反馈；Render 不生成道具、波次或房间。
 - 生命周期与 HUD 状态分别关联 `isaac-state-lifecycle`、`isaac-hud-ui-state`；世界动作关联 `isaac-repentogon-world`。不假定 MCM/StageAPI 存在。

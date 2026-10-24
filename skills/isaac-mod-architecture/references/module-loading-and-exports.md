@@ -61,6 +61,13 @@ an existing effect core. Preserve approved mechanics; route unclear behavior to
 - Register once per intended live instance/generation. Importing an effectful
   file twice is different from an engine-managed mod unload/reload. Discover
   which registrations the engine removes and which external systems retain.
+- Reload re-executes the bootstrap and the loading branches it reaches; it does
+  not execute every Lua file merely because the file exists. Keep native Mod
+  cleanup separate from same-instance imports and external registrations.
+
+For class helpers, method snapshots and returned state aliases, read
+[classes-and-method-dispatch.md](classes-and-method-dispatch.md). A private
+local name does not protect a mutable object returned to another consumer.
 
 ## Small Query/Effect Factory
 

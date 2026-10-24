@@ -2,6 +2,24 @@
   "skill_name": "isaac-callback-contracts",
   "evals": [
     {
+      "id": "method-adapter-is-not-native-string-registration",
+      "prompt": "参考 Mod 写 Item:AddCallback(id,'OnUse')，它的 Component 内部注册 function(_,...) return self[key](self,...) end。陌生项目只有普通 RegisterMod 对象，Agent 直接照抄字符串注册，并认为 registry.Item 换对象后旧回调会自动跟随。请审查。",
+      "expected_output": "先发现项目适配层；原生注册需要函数。区分同一对象的方法替换与整个对象替换，旧 wrapper 仍捕获旧 self；核对参数转发、filter、priority、返回值和重绑路径，不抄参考 Mod 类系统。",
+      "files": ["skills/isaac-callback-contracts/SKILL.md", "skills/isaac-callback-contracts/references/method-adapters.md"]
+    },
+    {
+      "id": "wrapper-return-and-removal-identity",
+      "prompt": "回调 helper 包装 method 后用 result or nil 返回，并在卸载时 RemoveCallback(id,owner.Method)。method 可能返回 false。请定位问题并定义可执行验证。",
+      "expected_output": "识别 false 被吞掉和移除函数身份不一致；直接转发受支持的返回值，保存真实 wrapper 用于清理。测试参数中的 nil、返回 false/nil、优先级/过滤、方法替换和其他回调保留；不随意用 false 作为错误兜底。",
+      "files": ["skills/isaac-callback-contracts/references/method-adapters.md", "skills/isaac-callback-contracts/tests/test-method-adapter.lua"]
+    },
+    {
+      "id": "managed-unload-versus-live-double-import",
+      "prompt": "目标版本源码证明卸载 Mod 会清掉该 Mod 的回调。有人因此说任何 include 都不会重复注册；另一个人说每次 luamod 必然累积。当前代码既有同一实例连续 include，也有正常 unload 再 load。请判断。",
+      "expected_output": "两种绝对结论都不成立；分别核对同一 live 实例重复注册和目标原生卸载清理，外部 EID/ImGui/缓存另验。引用源码证据不能冒充已执行的游戏热重载。",
+      "files": ["skills/isaac-callback-contracts/references/method-adapters.md"]
+    },
+    {
       "id": 1,
       "prompt": "新被动道具会给伤害和移速。代码里已经有 Evaluate 函数，但玩家拿到道具后属性不变。请先审核 callback 合同，不要先改数值。",
       "expected_output": "Checks MC_EVALUATE_CACHE registration, handler existence/signature, cache-flag gates, ownership count, and the AddCacheFlags/EvaluateItems refresh path; asks for a test proving the registered callback fires.",

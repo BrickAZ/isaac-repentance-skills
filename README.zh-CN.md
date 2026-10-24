@@ -43,6 +43,16 @@ CuerLib、EID、MCM、StageAPI、REPENTOGON 等均不被默认视为必需前置
 参见 [1.3.0 角色切换更新说明](docs/character-switching-1.3.0.md)；此前的
 [1.2.0 REPENTOGON 更新说明](docs/repentogon-1.2.0.md)仍然保留。
 
+## 最近更新
+
+2026-10-24 强化了架构、回调、RNG、REPENTOGON UI 和测试五个已有 Skill：
+区分 Class 方法与实例替换、原生回调与方法名适配器、独立随机流与道具池副作用，
+并按项目承诺的重启／重载范围验收。使用者仍可沿用自己项目的模块组织方式。
+
+配套示例完成 92 项 Lua／模拟检查；三个 `skill-test` 独立任务满足 22 项应用审查点。
+这些结果不代表原生游戏验收，详细范围及审计限制见[改进说明](docs/module-followup-2026-10-24.md)
+和[独立任务盲测记录](docs/module-blindtest-2026-10-24.md)。
+
 ## 安装
 
 当前由仓库直接验证的方式是安装 `skills/` 下的各个 Skill 目录。仓库同时包含

@@ -22,3 +22,8 @@ The generic validator scans direct `ModObject:AddCallback(..., Owner.Handler)` r
 ## Priority And Duplicate Rule
 
 Use priority only when callback order changes observable behavior and explain the competing callback. Do not register the same callback/handler/filter pair twice; it can double rewards, double damage, or make a bug look random.
+
+Same-instance repeated registration is distinct from a verified native unload
+that clears the Mod's callbacks. For method-name helpers, inspect the adapter's
+native function and retained owner; use [method-adapters.md](method-adapters.md).
+Removal must identify the registered wrapper, not merely its target method.

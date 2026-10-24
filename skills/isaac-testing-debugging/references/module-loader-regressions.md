@@ -17,6 +17,9 @@ Select cases affected by the change rather than retesting every mod subsystem.
 | Invalidation | Changing relevant player/seed/eligibility input or explicit invalidation rebuilds the correct cache; unchanged context is stable. |
 | Teardown and replacement | Old methods cannot affect replacement resources; repeated cleanup is safe; a new live owner can register after the old one is detached. |
 | External API lifecycle | Cover absent/late API, same-ID behavior from its source, replacement API object, current language and UI cleared independently of the loader cache. |
+| Method adapter | Execute the registered wrapper, replace the method, then replace the owner; check arguments, false/nil returns, priority/filter and exact wrapper removal. |
+| Shallow class copy | Changing the base method after a copy need not update the child; nested mutable fields may remain shared across instances. Check the actual project helper. |
+| Supported reload scope | Distinguish duplicate same-instance imports, supported native unload/reload and an explicitly restart-only workflow. Test the scope actually promised. |
 
 Do not manufacture atomic engine behavior in a stub. If the engine removes a
 Mod's callbacks, model that only with matching-build evidence; keep external UI
@@ -28,6 +31,8 @@ Run the bundled example checks when those references change:
 ```text
 lua <skills-root>/isaac-mod-architecture/tests/test-module-contracts.lua
 lua <skills-root>/isaac-repentogon-ui/tests/test-developer-panel.lua
+lua <skills-root>/isaac-callback-contracts/tests/test-method-adapter.lua
+lua <skills-root>/isaac-rng-determinism/tests/test-prediction-query.lua
 ```
 
 These tests execute documented pure Lua patterns and explicit engine doubles.

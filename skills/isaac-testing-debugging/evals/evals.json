@@ -2,6 +2,12 @@
   "skill_name": "isaac-testing-debugging",
   "evals": [
     {
+      "id": "method-adapter-native-boundary-tests",
+      "prompt": "当前测试直接调用 Item.OnUse，从未执行 AddCallback 登记的 wrapper。wrapper 会吞 false、隐藏 nil 参数，并移除错函数；开发者认为 helper 测试通过就够了。请补验证方案。",
+      "expected_output": "通过真实注册 wrapper 验证 owner/参数序列、false/nil返回、过滤/优先级、同对象方法替换、registry对象替换以及准确移除。区分纯Lua适配层与引擎派发/卸载时序，测试不把两者混同。",
+      "files": ["skills/isaac-testing-debugging/references/module-loader-regressions.md", "skills/isaac-callback-contracts/references/method-adapters.md"]
+    },
+    {
       "id": "loader-doubles-must-model-distinct-semantics",
       "prompt": "include 和 require 测试桩都直接返回同一固定表，入口只执行一次；测试通过后宣称共享模块和热重载安全。请审查。",
       "expected_output": "指出测试消除了重新执行、缓存、作用域与世代差异；执行真实模块/工厂，分别建模 include 和 require，覆盖多消费者、第二次初始化、两个根同名键和依赖未就绪；模拟通过不能证明原生 reload。",
