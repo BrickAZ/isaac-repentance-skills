@@ -65,6 +65,20 @@ Track each feature's introduction, required fixes and actual build separately.
 See [the 1.3.0 character-switching update notes](docs/character-switching-1.3.0.md).
 The previous [1.2.0 REPENTOGON notes](docs/repentogon-1.2.0.md) remain available.
 
+## Latest Update
+
+The 2026-10-24 update refines five existing skills for architecture, callbacks,
+RNG, REPENTOGON UI and testing. It distinguishes class-method and instance
+replacement, native callbacks and method-name adapters, and independent random
+streams and real pool side effects. Validation follows the project's declared
+restart or reload support; existing module conventions remain usable.
+
+The examples passed 92 Lua/model checks, and three independent `skill-test`
+tasks satisfied 22 application-review checks. These are not native game
+acceptance results. See the [follow-up notes](docs/module-followup-2026-10-24.md)
+and [independent-task review](docs/module-blindtest-2026-10-24.md) for scope and
+audit limitations.
+
 ## Installation
 
 The installation method directly verified by this repository is to install the

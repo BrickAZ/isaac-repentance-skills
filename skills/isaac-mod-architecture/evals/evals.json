@@ -2,6 +2,18 @@
   "skill_name": "isaac-mod-architecture",
   "evals": [
     {
+      "id": "class-copy-and-live-instance-boundaries",
+      "prompt": "项目 Class 用 pairs 把基类字段复制进子类，实例通过 __index 查子类。基类的 Shared 是可变表；创建两个实例后再替换 base.Method，并由其中一个修改 Shared。Agent 认为这是独立深拷贝和实时继承。请评审。",
+      "expected_output": "识别浅复制的函数快照和嵌套表别名；基类方法后改不一定传播，两个实例可能共享可变表；需要独立状态时在构造中创建。沿用实际项目 helper，不把自定义 Class 变成 Isaac 官方 API 或默认依赖。",
+      "files": ["skills/isaac-mod-architecture/SKILL.md", "skills/isaac-mod-architecture/references/classes-and-method-dispatch.md"]
+    },
+    {
+      "id": "local-name-does-not-protect-returned-state",
+      "prompt": "local cache={ids={1,2}}；公开 GetState 直接 return cache。EID 对结果 ids 排序后，作者说 cache 是 local 所以不可能影响玩法；他准备只复制外层表。请审查。",
+      "expected_output": "local 仅限制名称作用域，返回引用仍可被修改；外层浅拷贝保留 ids 别名。根据已确认可变性合同返回副本或窄查询，不强制所有项目引入只读代理框架。",
+      "files": ["skills/isaac-mod-architecture/references/classes-and-method-dispatch.md"]
+    },
+    {
       "id": "include-consumers-share-one-instance",
       "prompt": "道具文件顶层有 local cache 和 AddCallback，最后 return Planner。入口已 include 一次；B 道具和 EID 准备各 include 一次取得 GetPreview。有人说 local 不能复用，必须复制或改全局。请审查。",
       "expected_output": "保留私有 local，通过返回接口及闭包复用；由已发现的 bootstrap/registry 保存同一实例，消费者不重执行注册模块。明确缓存、方法调用和结果所有权；不假设项目已有注册表名称。",

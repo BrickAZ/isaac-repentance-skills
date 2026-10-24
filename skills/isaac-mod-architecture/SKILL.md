@@ -41,6 +41,7 @@ Before moving code:
 ## Route The Architecture Work
 
 - **Loading and exports**: `include`/`require`, shared instances, returned tables/factories, public query/effect methods, namespaces and dependency cycles. Read `references/module-loading-and-exports.md`.
+- **Classes and replacement**: existing class helpers, shallow inheritance, mutable prototype fields and method-versus-instance replacement. Read `references/classes-and-method-dispatch.md`; custom callback adapters belong to `isaac-callback-contracts`.
 - **Module boundaries**: when to split item/card/entity/challenge code and what each module owns. Read `references/module-boundaries.md`.
 - **Callback registration**: shared callback helpers, load order, duplicate callback prevention, per-content registration. Read `references/callback-registration.md`.
 - **Shared helpers and constants**: id maps, state helpers, RNG helpers, language helpers, asset helpers. Read `references/shared-helpers.md`.

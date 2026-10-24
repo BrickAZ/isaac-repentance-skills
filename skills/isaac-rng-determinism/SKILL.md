@@ -75,6 +75,11 @@ field or serialize live `RNG` userdata.
 
 ## Verification
 
+For EID/UI predictions or shared random-result queries, read
+`references/prediction-queries.md`: independent draws, matching ordered inputs,
+cache invalidation and zero/one/many-preview checks. A private RNG does not
+make pool calls or other gameplay operations non-mutating.
+
 Read `references/rng-review.md`. Static success does not prove reproducibility.
 Test repeated eligible events, two-player ownership, reroll/removal where
 relevant, and same-condition reruns. Report whether deterministic behavior was

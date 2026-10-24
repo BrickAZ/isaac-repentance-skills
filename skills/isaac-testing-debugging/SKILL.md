@@ -175,7 +175,9 @@ When changing a large, monolithic Lua entry file, include a check that parses or
 For loader/export changes, shared queries or cached integrations, read
 `references/module-loader-regressions.md`. Model repeated `include` execution
 separately from `require` cache hits, and exercise the actual export/installer
-instead of returning the same fixed table for both loaders. A parse or one-time
+and registered method wrapper instead of returning the same fixed table for both
+loaders. Separate method replacement from owner replacement, and validate the
+project's declared restart/reload support scope. A parse or one-time
 bootstrap pass does not prove shared identity, current closures or native reload.
 - Report separately if only an isolated helper was tested, or if no compatible Lua runner is available.
 

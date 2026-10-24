@@ -2,6 +2,12 @@
   "skill_name": "isaac-repentogon-ui",
   "evals": [
     {
+      "id": "restart-only-menu-is-a-valid-support-scope",
+      "prompt": "作者明确说明菜单改动只支持重启游戏验证，不支持手动 luamod；正常启动和重启均正常。Agent 因缓存闭包风险要求先重构整个热重载系统，否则拒绝交付。请审查。",
+      "expected_output": "保留已明确的重启支持范围，按正常启动/重启验证，不强制扩大为热重载项目。不宣称未支持的 luamod/luareset 已通过；若范围以后改变再核验旧引用/外部UI生命周期。",
+      "files": ["skills/isaac-repentogon-ui/SKILL.md", "skills/isaac-repentogon-ui/references/developer-panel.md"]
+    },
+    {
       "id": "require-cache-is-not-ui-lifecycle",
       "prompt": "菜单 require 模块顶层捕获旧 Mod 并创建 ImGui。reload 新建 Mod，但 require 命中缓存；有人宣称一次执行已保证重载安全。请评审。",
       "expected_output": "区分工厂缓存、当前实例、实际 UI 元素及注册；核对目标版本，旧实例经证实的卸载/Destroy 后用当前 Mod 安装，元素被清理时允许重建，不能仅依赖旧 registered 或新 Mod 字段。",

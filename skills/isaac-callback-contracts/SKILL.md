@@ -48,6 +48,7 @@ Read the relevant reference:
 
 - Callback choice, timing, and filtering: `references/callback-choice-and-filters.md`.
 - Registration, handler existence, return contracts, priority, and duplicates: `references/registration-and-return-contracts.md`.
+- Custom method-name adapters, captured owners, wrapper removal and normal reload versus duplicate imports: `references/method-adapters.md`.
 - Review and test matrix: `references/callback-review-checklist.md`.
 
 ## Callback Families

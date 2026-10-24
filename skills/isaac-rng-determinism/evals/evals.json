@@ -2,6 +2,18 @@
   "skill_name": "isaac-rng-determinism",
   "evals": [
     {
+      "id": "independent-rng-does-not-isolate-pool",
+      "prompt": "EID 预测使用新 RNG(seed)，但候选构建调用会耗减真实道具池的 API；执行时又从顺序不同的候选抽取。开发者说独立 RNG 已证明查询纯净且同种子结果相同。请审查。",
+      "expected_output": "区分随机流与道具池/其他写入；新 RNG 不消除耗减。要求相同种子/算法/shift/有序候选/资格上下文及失效规则，预览和执行同一计划，不把 seed 单独当完整证明。",
+      "files": ["skills/isaac-rng-determinism/SKILL.md", "skills/isaac-rng-determinism/references/prediction-queries.md"]
+    },
+    {
+      "id": "preview-frequency-and-factory-contamination",
+      "prompt": "要验证查看描述不会改变下一次实际随机效果。当前测试只检查 GetPreview 无异常，传入的 newRng 实际返回玩家的共享 RNG。应该怎样验证？",
+      "expected_output": "比较零/一/多次预览后的实际计划与玩法流/池/资源，发现工厂返回共享流会污染。覆盖候选顺序/资格、owner、返回值修改及缓存失效；构造签名按目标版核对，纯Lua测试不能证明引擎RNG和池无副作用。",
+      "files": ["skills/isaac-rng-determinism/references/prediction-queries.md", "skills/isaac-rng-determinism/tests/test-prediction-query.lua"]
+    },
+    {
       "id": "collectible-owned-random-event",
       "prompt": "陌生 Isaac 模组的被动道具每次击杀随机选择一种效果；合作模式下每个持有者应独立，重开同种子是否一致尚未决定。没有代码。只写随机合同。",
       "expected_output": "不决定确定性政策；要求 owner、draw edge、RNG 来源、co-op、重复和验证；不使用 player zero/global RNG 猜测。",
